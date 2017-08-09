@@ -1,0 +1,13 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="post">{% csrf_token %}
+      <h3>Eliminar Categoria:</h3>
+      <h4>¿Desea Eliminar?</h4>
+      <h5 class="alerta">Nombre de categoria: {{c.nombre|upper}}</h5>
+      <button type="submit" class="button boton1" name="eliminar">Eliminar</button>
+    </form>
+  </div>
+</div>
+{% endblock %}

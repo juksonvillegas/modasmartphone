@@ -1,0 +1,117 @@
+.profile {
+height: 50px;
+width: 50px;
+-moz-border-radius: 35px;
+border-radius: 35px;
+}
+
+.top-bar, .top-bar ul {
+  background: #03A9F4;
+  color: #fff;
+}
+
+.top-bar, .top-bar ul a {
+  padding: 0px;
+  background: #03A9F4;
+  color: #fff;
+}
+
+.top-bar, .top-bar ul a:hover {
+  background: #03A9F4;
+  color: #fff;
+}
+
+.top-bar-left{
+  width: inherit;
+}
+
+input#menu{
+  font-size: 10em;
+}
+
+.off-canvas{
+  background: #383E4A;
+}
+
+.menu  a {
+  background: #575B65;
+  color: #fff;
+  padding: 1em;
+}
+
+.menu a:hover {
+  background: #696E7A;
+  color: #fff;
+}
+
+.titulo {
+  color: #a0a0a0;
+  padding: 1em;
+  background: #fff;
+  border-radius: 1px;
+}
+
+.alerta{
+  color: green;
+  padding: 0;
+  font-size: 1em;
+}
+.error{
+  color: red;
+  padding: 0;
+  font-size: 1em;
+}
+
+input:focus {
+  border: 1px;
+  padding: 1.5em;
+  color: #333333;
+}
+
+label{
+  color : #a0a0a0;
+}
+
+.botonopenmodal{
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  display: inline-block;
+  background: #03A9F4;
+  color: #383e4a;
+  font-size: 1em;
+}
+
+.boton1{
+  background: #03A9F4;
+  border-radius: 5px;
+  font-size: 1.5em;
+}
+
+.barra-color{
+  background: #03A9F4;
+  padding-top: 3em;
+  padding-bottom: 3em;
+  color: #fff;
+}
+
+.fondo{ background: #EEEEEE; }
+
+.formulario{
+  color: #a0a0a0;
+  padding: 3em;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 10px 10px 5px #888888;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.input-login {
+  color: #a0a0a0;
+  border-radius: 5px;
+}

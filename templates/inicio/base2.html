@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  {% load static from staticfiles %}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moda Smartphone</title>
+  <link href="{% static 'css/foundation.css' %}" rel="stylesheet">
+  <link href="{% static 'css/owner.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body class="fondo">
+  <!-- area  de trabajo-->
+  <div class="row expanded">
+    <div class="large-2 medium-3 small-12 columns">
+      <!-- menu mobil 1 -->
+      <div class="title-bar" data-responsive-toggle="example-menu" data-hide-for="medium">
+        <button class="menu-icon" type="button" data-toggle></button>
+    	  <div class="title-bar-title">Menu</div>
+      </div>
+      <!--11111111111111111-->
+      <!--menu normal 2-->
+      <div class="columns top-bar menucontenedor" id="example-menu">
+        <ul class="vertical menu" data-responsive-menu="drilldown medium-accordion">
+          <li class="menu-text text-center" >{{request.user.username|capfirst}}</li>
+              <li>
+                <div class="row">
+                  <div class="small-centered large-centered avatar" style="background-image:url('http://lorempixel.com/100/100/abstract/');">
+                  </div>
+                </div>
+
+              </li>
+              <li class="text-center">
+                {% if request.user.is_staff %}
+                  Administrador
+                {% else %}
+                  Vendedor
+                {% endif %}
+              </li>
+            <li>
+              <a href="#">Consiganaciones</a>
+                <ul class="vertical menu">
+                  <li>
+                    <a href="#">Agregar</a>
+                  </li>
+                  <li>
+                    <a href="#">Mantenimiento</a>
+                </li>
+              </ul>
+            </li>
+            <!--menu clientes-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Clientes</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="/clientes/agregar">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="/clientes/listar">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <!--menu compras-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Compras</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="#">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="#">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <!--menu productos-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Productos</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="#">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="#">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <!--menu pedidos-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Pedidos</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="#">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="#">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <!--menu ventas-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Ventas</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="#">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="#">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <!--menu reportes-->
+            <ul class="vertical menu">
+              <li>
+                <a href="#">Reportes</a>
+                  <ul class="vertical menu">
+                    <li>
+                      <a href="#">Agregar</a>
+                    </li>
+                    <li>
+                        <a href="#">Mantenimiento</a>
+                    </li>
+                  </ul>
+              </li>
+            </ul>
+            <li class="salir text-center">
+              <a href="/salir/">
+                <i class="material-icons">power_settings_new</i>
+              </a>
+            </li>
+          </ul>
+      </div>
+      <!-- 222222222222222 -->
+    </div>
+    <div class="large-10 medium-9 small-12 columns">
+      <!--area formularios 3-->
+      <div class="columns">
+        <div class="columns small-12 sub-barra-color">
+          <h2>MODA SMARTPHONE SAC</h2>
+        </div>
+        <div class="columns small-12">
+          {% block contenido %}
+          {% endblock %}
+        </div>
+      </div>
+      <!--333333333333333333-->
+    </div>
+    <!--Area Formularios-->
+  </div>
+</body>
+
+<script src="{% static 'js/vendor/jquery.js' %}"></script>
+<script src="{% static 'js/vendor/foundation.min.js' %}"></script>
+<!--<script src="{% static 'js/vendor/what-input.js' %}"></script>-->
+<script src="{% static 'js/app.js' %}"></script>
+<script src="{% static 'js/maskinput.js' %}"></script>
+<script type="text/javascript">
+  $(window).on('changed.zf.mediaquery', function() {
+    $('.is-accordion-submenu.invisible').removeClass('invisible');
+  });
+</script>
+<script type="text/javascript">
+{%block script%}
+{% endblock %}
+</script>
+</html>

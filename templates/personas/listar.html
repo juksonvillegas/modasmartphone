@@ -1,0 +1,121 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="callout clearfix">
+    <a href="/personas/agregar" class="button float-left">Agregar nuevo cliente</a>
+  </div>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Clientes</h3>
+      <div class="columns large-4 right medium-6 small-12">
+        <div class="input-group input-group-rounded columns large-6 medium-4">
+          <span class="input-group-label"><i class="material-icons">search</i></span>
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Clientes" id="buscador">
+        </div>
+      </div>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Nombres</th>
+              <th>Sexo</th>
+              <th>Telefono</th>
+              <th>Mayorista</th>
+              <th>Fec. Nacimiento</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in personas %}
+            <tr>
+              <td>{{c.nombres}}</td>
+              <td>
+                {% if c.sexo %}
+                  Hombre
+                {% else %}
+                  Mujer
+                {% endif %}
+              </td>
+              <td>{{c.phone}}</td>
+              <td>
+                {% if c.mayorista %}
+                  <i class="material-icons">check_box</i>
+                {% else %}
+                  <i class="material-icons">check_box_outline_blank</i>
+                {% endif %}
+              </td>
+              <td>{{c.nacimiento}}</td>
+              <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
+              <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != personas.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#texto').focus();
+  });
+  $('#texto').change(function(){
+    a = $("#texto").val().length;
+    if(a>2){
+      $("#tabla tbody tr").remove();
+      texto = $("#texto").val();
+      nuevafila = "<tr>"
+      $.ajax({
+				data: {'term':texto},
+				url: "/personas/buscar-ajax",
+				type: "get",
+				success: function(data){
+          for(var i = 0; i<data.length; i++){
+            var nac = new Date(data[i].nacimiento);
+						var nacimiento = nac.getDate() + '/' + (nac.getMonth() + 1) + '/' + nac.getFullYear();
+            var mayorista = data[i].mayorista;
+            var sexo= data[i].sexo;
+            var may ="";
+            var sex ="";
+            if(sexo==true){
+              sex = 'Hombre';
+            }
+            else{
+              sex = 'Mujer';
+            }
+            if(mayorista==true){
+              may = '<i class="material-icons">check_box</i>';
+            }
+            else{
+              may = '<i class="material-icons">check_box_outline_blank</i>';
+            }
+            nuevafila +="<td>" + data[i].nombres + "</td>" +
+                        "<td>" + sex + "</td>" +
+                        "<td>" + data[i].phone + "</td>" +
+                        "<td>" + may + "</td>" +
+                        "<td>" + nacimiento + "</td>" +
+                        '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
+                        '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
+           $("#tabla").append(nuevafila);
+         }
+        }
+      });
+    }
+    else if(a==0){
+      window.location.replace("/personas/listar?page=1");
+    }
+  });
+{% endblock %}

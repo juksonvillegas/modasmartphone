@@ -1,0 +1,47 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="post">{% csrf_token %}
+      <h3>Editar Categoria</h3>
+      {% if form.errors %}
+        <h5 class="error">Ha ocurrido un error</h5>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <h5 class="error">{{error|escape}}</h5>
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      <label for="id_nombre">Nombre Categoria: (Requerido)</label>
+      <div hidden id="errornombres" class="error">
+        Nombre no puede estar vacio, ni contener numeros.
+      </div>
+      {{form.nombre}}
+      <button type="submit" class="button boton1" name="entrar">Guardar</button>
+   </form>
+ </div>
+</div>
+{% endblock contenido %}
+{%block script%}
+$( document ).ready(function() {
+  $("#id_nombre").focus();
+});
+$("#id_nombres").focusout(function(){
+  nombre = $("#id_nombres").val();
+  a = $("#id_nombres").val().length;
+  if(a==0){
+    $("#errornombres").show();
+  }
+  else{
+    $("#errornombres").hide();
+  }
+});
+{% endblock %}

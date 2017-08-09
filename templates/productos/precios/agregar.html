@@ -1,0 +1,171 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="post">{% csrf_token %}
+      <h3>Agregar Precios</h3>
+      {% if form.errors %}
+        <h5 class="error">Ha ocurrido un error</h5>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <h5 class="error">{{error|escape}}</h5>
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      <label class="" for="id_categoria">Seleccione Categoria: (Requerido)</label>
+      {{form.categoria}}
+      <div class="input-group">
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" readonly id="id_nombrecategoria" name="" value="">
+        <div hidden id="errorcategoria" class="error">
+          Debe seleccionar una Categoria.
+        </div>
+      </div>
+      <label for="id_nombre">Seleccione Modelo: (Requerido)</label>
+      {{form.modelo}}
+      <div class="input-group">
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" readonly id="id_nombre" name="" value="">
+        <div hidden id="errormodelo" class="error">
+          Debe seleccionar un modelo
+        </div>
+      </div>
+
+      <label for="id_mayor">Precio por Mayor: (Requerido)</label>
+      <div hidden id="errormayor" class="error">
+        Debe seleccionar una marca.
+      </div>
+      {{form.mayor}}
+      <label for="id_punto">Precio Punto: (Requerido)</label>
+      <div hidden id="errorpunto" class="error">
+        Debe seleccionar una marca.
+      </div>
+      {{form.punto}}
+      <label for="id_cliente">Precio Cliente: (Requerido)</label>
+      <div hidden id="errorcliente" class="error">
+        Debe seleccionar una marca.
+      </div>
+      {{form.cliente}}
+      <button type="submit" class="button boton1" name="entrar">Guardar</button>
+   </form>
+ </div>
+ <!--MODAL PARA MODELOS-->
+   <div class="reveal titulo" id="exampleModal1" data-reveal>
+    <h3>Seleccionar Modelo</h3>
+    <div class="input-group input-group-rounded columns large-6 medium-4">
+      <span class="input-group-label"><i class="material-icons">search</i></span>
+      <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Modelo" id="buscador">
+    </div>
+      <table id="tabla">
+        <thead>
+          <tr>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Seleccionar</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+      </table>
+    <button class="close-button" data-close aria-label="Close modal" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<!--MODAL PARA MODELOS-->
+<!--MODAL PARA CATEGORIAS-->
+  <div class="reveal titulo" id="exampleModal2" data-reveal>
+   <h3>Seleccionar Categoria</h3>
+   <div class="input-group input-group-rounded columns large-6 medium-4">
+     <span class="input-group-label"><i class="material-icons">search</i></span>
+     <input type="text" id="categoria" name="buscador" class="buscador input-group-field" placeholder="Buscar Modelo" id="buscador">
+   </div>
+     <table id="tabla2">
+       <thead>
+         <tr>
+           <th>Nombre</th>
+           <th>Seleccionar</th>
+         </tr>
+       </thead>
+       <tbody>
+       </tbody>
+     </table>
+   <button class="close-button" data-close aria-label="Close modal" type="button">
+     <span aria-hidden="true">&times;</span>
+   </button>
+  </div>
+<!--MODAL PARA CATEGORIAS-->
+</div>
+{% endblock contenido %}
+{%block script%}
+$( document ).ready(function() {
+  $("#abrirmodal2").focus();
+});
+
+$('#texto').change(function(){
+  a = $("#texto").val().length;
+  if(a>1){
+    $("#tabla tbody").remove();
+    texto = $("#texto").val();
+    nuevafila = "<tr>"
+    $.ajax({
+      data: {'term':texto},
+      url: "/modelos/buscar-ajax",
+      type: "get",
+      success: function(data){
+        for(var i = 0; i<data.length; i++){
+          nombre = data[i].nombre.replace(/\s+/g, '-');
+          marca = data[i].marca.replace(/\s+/g, '-');
+          nombrecompleto = marca + '-' + nombre;
+          console.log(nombrecompleto);
+          nuevafila +="<td>" + data[i].nombre + "</td>" +
+                      "<td>" + data[i].marca + "</td>" +
+                      "<td><a href=javascript:seleccionar("+ data[i].pk + ",'" + nombrecompleto + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+       }
+       $("#tabla").append(nuevafila);
+      }
+    });
+  }
+});
+$('#categoria').change(function(){
+  a = $("#categoria").val().length;
+  if(a>1){
+    $("#tabla tbody").remove();
+    texto = $("#categoria").val();
+    nuevafila = "<tr>"
+    $.ajax({
+      data: {'term':texto},
+      url: "/categorias/buscar-ajax",
+      type: "get",
+      success: function(data){
+        for(var i = 0; i<data.length; i++){
+          nombre = data[i].nombre.replace(/\s+/g, '-');
+          nuevafila +="<td>" + data[i].nombre + "</td>" +
+                      "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombre + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+       }
+       $("#tabla2").append(nuevafila);
+      }
+    });
+  }
+});
+function seleccionar(id, modelo){
+  $("#id_modelo").val(id);
+  $("#id_nombre").val(modelo);
+  $("#exampleModal1").foundation('close');
+  $("#id_mayor").focus();
+}
+function seleccionar2(id, categoria){
+  $("#id_categoria").val(id);
+  console.log(id);
+  $("#id_nombrecategoria").val(categoria);
+  $("#exampleModal2").foundation('close');
+  $("#abrirmodal").focus();
+}
+{% endblock %}

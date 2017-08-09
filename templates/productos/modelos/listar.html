@@ -1,0 +1,84 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="callout clearfix">
+    <a href="/modelos/agregar" class="button float-left">Agregar nuevo modelo</a>
+  </div>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Modelos</h3>
+      <div class="columns large-4 right medium-6 small-12">
+        <div class="input-group input-group-rounded columns large-6 medium-4">
+          <span class="input-group-label"><i class="material-icons">search</i></span>
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Categoria" id="buscador">
+        </div>
+      </div>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Modelo</th>
+              <th>Marca</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in modelos %}
+            <tr>
+              <td>{{c.nombre}}</td>
+              <td>{{c.marca}}</td>
+              <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
+              <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != modelos.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#texto').focus();
+  });
+  $('#texto').change(function(){
+    a = $("#texto").val().length;
+    console.log(a);
+    if(a>1){
+      $("#tabla tbody tr").remove();
+      texto = $("#texto").val();
+      $.ajax({
+				data: {'term':texto},
+				url: "/modelos/buscar-ajax",
+				type: "get",
+				success: function(data){
+          for(var i = 0; i<data.length; i++){
+            nuevafila = "<tr>";
+            nuevafila +="<td>" + data[i].nombre + "</td>" +
+                        "<td>" + data[i].marca + "</td>" +
+                        '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
+                        '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
+           $("#tabla").append(nuevafila);
+           nuevafila="";
+         }
+        }
+      });
+    }
+    else if(a==0){
+      window.location.replace("/modelos/listar?page=1");
+    }
+  });
+{% endblock %}

@@ -1,0 +1,81 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="post">{% csrf_token %}
+      <h3>Agregar Persona</h3>
+      {% if form.errors %}
+        <h5 class="error">Ha ocurrido un error</h5>
+        {% for field in form %}
+          {% for error in field.errors %}
+            <h5 class="error">{{error|escape}}</h5>
+          {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      <label for="id_nombres">Nombres Completos: (Requerido)</label>
+      <div hidden id="errornombres" class="error">
+        Nombre no puede estar vacio, ni contener numeros.
+      </div>
+      {{form.nombres}}
+      <label for="id_phone">Telefono: (Requerido)</label>
+      <div hidden id="errorphone" class="error">
+        Telefono Incorrecto. Ejemplo: 950012502 o 073505594
+      </div>
+      {{form.phone}}
+      {{form.direccion}}
+      <label for="id_sexo">Sexo:</label>
+      {{form.sexo}}
+      <label for="id_mayorista">Mayorista:</label>
+      {{form.mayorista}}
+      <label for="id_nacimiento">Fecha de nacimiento: (Requerido)</label>
+      {{form.nacimiento}}
+      {% if detalle.nacimiento %}
+        <span>introudcta una fecha correcta</span>
+      {% endif %}
+      <label for="id_datos">Datos: (Opcional)</label>
+      {{form.datos}}
+      <button type="submit" class="button boton1" name="entrar">Guardar</button>
+   </form>
+ </div>
+</div>
+{% endblock contenido %}
+{%block script%}
+$( document ).ready(function() {
+  $("#id_phone").mask("999999999");
+  $("#id_nacimiento").mask("99/99/9999");
+  $("#id_nombres").focus();
+});
+$("#id_nombres").focusout(function(){
+  nombre = $("#id_nombres").val();
+  a = $("#id_nombres").val().length;
+  if(a==0){
+    $("#errornombres").show();
+  }
+  else{
+    $("#errornombres").hide();
+  }
+  for (i = 0; i<a; i++){
+    b = nombre[i];
+    if ($.isNumeric(b)){
+      $("#errornombres").show();
+    }
+  }
+});
+$("#id_phone").focusout(function(){
+  a = $("#id_phone").val().length;
+  if(a!=9){
+    $("#errorphone").show();
+  }
+  else {
+      $("#errorphone").hide();
+  }
+});
+{% endblock %}

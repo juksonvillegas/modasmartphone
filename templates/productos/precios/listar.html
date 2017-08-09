@@ -1,0 +1,92 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="callout clearfix">
+    <a href="/precios/agregar" class="button float-left">Agregar nuevo precio</a>
+  </div>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Precios</h3>
+      <div class="columns large-4 right medium-6 small-12">
+        <div class="input-group input-group-rounded columns large-6 medium-4">
+          <span class="input-group-label"><i class="material-icons">search</i></span>
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Precio" id="buscador">
+        </div>
+      </div>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Modelo</th>
+              <th>Por mayor</th>
+              <th>A punto</th>
+              <th>Cliente</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in lista %}
+            <tr>
+              <td>{{c.categoria}}</td>
+              <td>{{c.modelo}}</td>
+              <td>{{c.mayor}}</td>
+              <td>{{c.punto}}</td>
+              <td>{{c.cliente}}</td>
+              <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
+              <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != lista.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#texto').focus();
+  });
+  $('#texto').change(function(){
+    a = $("#texto").val().length;
+    console.log(a);
+    if(a>1){
+      $("#tabla tbody").remove();
+      texto = $("#texto").val();
+      nuevafila = "<tr>"
+      $.ajax({
+				data: {'term':texto},
+				url: "/precios/buscar-ajax",
+				type: "get",
+				success: function(data){
+          for(var i = 0; i<data.length; i++){
+            nuevafila +="<td>" + data[i].categoria + "</td>" +
+                        "<td>" + data[i].modelo + "</td>" +
+                        "<td>" + data[i].mayor + "</td>" +
+                        "<td>" + data[i].punto + "</td>" +
+                        "<td>" + data[i].cliente + "</td>" +
+                        '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
+                        '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
+         }
+         $("#tabla").append(nuevafila);
+        }
+      });
+    }
+    else if(a==0){
+      window.location.replace("/precios/listar?page=1");
+    }
+  });
+{% endblock %}
