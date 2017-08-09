@@ -77,7 +77,6 @@
     if(a>2){
       $("#tabla tbody tr").remove();
       texto = $("#texto").val();
-      nuevafila = "<tr>"
       $.ajax({
 				data: {'term':texto},
 				url: "/personas/buscar-ajax",
@@ -102,6 +101,7 @@
             else{
               may = '<i class="material-icons">check_box_outline_blank</i>';
             }
+            nuevafila = "<tr>";
             nuevafila +="<td>" + data[i].nombres + "</td>" +
                         "<td>" + sex + "</td>" +
                         "<td>" + data[i].phone + "</td>" +

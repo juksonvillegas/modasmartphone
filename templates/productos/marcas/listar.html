@@ -10,7 +10,7 @@
       <div class="columns large-4 right medium-6 small-12">
         <div class="input-group input-group-rounded columns large-6 medium-4">
           <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Categoria" id="buscador">
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Marca" id="buscador">
         </div>
       </div>
     </div>
@@ -58,13 +58,13 @@
     if(a>1){
       $("#tabla tbody").remove();
       texto = $("#texto").val();
-      nuevafila = "<tr>"
       $.ajax({
 				data: {'term':texto},
 				url: "/marcas/buscar-ajax",
 				type: "get",
 				success: function(data){
           for(var i = 0; i<data.length; i++){
+            nuevafila = "<tr>";
             nuevafila +="<td>" + data[i].nombre + "</td>" +
                         '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
                         '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';

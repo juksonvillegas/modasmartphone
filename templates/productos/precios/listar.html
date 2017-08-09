@@ -62,17 +62,16 @@
   });
   $('#texto').change(function(){
     a = $("#texto").val().length;
-    console.log(a);
     if(a>1){
-      $("#tabla tbody").remove();
+      $("#tabla tbody tr").remove();
       texto = $("#texto").val();
-      nuevafila = "<tr>"
       $.ajax({
 				data: {'term':texto},
 				url: "/precios/buscar-ajax",
 				type: "get",
 				success: function(data){
           for(var i = 0; i<data.length; i++){
+            nuevafila = "<tr>";
             nuevafila +="<td>" + data[i].categoria + "</td>" +
                         "<td>" + data[i].modelo + "</td>" +
                         "<td>" + data[i].mayor + "</td>" +
@@ -80,8 +79,9 @@
                         "<td>" + data[i].cliente + "</td>" +
                         '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
                         '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
+                        $("#tabla").append(nuevafila);
          }
-         $("#tabla").append(nuevafila);
+
         }
       });
     }

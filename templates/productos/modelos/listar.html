@@ -10,7 +10,7 @@
       <div class="columns large-4 right medium-6 small-12">
         <div class="input-group input-group-rounded columns large-6 medium-4">
           <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Categoria" id="buscador">
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Modelo" id="buscador">
         </div>
       </div>
     </div>
@@ -56,7 +56,6 @@
   });
   $('#texto').change(function(){
     a = $("#texto").val().length;
-    console.log(a);
     if(a>1){
       $("#tabla tbody tr").remove();
       texto = $("#texto").val();

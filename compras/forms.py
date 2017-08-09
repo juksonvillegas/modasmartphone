@@ -1,8 +1,6 @@
 from django.forms import *
 from .models import *
 import datetime
-from splitjson.widgets import SplitJSONWidget
-
 
 def getfecha():
     return datetime.date.today().strftime("%d/%m/%Y")

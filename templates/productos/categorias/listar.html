@@ -58,13 +58,13 @@
     if(a>2){
       $("#tabla tbody").remove();
       texto = $("#texto").val();
-      nuevafila = "<tr>"
       $.ajax({
 				data: {'term':texto},
 				url: "/categorias/buscar-ajax",
 				type: "get",
 				success: function(data){
           for(var i = 0; i<data.length; i++){
+            nuevafila = "<tr>";
             nuevafila +="<td>" + data[i].nombre + "</td>" +
                         '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
                         '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';

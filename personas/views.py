@@ -32,7 +32,7 @@ def buscarpersonas(request):
             personas = Personas.objects.filter(Q(nombres__contains = texto)|Q(phone__contains = texto)|Q(datos__contains = texto))
             lista = []
             for c in personas:
-				lista.append({'pk':c.pk, 'nombres':c.nombres, 'nacimiento':str(c.nacimiento), 'phone':c.phone, 'mayorista':c.mayorista, 'datos':c.datos})
+				lista.append({'pk':c.pk, 'nombres':c.nombres, 'sexo':c.sexo, 'nacimiento':str(c.nacimiento), 'phone':c.phone, 'mayorista':c.mayorista, 'datos':c.datos})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 
