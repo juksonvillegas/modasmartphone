@@ -84,3 +84,15 @@ def buscarcompras(request):
 				lista.append({'pk':c.pk, 'proveedor':c.personas.nombres, 'fecha':str(c.fecha), 'pago':c.pago, 'facturado':c.facturado})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
+
+@login_required
+def editarcompra(request,pk):
+    c = get_object_or_404(Compra, pk=pk)
+    personas = c.personas.pk
+    proveedor = c.personas
+    fecha = c.fecha.strftime("%d/%m/%Y")
+    facturado = c.facturado
+    pago = c.pago
+    observacion = c.observacion
+    productos = list(detalle_compra.objects.filter(compra=pk))
+    return render(request, 'compras/editar.html', {'proveedor':proveedor, 'personas':personas, 'fecha':fecha, 'facturado':facturado, 'pago':pago, 'observacion':observacion, 'productos':productos})
