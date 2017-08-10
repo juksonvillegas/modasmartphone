@@ -68,7 +68,8 @@ ROOT_URLCONF = 'modasmartphonesac.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/juksonvillegas/Documents/modasmartphone/modasmartphone/entorno/modasmartphonesac/templates'],
+        #'DIRS': ['/Users/juksonvillegas/Documents/modasmartphone/modasmartphone/entorno/modasmartphonesac/templates'],
+        'DIRS': ['/home/jukson/Documentos/entorno/modasmartphone/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -93,8 +94,8 @@ DATABASES = {
         'NAME': 'modasmartphone',
         'USER': 'jukson',
         'PASSWORD': 'libertad',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'HOST': '',
+        'PORT': '',
     }
 }
 
