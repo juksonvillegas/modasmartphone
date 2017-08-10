@@ -467,11 +467,16 @@ def agregarproducto(request):
                 c.modelo = get_object_or_404(Modelo, pk=pk1)
                 c.precio = get_object_or_404(Precio, pk=pk3)
                 c.stock_minimo = form.cleaned_data['stock_minimo']
+                c.descripcion = form.cleaned_data['descripcion']
+                c.save()
+                barra = str(1000000 + int(c.id))
+                c.barra = calcularean8(barra)
                 c.save()
         except Exception as e:
              detalle = "Error: " + str(e)
         finally:
             if detalle != 0 or form.is_valid() == False:
+                print(detalle)
                 return render(request, 'productos/productos/agregar.html', {'form': form, 'detalle':detalle})
             else:
                 return redirect(reverse_lazy('productos_listar'))
@@ -500,7 +505,7 @@ def buscarproductos(request):
             clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto))
             lista = []
             for c in clase:
-				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock_minimo':c.stock_minimo})
+				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre,'barra':c.barra, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock_minimo':c.stock_minimo})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 
@@ -508,7 +513,7 @@ def buscarproductos2(request):
     if request.is_ajax():
         texto = request.GET['term']
         if texto is not None:
-            clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto))
+            clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto)| Q(barra__contains = texto))
             lista = []
             for c in clase:
                 nom = c.categoria.nombre + "-" + c.modelo.marca.nombre + "-" +  c.modelo.nombre
@@ -536,6 +541,7 @@ def editarproductos(request, pk):
                 c.modelo = get_object_or_404(Modelo, pk=pk1)
                 c.precio = get_object_or_404(Precio, pk=pk3)
                 c.stock_minimo = form.cleaned_data['stock_minimo']
+                c.descripcion = form.cleaned_data['descripcion']
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
@@ -546,7 +552,7 @@ def editarproductos(request, pk):
                 return redirect(reverse_lazy('productos_listar'))
     else:
         c = get_object_or_404(Producto, pk=pk)
-        form = ProductoForm(initial={'categoria':c.categoria.pk,'modelo':c.modelo.pk, 'precio':c.precio.pk, 'stock_minimo':c.stock_minimo})
+        form = ProductoForm(initial={'categoria':c.categoria.pk,'modelo':c.modelo.pk, 'precio':c.precio.pk, 'stock_minimo':c.stock_minimo, 'descripcion':c.descripcion})
         precios = "Mayor:S/." + str(c.precio.mayor) + "--Punto:S/." + str(c.precio.punto) + "--Cliente:S/." + str(c.precio.cliente)
         modnom = c.modelo.marca.nombre + "-" +  c.modelo.nombre
         extras = {'marcanom':c.modelo.marca.nombre, 'catnom': c.categoria.nombre, 'modnom':modnom, 'precios':precios }
@@ -600,7 +606,6 @@ def agregarsku(request):
                 c.genero = form.cleaned_data['genero']
                 c.descripcion = form.cleaned_data['descripcion']
                 c.save()
-                print(c.id)
                 barra = str(1000000 + int(c.id))
                 c.barra = calcularean8(barra)
                 c.save()

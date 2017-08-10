@@ -32,6 +32,8 @@ class Producto(models.Model):
     categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
     precio = models.ForeignKey('Precio', on_delete=models.CASCADE)
     stock_minimo = models.IntegerField(default=1)
+    barra = models.CharField(max_length=8, unique=True, blank=True, null=True)
+    descripcion = models.CharField(max_length=70,blank=True, null=True, default="Nada")
     def __str__(self):
         return self.categoria.nombre + self.modelo.nombre
 

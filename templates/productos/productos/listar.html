@@ -21,6 +21,7 @@
               <th>Categoria</th>
               <th>Marca</th>
               <th>Modelo</th>
+              <th>Barras</th>
               <th>Por mayor</th>
               <th>A punto</th>
               <th>Cliente</th>
@@ -35,6 +36,7 @@
               <td>{{c.categoria}}</td>
               <td>{{c.modelo.marca}}</td>
               <td>{{c.modelo}}</td>
+              <td>{{c.barra}}</td>
               <td>{{c.precio.mayor}}</td>
               <td>{{c.precio.punto}}</td>
               <td>{{c.precio.cliente}}</td>
@@ -80,6 +82,7 @@
             nuevafila +="<td>" + data[i].categoria + "</td>" +
                         "<td>" + data[i].marca + "</td>" +
                         "<td>" + data[i].modelo + "</td>" +
+                        "<td>" + data[i].barra + "</td>" +
                         "<td>" + data[i].mayor + "</td>" +
                         "<td>" + data[i].punto + "</td>" +
                         "<td>" + data[i].cliente + "</td>" +

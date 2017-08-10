@@ -30,6 +30,8 @@ class ProductoForm(forms.Form):
     modelo = CharField(widget=HiddenInput)
     precio = CharField(widget=HiddenInput)
     stock_minimo = IntegerField()
+    descripcion = CharField(max_length=50, widget = TextInput(
+    attrs={'placeholder':'Ingrese descripcion del producto'}), required = False)
 
 class SkuForm(forms.Form):
     generos = (
