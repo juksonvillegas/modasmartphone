@@ -2,115 +2,58 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
-   <form id="form" class="" action="#" method="post">{% csrf_token %}
-      <h3>Editar Compra</h3>
-        {% if detalle %}
-          {% if detalle != "0" %}
-          <h5 class="error">
-            {{detalle}}
-          </h5>
-          {% endif %}
-        {% endif %}
-      <label for="id_personas">Seleccione Proveedor: (Requerido)</label>
-      <input id = "id_personas" type="hidden" value="{{personas}}">
-      <div class="input-group">
-        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
-        <input type="text" class=" input-group-field" readonly id="id_proveedor" name="" value="{{proveedor}}">
-      </div>
-      <div class="row">
-        <div class="columns small-4">
-          <input id="id_facturado" type="checkbox" name=""
-          {%if facturado%}checked{%endif%}>
-          <label for="id_facturado">Facturado:</label>
-        </div>
-        <div class="columns small-4">
-          <input id="id_pago" type="checkbox" {%if pago%}checked{%endif%}>
-          <label for="id_pago">Al contado:</label>
-        </div>
-        <div class="columns small-4">
-          <label for="id_fecha">Fecha de compra: (Requerido)</label>
-          <input id="id_fecha"type="text" name="" value="{{fecha}}">
-        </div>
-      </div>
-      <label for="id_observacion">Observaciones: (Opcional)</label>
-      <textarea id="id_observacion" name="id_observacion" rows="2" cols="40">{{observacion}}</textarea>
-      <!--<div class="callout medium">
-        <h4>Agregar Productos:</h4>
-        <div class="input-group">
-          <input id="id_producto" type="hidden" name="" value="">
-          <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
-          <input type="text" class=" input-group-field" readonly placeholder="Seleccione un producto" id="producto" name="" value="">
-        </div>
-        <div class="row">
-            <div class="columns small-3">
-              <label >Costo</label>
-              <input id="costo"type="number" name="" value="">
-            </div>
-          <div class="columns small-3">
-            <label for="cantidad">Cantidad</label>
-            <input id="cantidad" type="number" name="" value="">
-          </div>
-          <div class="columns small-3">
-          </div>
-          <div class="columns small-3">
-            <a href="#" onclick="agregarproducto();" class="button">Agregar producto</a>
-          </div>
-        </div>-->
-
- </div>
- <!--MODAL PARA PROVEEDOR-->
-   <div class="reveal titulo" id="exampleModal1" data-reveal>
-    <h3>Seleccionar Proveedor</h3>
-    <div class="input-group input-group-rounded columns large-6 medium-4">
-      <span class="input-group-label"><i class="material-icons">search</i></span>
-      <input type="text" id="buscadorproveedor" name="buscador" class="buscador input-group-field" placeholder="Buscar proveedor" id="buscador">
-    </div>
-      <table class="table-scroll" id="tablaproveedor">
-        <thead>
+  {% csrf_token %}
+  <h3>Detalles de la Compra</h3>
+    {% if detalle %}
+      {% if detalle != "0" %}
+      <h5 class="error">
+        {{detalle}}
+      </h5>
+      {% endif %}
+    {% endif %}
+    <div class="callout medium">
+      <h4>Datos generales</h4>
+      <table>
+        <tbody>
           <tr>
-            <th>Nombre</th>
-            <th>Seleccionar</th>
+            <td>Proveedor</td>
+            <td>{{c.personas.nombres|upper}}</td>
           </tr>
-        </thead>
-        <tbody id="tablaproductobody">
+          <tr>
+            <td>Fecha</td>
+            <td>{{c.fecha}}</td>
+          </tr>
+          <tr>
+            <td>Con Factura</td>
+            <td>
+              {% if c.facturado == True %}
+                SI
+              {% else %}
+                NO
+              {% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td>Tipo de pago</td>
+            <td>
+              {% if c.pago == True %}
+                EN EFECTICO
+              {% else %}
+                CREDITO
+              {% endif %}
+            </td>
+          </tr>
         </tbody>
       </table>
-    <button class="close-button" data-close aria-label="Close modal" type="button">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-<!--MODAL PARA PROVEEDOR-->
-<!--MODAL PARA PRODUCTO-->
-  <div class="reveal titulo" id="exampleModal2" data-reveal>
-   <h3>Seleccionar Producto</h3>
-   <div class="input-group input-group-rounded columns large-6 medium-4">
-     <span class="input-group-label"><i class="material-icons">search</i></span>
-     <input type="text" id="buscadorproducto" name="buscador" class="buscador input-group-field" placeholder="Buscar producto">
-   </div>
-     <table class="table-scroll" id="tablaproducto">
-       <thead>
-         <tr>
-           <th>Categoria</th>
-           <th>Marca</th>
-           <th>Modelo</th>
-           <th>Seleccionar</th>
-         </tr>
-       </thead>
-       <tbody id="tablaproductobody">
-       </tbody>
-     </table>
-   <button class="close-button" data-close aria-label="Close modal" type="button">
-     <span aria-hidden="true">&times;</span>
-   </button>
+    </div>
  </div>
-<!--MODAL PARA PRODUCTO-->
 </div>
 {% endblock %}
 {% block contenido_ancho %}
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
 <div class="callout medium">
-  <h4>Productos de la compra:</h4>
+  <h4>Lista de productos comprados:</h4>
   <table id="listaproductos">
     <thead>
       <tr>
@@ -118,7 +61,6 @@
         <th width="">Producto</th>
         <th width="15%">Costo</th>
         <th width="15%">Cantidad</th>
-        <th width="5%">Eliminar</th>
       </tr>
     </thead>
     <tbody>
@@ -128,139 +70,11 @@
           <td>{{p.producto.categoria}}-{{p.producto.modelo.marca}}-{{p.producto.modelo}}</td>
           <td>{{p.costo}}</td>
           <td>{{p.cantidad}}</td>
-          <td><a href="#" onclick="eliminaritem(this);"> <i class="material-icons">delete</i></a></td>
         </tr>
       {%endfor%}
     </tbody>
   </table>
 </div>
-<!--<button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>-->
 </div>
-</form>
 </div>
-{% endblock %}
-{%block script%}
-$( document ).ready(function() {
-  $("#id_fecha").mask("99/99/9999");
-  $("#abrirmodal").focus();
-});
-$('#buscadorproveedor').change(function(){
-  a = $("#buscadorproveedor").val().length;
-  if(a>2){
-    texto = $("#buscadorproveedor").val();
-    nuevafila = "<tr>"
-    $.ajax({
-      data: {'term':texto},
-      url: "/personas/buscar-ajax",
-      type: "get",
-      success: function(data){
-        for(var i = 0; i<data.length; i++){
-          $nom = data[i].nombres;
-          nuevafila +="<td>" + $nom + "</td>" +
-                      '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')";><i class=material-icons>thumb_up</i></a></td></tr>';
-       }
-       $("#tablaproveedor").append(nuevafila);
-      }
-    });
-  }
-});
-$('#buscadorproducto').change(function(){
-  a = $("#buscadorproducto").val().length;
-  if(a>1){
-    texto = $("#buscadorproducto").val();
-    nuevafila = "<tr>"
-    $.ajax({
-      data: {'term':texto},
-      url: "/productos/buscar-ajax",
-      type: "get",
-      success: function(data){
-        for(var i = 0; i<data.length; i++){
-          categoria = data[i].categoria.replace(/\s+/g, '-');
-          modelo = data[i].modelo.replace(/\s+/g, '-');
-          marca = data[i].marca.replace(/\s+/g, '-');
-          nombrecompleto = categoria + '-' + marca + '-' + modelo;
-          nuevafila +="<td>" + data[i].categoria + "</td>" +
-                      "<td>" + data[i].marca + "</td>" +
-                      "<td>" + data[i].modelo + "</td>" +
-                      "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto +"');><i class=material-icons>thumb_up</i></a></td></tr>";
-       }
-       $("#tablaproducto").append(nuevafila);
-      }
-    });
-  }
-});
-function seleccionar(id, modelo){
-  $("#id_personas").val(id);
-  $("#id_proveedor").val(modelo);
-  $("#exampleModal1").foundation('close');
-  $("#buscadorproveedor").val('');
-  $("#tablaproveedor tbody tr").remove();
-  $("#id_facturado").focus();
-}
-function seleccionar2(id, modelo){
-  $("#id_producto").val(id);
-  $("#producto").val(modelo);
-  $("#exampleModal2").foundation('close');
-  $("#buscadorproducto").val('');
-  $("#tablaproducto tbody tr").remove();
-  $("#costo").focus();
-}
-function agregarproducto(){
-  fila =  '<tr><td id=\"colpk\" >'+ $("#id_producto").val()+'</td><td>'+
-                      $("#producto").val()+'</td><td id=\"colcosto\">' +
-                      $("#costo").val()+'</td><td id=\"colcantidad\">' +
-                      $("#cantidad").val()+'</td><td>' +
-                      '<a href="#" onclick=\"eliminaritem(this);\"> <i class="material-icons">delete</i></a> </td></tr>';
-  $("#listaproductos").append(fila);
-  $("#id_producto").val('');
-  $("#producto").val('');
-  $("#costo").val('');
-  $("#cantidad").val('');
-  $("#abrirmodal2").focus();
-}
-function eliminaritem(arg){
-  arg.closest("tr").remove();
-}
-$("#id_observacion").change(function(){
-  var filas = []
-  var fila = [];
-  $("#listaproductos>tbody>tr").each(function(){
-        a = $(this).find('td[id=\"colpk\"]').text();
-        b = $(this).find('td[id=\"colcantidad\"]').text();
-        c = $(this).find('td[id=\"colcosto\"]').text();
-        fila.push({prod:a, cant:b, cost:c });
-        filas.push({'producto':fila});
-    });
-    $("#id_productos").val($.param({p: filas}));
-});
-$("#form").on('submit', function(evt){
-    evt.preventDefault();
-    guardarcompra();
- });
-function guardarcompra(){
-		datos = new Array();
-    $("#listaproductos>tbody>tr").each(function(){
-          producto = $(this).find('td[id=\"colpk\"]').text();
-          cantidad = $(this).find('td[id=\"colcantidad\"]').text();
-          costo = $(this).find('td[id=\"colcosto\"]').text();
-          dato = new Array(producto, cantidad, costo);
-          datos.push(dato);
-      });
-      if($('#id_personas').val()!='' && !($.isEmptyObject(datos))){
-      $.ajax({
-        url: "agregar-ajax",
-        dataType: "json",
-        data: {'fecha':$('#id_fecha').val(), 'proveedor':$('#id_personas').val(), 'facturado':$('#id_facturado').is(':checked'), 'pago':$('#id_pago').is(':checked'), 'observacion':$("#id_observacion").val() , 'datos[]':datos},
-        success: function(detalle){
-          if(detalle=="ok"){
-            window.location.replace("/compras/listar");
-          }
-          else{
-            console.log("hay que implementar un div para mostrat error");
-          }
-        }
-      });
-	   }
-}
-
 {% endblock %}

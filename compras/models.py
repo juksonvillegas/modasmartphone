@@ -16,7 +16,6 @@ class Compra(models.Model):
     pago = models.BooleanField()
     observacion = models.CharField(max_length=100)
     productos = models.ManyToManyField(Producto, through='detalle_compra')
-    estado = models.BooleanField(default=True)
 
 class detalle_compra(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
@@ -35,10 +34,8 @@ def agregarstock(sender, instance, **kwargs):
 
 @receiver(post_delete, sender=detalle_compra)
 def quitarstock(sender, instance, **kwargs):
-    if kwargs['deleted']:
-        pk = instance.producto.pk
-        nuevo_stock = instance.cantidad
-        producto = get_object_or_404(Producto, pk=pk)
-        #producto.stock-= int(nuevo_stock)
-        #producto.save()
-        print("se elimino")
+    pk = instance.producto.pk
+    nuevo_stock = instance.cantidad
+    producto = get_object_or_404(Producto, pk=pk)
+    #producto.stock-= int(nuevo_stock)
+    #producto.save()

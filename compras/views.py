@@ -88,29 +88,27 @@ def buscarcompras(request):
 @login_required
 def editarcompra(request,pk):
     c = get_object_or_404(Compra, pk=pk)
-    personas = c.personas.pk
-    proveedor = c.personas
-    fecha = c.fecha.strftime("%d/%m/%Y")
-    facturado = c.facturado
-    pago = c.pago
-    observacion = c.observacion
     productos = list(detalle_compra.objects.filter(compra=pk))
-    return render(request, 'compras/editar.html', {'proveedor':proveedor, 'personas':personas, 'fecha':fecha, 'facturado':facturado, 'pago':pago, 'observacion':observacion, 'productos':productos})
+    return render(request, 'compras/editar.html', {'c':c, 'productos':productos})
 
 @login_required
 def eliminarcompra(request, pk):
     c = get_object_or_404(Compra, pk=pk)
+    productos = list(detalle_compra.objects.filter(compra=pk))
     detalle = 0
     if request.method == 'POST':
         try:
+            print("metodo post")
             c.delete()
         except Exception, e:
             detalle = "Error: " + str(e)
+            print(e)
         finally:
             if detalle != 0:
+                print(detalle)
                 return render(request, 'compras/eliminar.html', {'c': c, 'detalle':detalle})
             else:
                 return redirect(reverse_lazy('compras_listar'))
     else:
-        return render(request, 'compras/eliminar.html', {'c': c})
+        return render(request, 'compras/eliminar.html', {'c': c, 'productos':productos})
 #-------------------------------------------------------------------------------
