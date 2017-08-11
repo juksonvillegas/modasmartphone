@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'personas',
     'productos',
     'compras',
+    'consignaciones',
 ]
 
 MIDDLEWARE_CLASSES = [
