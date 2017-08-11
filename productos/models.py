@@ -32,6 +32,7 @@ class Producto(models.Model):
     categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
     precio = models.ForeignKey('Precio', on_delete=models.CASCADE)
     stock_minimo = models.IntegerField(default=1)
+    stock = models.IntegerField(default=0)
     barra = models.CharField(max_length=8, unique=True, blank=True, null=True)
     descripcion = models.CharField(max_length=70,blank=True, null=True, default="Nada")
     def __str__(self):
@@ -42,26 +43,7 @@ class Almacen(models.Model):
     def __str__(self):
         return self.nombre
 
-class Sku(models.Model):
-    generos = (
-        ('varon','Varon'),
-        ('mujer','Mujer'),
-        ('unisex','Unisex'),
-        ('nino','Nino'),
-        ('nina','Nina'),
-    )
+class Perdida(models.Model):
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE)
-    barra = models.CharField(max_length=8, unique=True, blank=True, null=True)
-    #ean-8 inicia en 10 millones quedan 90millones libres
-    imagen = models.URLField()
-    genero = models.CharField(max_length=15, choices=generos)
-    descripcion = models.CharField(max_length=70, default="Nada")
-    def __str__(self):
-        return self.barra
-
-class Existencias(models.Model):
-    sku = models.ForeignKey('Sku', on_delete=models.CASCADE)
-    almacen = models.ForeignKey('Almacen', on_delete=models.CASCADE)
-    stock = models.IntegerField(default=0)
-    def __str__(self):
-        return self.sku.barra + self.almancen.nombre
+    cantidad = models.IntegerField(default=1)
+    fecha = models.DateField()
