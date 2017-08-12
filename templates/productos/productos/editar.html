@@ -139,9 +139,8 @@ $( document ).ready(function() {
 $('#texto').change(function(){
   a = $("#texto").val().length;
   if(a>1){
-    $("#tabla tbody").remove();
+    $("#tabla tbody tr").remove();
     texto = $("#texto").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/modelos/buscar-ajax",
@@ -151,12 +150,16 @@ $('#texto').change(function(){
           nombre = data[i].nombre.replace(/\s+/g, '-');
           marca = data[i].marca.replace(/\s+/g, '-');
           nombrecompleto = marca + '-' + nombre;
-          console.log(nombrecompleto);
+          if(data.length==1){
+            seleccionar(data[i].pk, nombrecompleto);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].nombre + "</td>" +
                       "<td>" + data[i].marca + "</td>" +
                       "<td><a href=javascript:seleccionar("+ data[i].pk + ",'" + nombrecompleto + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+                      $("#tabla").append(nuevafila);
        }
-       $("#tabla").append(nuevafila);
+
       }
     });
   }
@@ -164,9 +167,8 @@ $('#texto').change(function(){
 $('#categoria').change(function(){
   a = $("#categoria").val().length;
   if(a>1){
-    $("#tabla tbody").remove();
+    $("#tabla tbody tr").remove();
     texto = $("#categoria").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/categorias/buscar-ajax",
@@ -174,10 +176,14 @@ $('#categoria').change(function(){
       success: function(data){
         for(var i = 0; i<data.length; i++){
           nombre = data[i].nombre.replace(/\s+/g, '-');
+          if(data.length==1){
+            seleccionar2(data[i].pk, nombre);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].nombre + "</td>" +
                       "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombre + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+                      $("#tabla2").append(nuevafila);
        }
-       $("#tabla2").append(nuevafila);
       }
     });
   }
@@ -185,9 +191,8 @@ $('#categoria').change(function(){
 $('#precio').change(function(){
   a = $("#precio").val().length;
   if(a>1){
-    $("#tabla3 tbody").remove();
+    $("#tabla3 tbody tr").remove();
     texto = $("#precio").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/precios/buscar-ajax",
@@ -195,6 +200,10 @@ $('#precio').change(function(){
       success: function(data){
         for(var i = 0; i<data.length; i++){
           nombre = "Mayor:S/." + data[i].mayor + "--Punto:S/." + data[i].punto + "--Cliente:S/." + data[i].cliente ;
+          if(data.length==1){
+            seleccionar3(data[i].pk, nombre);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].categoria + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
@@ -202,8 +211,8 @@ $('#precio').change(function(){
                       "<td>" + data[i].punto + "</td>" +
                       "<td>" + data[i].cliente + "</td>" +
                       "<td><a href=javascript:seleccionar3("+ data[i].pk + ",'" + nombre + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+                      $("#tabla3").append(nuevafila);
        }
-       $("#tabla3").append(nuevafila);
       }
     });
   }
@@ -212,6 +221,7 @@ function seleccionar(id, modelo){
   $("#id_modelo").val(id);
   $("#id_nombre").val(modelo);
   $("#exampleModal1").foundation('close');
+  $("#texto").val("");
   $("#abrirmodal3").focus();
 }
 function seleccionar2(id, categoria){
@@ -219,12 +229,14 @@ function seleccionar2(id, categoria){
   console.log(id);
   $("#id_nombrecategoria").val(categoria);
   $("#exampleModal2").foundation('close');
+  $("#categoria").val("");
   $("#abrirmodal").focus();
 }
 function seleccionar3(id, precio){
   $("#id_precio").val(id);
   $("#id_precios").val(precio);
   $("#exampleModal3").foundation('close');
+  $("#precio").val("");
   $("#id_stock_minimo").focus();
 }
 {% endblock %}

@@ -112,9 +112,8 @@ $( document ).ready(function() {
 $('#texto').change(function(){
   a = $("#texto").val().length;
   if(a>1){
-    $("#tabla tbody").remove();
+    $("#tabla tbody tr").remove();
     texto = $("#texto").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/modelos/buscar-ajax",
@@ -124,12 +123,15 @@ $('#texto').change(function(){
           nombre = data[i].nombre.replace(/\s+/g, '-');
           marca = data[i].marca.replace(/\s+/g, '-');
           nombrecompleto = marca + '-' + nombre;
-          console.log(nombrecompleto);
+          if(data.length==1){
+            seleccionar(data[i].pk, nombrecompleto);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].nombre + "</td>" +
                       "<td>" + data[i].marca + "</td>" +
                       "<td><a href=javascript:seleccionar("+ data[i].pk + ",'" + nombrecompleto + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+          $("#tabla").append(nuevafila);
        }
-       $("#tabla").append(nuevafila);
       }
     });
   }
@@ -137,9 +139,8 @@ $('#texto').change(function(){
 $('#categoria').change(function(){
   a = $("#categoria").val().length;
   if(a>1){
-    $("#tabla tbody").remove();
+    $("#tabla tbody tr").remove();
     texto = $("#categoria").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/categorias/buscar-ajax",
@@ -147,6 +148,10 @@ $('#categoria').change(function(){
       success: function(data){
         for(var i = 0; i<data.length; i++){
           nombre = data[i].nombre.replace(/\s+/g, '-');
+          if(data.length==1){
+            seleccionar2(data[i].pk, nombre);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].nombre + "</td>" +
                       "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombre + "');><i class=material-icons>thumb_up</i></a></td></tr>";
        }
@@ -159,6 +164,7 @@ function seleccionar(id, modelo){
   $("#id_modelo").val(id);
   $("#id_nombre").val(modelo);
   $("#exampleModal1").foundation('close');
+  $("#texto").val('');
   $("#id_mayor").focus();
 }
 function seleccionar2(id, categoria){
@@ -166,6 +172,7 @@ function seleccionar2(id, categoria){
   console.log(id);
   $("#id_nombrecategoria").val(categoria);
   $("#exampleModal2").foundation('close');
+  $("#categoria").val('');
   $("#abrirmodal").focus();
 }
 {% endblock %}
