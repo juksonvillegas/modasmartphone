@@ -94,6 +94,13 @@
   <script type="text/javascript">
   </script>
   <script type="text/javascript">
+  $(document).on(
+    'open.zf.reveal', '[data-reveal]', function () {
+      console.log("'open.zf.Reveal' fired.");
+      var modal = $(this);
+      modal.find('input').focus();
+    }
+  );
   {%block script%}
   {% endblock %}
   </script>

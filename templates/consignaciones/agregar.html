@@ -91,13 +91,12 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
 <div class="callout medium">
-  <h4>Productos de la compra:</h4>
+  <h4>Productos de la Consignacion:</h4>
   <table id="listaproductos">
     <thead>
       <tr>
         <th width="5%">ID</th>
         <th width="">Producto</th>
-        <th width="15%">Costo</th>
         <th width="15%">Cantidad</th>
         <th width="5%">Eliminar</th>
       </tr>
@@ -115,9 +114,16 @@
 $( document ).ready(function() {
   $("#abrirmodal").focus();
 });
+$('#cantidad').keypress(function(e) {
+    if(e.which == 13 && $("#id_producto").val()!='') {
+      console.log("si presiono aca");
+        agregarproducto();
+    }
+});
 $('#buscadorcliente').change(function(){
   a = $("#buscadorcliente").val().length;
   if(a>2){
+    $("#tablacliente tbody tr").remove();
     texto = $("#buscadorcliente").val();
     $.ajax({
       data: {'term':texto},
@@ -126,11 +132,16 @@ $('#buscadorcliente').change(function(){
       success: function(data){
         for(var i = 0; i<data.length; i++){
           $nom = data[i].nombres;
+          if(data.length==1){
+            seleccionar(data[i].pk, $nom);
+          }
+          else{
           nuevafila="<tr>";
           nuevafila +="<td>" + $nom + "</td>" +
                       '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')"><i class=material-icons>thumb_up</i></a></td></tr>';
+          $("#tablacliente").append(nuevafila);
+          }
        }
-       $("#tablacliente").append(nuevafila);
       }
     });
   }
@@ -139,6 +150,7 @@ $('#buscadorproducto').change(function(){
   a = $("#buscadorproducto").val().length;
   if(a>1){
     texto = $("#buscadorproducto").val();
+    $("#tablaproducto tbody tr").remove();
     $.ajax({
       data: {'term':texto},
       url: "/productos/buscar-ajax",
@@ -149,13 +161,18 @@ $('#buscadorproducto').change(function(){
           modelo = data[i].modelo.replace(/\s+/g, '-');
           marca = data[i].marca.replace(/\s+/g, '-');
           nombrecompleto = categoria + '-' + marca + '-' + modelo;
+          if(data.length==1){
+            seleccionar2(data[i].pk, nombrecompleto);
+          }
+          else{
           nuevafila="<tr>";
           nuevafila +="<td>" + data[i].categoria + "</td>" +
                       "<td>" + data[i].marca + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
                       "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto +"')><i class=material-icons>thumb_up</i></a></td></tr>";
+          $("#tablaproducto").append(nuevafila);}
        }
-       $("#tablaproducto").append(nuevafila);
+
       }
     });
   }
@@ -174,23 +191,22 @@ function seleccionar2(id, modelo){
   $("#exampleModal2").foundation('close');
   $("#buscadorproducto").val('');
   $("#tablaproducto tbody tr").remove();
-  $("#costo").focus();
+  $("#cantidad").focus();
 }
 function agregarproducto(){
   fila =  '<tr><td id=\"colpk\" >'+ $("#id_producto").val()+'</td><td>'+
-                      $("#producto").val()+'</td><td id=\"colcosto\">' +
-                      $("#costo").val()+'</td><td id=\"colcantidad\">' +
+                      $("#producto").val()+'</td><td id=\"colcantidad\">' +
                       $("#cantidad").val()+'</td><td>' +
                       '<a href="#" onclick=\"eliminaritem(this);\"> <i class="material-icons">delete</i></a> </td></tr>';
   $("#listaproductos").append(fila);
   $("#id_producto").val('');
   $("#producto").val('');
-  $("#costo").val('');
   $("#cantidad").val('');
   $("#abrirmodal2").focus();
 }
 function eliminaritem(arg){
   arg.closest("tr").remove();
+  $("#abrirmodal2").focus();
 }
 $("#id_observacion").change(function(){
   var filas = []
@@ -198,8 +214,7 @@ $("#id_observacion").change(function(){
   $("#listaproductos>tbody>tr").each(function(){
         a = $(this).find('td[id=\"colpk\"]').text();
         b = $(this).find('td[id=\"colcantidad\"]').text();
-        c = $(this).find('td[id=\"colcosto\"]').text();
-        fila.push({prod:a, cant:b, cost:c });
+        fila.push({prod:a, cant:b });
         filas.push({'producto':fila});
     });
     $("#id_productos").val($.param({p: filas}));
@@ -213,8 +228,7 @@ function guardarcompra(){
     $("#listaproductos>tbody>tr").each(function(){
           producto = $(this).find('td[id=\"colpk\"]').text();
           cantidad = $(this).find('td[id=\"colcantidad\"]').text();
-          costo = $(this).find('td[id=\"colcosto\"]').text();
-          dato = new Array(producto, cantidad, costo);
+          dato = new Array(producto, cantidad);
           datos.push(dato);
       });
       if($('#id_personas').val()!='' && !($.isEmptyObject(datos))){

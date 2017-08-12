@@ -502,7 +502,10 @@ def buscarproductos(request):
     if request.is_ajax():
         texto = request.GET['term']
         if texto is not None:
-            clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto))
+            if len(texto)==8 and texto.isnumeric():
+                clase = Producto.objects.filter(barra=texto)
+            else:
+                clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto)| Q(barra__contains = texto))
             lista = []
             for c in clase:
 				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre,'barra':c.barra, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock':c.stock})
