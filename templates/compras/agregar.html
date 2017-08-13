@@ -71,7 +71,7 @@
             <th>Seleccionar</th>
           </tr>
         </thead>
-        <tbody id="tablaproductobody">
+        <tbody>
         </tbody>
       </table>
     <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -95,7 +95,7 @@
            <th>Seleccionar</th>
          </tr>
        </thead>
-       <tbody id="tablaproductobody">
+       <tbody>
        </tbody>
      </table>
    <button class="close-button" data-close aria-label="Close modal" type="button">
@@ -135,21 +135,27 @@ $( document ).ready(function() {
   $("#abrirmodal").focus();
 });
 $('#buscadorproveedor').change(function(){
+  $("#tablaproveedor tbody tr").remove();
   a = $("#buscadorproveedor").val().length;
   if(a>2){
     texto = $("#buscadorproveedor").val();
-    nuevafila = "<tr>"
+    $("#tablaproveedor tbody tr").remove();
     $.ajax({
       data: {'term':texto},
       url: "/personas/buscar-ajax",
       type: "get",
       success: function(data){
         for(var i = 0; i<data.length; i++){
+          nuevafila = "<tr>";
           $nom = data[i].nombres;
+          if(data.length==1){
+            seleccionar(data[i].pk, $nom);
+          }
           nuevafila +="<td>" + $nom + "</td>" +
                       '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')";><i class=material-icons>thumb_up</i></a></td></tr>';
+          $("#tablaproveedor").append(nuevafila);
        }
-       $("#tablaproveedor").append(nuevafila);
+
       }
     });
   }
@@ -184,7 +190,6 @@ function seleccionar(id, modelo){
   $("#id_proveedor").val(modelo);
   $("#exampleModal1").foundation('close');
   $("#buscadorproveedor").val('');
-  $("#tablaproveedor tbody tr").remove();
   $("#id_facturado").focus();
 }
 function seleccionar2(id, modelo){

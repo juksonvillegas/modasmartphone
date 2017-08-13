@@ -34,23 +34,14 @@
       <div class="input-group">
         <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
         <input type="text" class=" input-group-field" readonly id="id_nombre" name="" value="">
-        <div hidden id="errormodelo" class="error">
-          Debe seleccionar un modelo
-        </div>
       </div>
       <label for="id_nombre">Seleccione Precio: (Requerido)</label>
       {{form.precio}}
       <div class="input-group">
         <a href="#" class="botonopenmodal input-group-button" id="abrirmodal3" data-open="exampleModal3"><i class="material-icons">search</i></a>
         <input type="text" class=" input-group-field" readonly id="id_precios" name="" value="">
-        <div hidden id="errormodelo" class="error">
-          Debe seleccionar un precio
-        </div>
       </div>
       <label for="id_mayor">Stock Minimo: (Requerido)</label>
-      <div hidden id="errormayor" class="error">
-        Debe seleccionar Ingresar un stock minimo.
-      </div>
       {{form.stock_minimo}}
       <label for="id_descripcion">Descripcion: (opcional)</label>
       <textarea id="id_descripcion" name="id_descripcion" rows="2" cols="40"></textarea>
@@ -200,6 +191,9 @@ $('#precio').change(function(){
         for(var i = 0; i<data.length; i++){
           nuevafila = "<tr>";
           nombre = "Mayor:S/." + data[i].mayor + "--Punto:S/." + data[i].punto + "--Cliente:S/." + data[i].cliente ;
+          if(data.length==1){
+            seleccionar3(data[i].pk, nombre);
+          }
           nuevafila +="<td>" + data[i].categoria + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
@@ -207,8 +201,8 @@ $('#precio').change(function(){
                       "<td>" + data[i].punto + "</td>" +
                       "<td>" + data[i].cliente + "</td>" +
                       "<td><a href=javascript:seleccionar3("+ data[i].pk + ",'" + nombre + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+          $("#tabla3").append(nuevafila);
        }
-       $("#tabla3").append(nuevafila);
       }
     });
   }
