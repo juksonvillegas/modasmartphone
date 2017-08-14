@@ -124,7 +124,7 @@
     </tbody>
   </table>
 </div>
-<button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+<button id="guardar" type="button" class="button boton1" onclick="guardarcompra();" name="entrar">Guardar</button>
 </div>
 </form>
 </div>
@@ -161,10 +161,10 @@ $('#buscadorproveedor').change(function(){
   }
 });
 $('#buscadorproducto').change(function(){
+  $("#tablaproducto tbody tr").remove();
   a = $("#buscadorproducto").val().length;
   if(a>1){
     texto = $("#buscadorproducto").val();
-    nuevafila = "<tr>"
     $.ajax({
       data: {'term':texto},
       url: "/productos/buscar-ajax",
@@ -175,12 +175,17 @@ $('#buscadorproducto').change(function(){
           modelo = data[i].modelo.replace(/\s+/g, '-');
           marca = data[i].marca.replace(/\s+/g, '-');
           nombrecompleto = categoria + '-' + marca + '-' + modelo;
+          if(data.length==1){
+            seleccionar2(data[i].pk, nombrecompleto);
+          }
+          nuevafila = "<tr>";
           nuevafila +="<td>" + data[i].categoria + "</td>" +
                       "<td>" + data[i].marca + "</td>" +
                       "<td>" + data[i].modelo + "</td>" +
                       "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto +"');><i class=material-icons>thumb_up</i></a></td></tr>";
+          $("#tablaproducto").append(nuevafila);
        }
-       $("#tablaproducto").append(nuevafila);
+
       }
     });
   }
@@ -190,6 +195,7 @@ function seleccionar(id, modelo){
   $("#id_proveedor").val(modelo);
   $("#exampleModal1").foundation('close');
   $("#buscadorproveedor").val('');
+  $("#tablaproducto tbody tr").remove();
   $("#id_facturado").focus();
 }
 function seleccionar2(id, modelo){
@@ -216,6 +222,15 @@ function agregarproducto(){
 function eliminaritem(arg){
   arg.closest("tr").remove();
 }
+
+$('#cantidad,#costo' ).keypress(function(e) {
+
+    if(e.which == 13 && $("#id_producto").val()!='' && $("#costo").val()!='' ) {
+      console.log("entro");
+        agregarproducto();
+    }
+});
+
 $("#id_observacion").change(function(){
   var filas = []
   var fila = [];
@@ -230,7 +245,6 @@ $("#id_observacion").change(function(){
 });
 $("#form").on('submit', function(evt){
     evt.preventDefault();
-    guardarcompra();
  });
 function guardarcompra(){
 		datos = new Array();

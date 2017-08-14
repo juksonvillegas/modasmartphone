@@ -516,16 +516,13 @@ def buscarproductos2(request):
     if request.is_ajax():
         texto = request.GET['term']
         if texto is not None:
-            clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto)| Q(barra__contains = texto))
+            if len(texto)==8 and texto.isnumeric():
+                clase = Producto.objects.filter(barra=texto, stock__gte=1)
+            else:
+                clase = Producto.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto)| Q(barra__contains = texto ),stock__gte=1)
             lista = []
             for c in clase:
-                nom = c.categoria.nombre + "-" + c.modelo.marca.nombre + "-" +  c.modelo.nombre
-                item = {}
-                item['id'] = c.pk
-                item['label'] = nom
-                item['value'] = nom
-                lista.append(item)
-				#lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock_minimo':c.stock_minimo})
+				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre,'barra':c.barra, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock':c.stock})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 

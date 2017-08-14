@@ -17,7 +17,7 @@ ruta_templates = Path(__file__).ancestor(2)
 
 from django.core.urlresolvers import reverse_lazy
 LOGIN_URL = reverse_lazy('home')
-LOGIN_REDIRECT_URL = reverse_lazy('personas_listar')
+LOGIN_REDIRECT_URL = reverse_lazy('consignaciones_listar')
 LOGOUT_URL = reverse_lazy('salir')
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

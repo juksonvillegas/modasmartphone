@@ -152,7 +152,7 @@ $('#buscadorproducto').change(function(){
     $("#tablaproducto tbody tr").remove();
     $.ajax({
       data: {'term':texto},
-      url: "/productos/buscar-ajax",
+      url: "/productos/buscar-ajax2",
       type: "get",
       success: function(data){
         for(var i = 0; i<data.length; i++){

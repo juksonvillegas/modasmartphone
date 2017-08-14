@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
 import datetime
 from django.contrib.auth.decorators import login_required
@@ -17,7 +17,7 @@ def agregarconsignacion(request):
 
 @login_required
 def listarconsignaciones(request):
-    lista = Consignacion.objects.all().order_by('-fecha')
+    lista = Consignacion.objects.filter(pagado=False, devuelto=False).order_by('-fecha')
     page = request.GET.get('page')
     paginator = Paginator(lista, 10)
     try:
@@ -66,9 +66,24 @@ def buscarconsignaciones(request):
     if request.is_ajax():
         texto = request.GET['term']
         if texto is not None:
-            clase = Consignacion.objects.filter(Q(personas__nombres__contains = texto,pagado=False,devuelto=False)).order_by(-fecha)
+            clase = Consignacion.objects.filter(Q(personas__nombres__contains = texto)).order_by(-fecha)
             lista = []
             for c in clase:
 				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre,'barra':c.barra, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock':c.stock})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
+
+@login_required
+def editarconsignaciones2(request, pk):
+    if request.method == "GET":
+        try:
+            c = get_object_or_404(Consignacion, pk=pk)
+            print(c)
+        except Exception as e:
+            detalle = "Error: " + str(e)
+            print(detalle)
+        finally:
+			return HttpResponse(
+				json.dumps(detalle),
+				content_type="application/json"
+			)
