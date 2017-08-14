@@ -105,7 +105,7 @@
     </tbody>
   </table>
 </div>
-<button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+<button id="guardar" type="button" class="button boton1" name="entrar" onclick="guardarconsignacion();">Guardar</button>
 </div>
 </form>
 </div>
@@ -116,7 +116,6 @@ $( document ).ready(function() {
 });
 $('#cantidad').keypress(function(e) {
     if(e.which == 13 && $("#id_producto").val()!='') {
-      console.log("si presiono aca");
         agregarproducto();
     }
 });
@@ -221,10 +220,9 @@ $("#id_observacion").change(function(){
 });
 $("#form").on('submit', function(evt){
     evt.preventDefault();
-    guardarcompra();
  });
-function guardarcompra(){
-		datos = new Array();
+function guardarconsignacion(){
+    datos = new Array();
     $("#listaproductos>tbody>tr").each(function(){
           producto = $(this).find('td[id=\"colpk\"]').text();
           cantidad = $(this).find('td[id=\"colcantidad\"]').text();
@@ -235,10 +233,10 @@ function guardarcompra(){
       $.ajax({
         url: "agregar-ajax",
         dataType: "json",
-        data: {'fecha':$('#id_fecha').val(), 'cliente':$('#id_personas').val(), 'facturado':$('#id_facturado').is(':checked'), 'pago':$('#id_pago').is(':checked'), 'observacion':$("#id_observacion").val() , 'datos[]':datos},
+        data: {'cliente':$('#id_personas').val(), 'observacion':$("#id_observacion").val() , 'datos[]':datos},
         success: function(detalle){
           if(detalle=="ok"){
-            window.location.replace("/compras/listar");
+            window.location.replace("/consignaciones/listar");
           }
           else{
             console.log("hay que implementar un div para mostrat error");

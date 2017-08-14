@@ -32,17 +32,17 @@
               <td>{{c.personas.nombres}}</td>
               <td>{{c.fecha}}</td>
               <td>
-                {% if c.facturado %}
-                  Con factura
+                {% if c.pagado == True %}
+                  Pago
                 {% else %}
-                  Sin Factura
+                  Debe
                 {% endif %}
               </td>
               <td>
-                {% if c.pago %}
-                  Efectivo
+                {% if c.devuelvo == True %}
+                  Devuelto
                 {% else %}
-                  Credito
+                  No devuelto
                 {% endif %}
               </td>
               <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
@@ -78,30 +78,30 @@
       nuevafila = "<tr>"
       $.ajax({
 				data: {'term':texto},
-				url: "/compras/buscar-ajax",
+				url: "/consignaciones/buscar-ajax",
 				type: "get",
 				success: function(data){
           for(var i = 0; i<data.length; i++){
             var fec = new Date(data[i].fecha);
 						var fecha = fec.getDate() + '/' + (fec.getMonth() + 1) + '/' + fec.getFullYear();
             var facturado="";
-            if(data[i].facturado==true){
-              facturado = "Con Factura";
+            if(data[i].pagado==true){
+              pagado = "Pago";
             }
             else{
-              facturado = "Sin Factura";
+              pagado = "Debe";
             }
             var pago="";
-            if(data[i].pago==true){
-              pago = "Efectivo";
+            if(data[i].devuelto==true){
+              pago = "Devuelto";
             }
             else{
-              pago = "Credito";
+              pago = "No devuelto";
             }
-            nuevafila +="<td>" + data[i].proveedor + "</td>" +
+            nuevafila +="<td>" + data[i].cliente + "</td>" +
                         "<td>" + fecha + "</td>" +
-                        "<td>" + facturado + "</td>" +
-                        "<td>" + pago + "</td>" +
+                        "<td>" + pagado + "</td>" +
+                        "<td>" + devuelto + "</td>" +
                         '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
                         '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
            $("#tabla").append(nuevafila);

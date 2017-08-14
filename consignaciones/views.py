@@ -9,6 +9,7 @@ from productos.models import Producto
 from .forms import *
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
+import json
 
 @login_required
 def agregarconsignacion(request):
@@ -32,7 +33,7 @@ def agregarconsignacion2(request):
     if request.method == "GET":
         try:
             c = Consignacion()
-            clien = int(request.GET['proveedor'])
+            clien = int(request.GET['cliente'])
             obse = str(request.GET['observacion'])
             fecha = datetime.datetime.now()
             c.personas = get_object_or_404(Personas, pk=clien)
@@ -59,3 +60,15 @@ def agregarconsignacion2(request):
 				json.dumps(detalle),
 				content_type="application/json"
 			)
+
+@login_required
+def buscarconsignaciones(request):
+    if request.is_ajax():
+        texto = request.GET['term']
+        if texto is not None:
+            clase = Consignacion.objects.filter(Q(personas__nombres__contains = texto,pagado=False,devuelto=False)).order_by(-fecha)
+            lista = []
+            for c in clase:
+				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'marca':c.modelo.marca.nombre ,'modelo':c.modelo.nombre,'barra':c.barra, 'mayor':str(c.precio.mayor), 'punto':str(c.precio.punto), 'cliente':str(c.precio.cliente), 'stock':c.stock})
+            data = json.dumps(lista)
+            return HttpResponse(data, content_type='application/json')
