@@ -73,6 +73,13 @@ def buscarconsignaciones(request):
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 
+
+@login_required
+def editarconsignaciones(request, pk):
+    c = get_object_or_404(Consignacion, pk=pk)
+    productos = list(detalle_consignacion.objects.filter(consignacion=pk))
+    return render(request, "consignaciones/editar.html", {'c':c, 'productos':productos})
+
 @login_required
 def editarconsignaciones2(request, pk):
     if request.method == "GET":
