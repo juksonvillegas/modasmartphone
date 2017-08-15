@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'', include('productos.urls')),
     url(r'', include('compras.urls')),
     url(r'', include('consignaciones.urls')),
+    url(r'', include('ventas.urls')),
 ]
