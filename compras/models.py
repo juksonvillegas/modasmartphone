@@ -37,5 +37,5 @@ def quitarstock(sender, instance, **kwargs):
     pk = instance.producto.pk
     nuevo_stock = instance.cantidad
     producto = get_object_or_404(Producto, pk=pk)
-    #producto.stock-= int(nuevo_stock)
-    #producto.save()
+    producto.stock-= int(nuevo_stock)
+    producto.save()
