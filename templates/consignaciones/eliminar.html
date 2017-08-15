@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
    <form class="" action="#" method="POST">{% csrf_token %}
-     <h3>Detalles de la Compra</h3>
+     <h3>Detalles de la Consignacion</h3>
        {% if detalle %}
          {% if detalle != "0" %}
          <h5 class="error">
@@ -16,30 +16,30 @@
          <table>
            <tbody>
              <tr>
-               <td>Proveedor</td>
+               <td>Cliente</td>
                <td>{{c.personas.nombres|upper}}</td>
              </tr>
              <tr>
                <td>Fecha</td>
-               <td>{{c.fecha}}</td>
+               <td>{{c.fecha|date:'d/m/Y H:i:s'}}</td>
              </tr>
              <tr>
-               <td>Con Factura</td>
+               <td>Pagado</td>
                <td>
-                 {% if c.facturado == True %}
-                   SI
+                 {% if c.pagado == True %}
+                   <span class="alerta" >Pagado</span>
                  {% else %}
-                   NO
+                   <span class="error" >Debe</span>
                  {% endif %}
                </td>
              </tr>
              <tr>
-               <td>Tipo de pago</td>
+               <td>Devuelto</td>
                <td>
-                 {% if c.pago == True %}
-                   EN EFECTICO
+                 {% if c.devuelto == True %}
+                   <span class="alerta" >Devuelto</span>
                  {% else %}
-                   CREDITO
+                   <span class="error" >No devuelto</span>
                  {% endif %}
                </td>
              </tr>
@@ -58,7 +58,6 @@
              <tr>
                <th width="5%">ID</th>
                <th width="">Producto</th>
-               <th width="15%">Costo</th>
                <th width="15%">Cantidad</th>
              </tr>
            </thead>
@@ -67,7 +66,6 @@
                <tr>
                  <td>{{p.producto.pk}}</td>
                  <td>{{p.producto.categoria}}-{{p.producto.modelo.marca}}-{{p.producto.modelo}}</td>
-                 <td>{{p.costo}}</td>
                  <td>{{p.cantidad}}</td>
                </tr>
              {%endfor%}

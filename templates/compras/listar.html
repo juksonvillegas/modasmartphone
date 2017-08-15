@@ -30,7 +30,7 @@
         {% for c in lista %}
             <tr>
               <td>{{c.personas.nombres}}</td>
-              <td>{{c.fecha}}</td>
+              <td>{{c.fecha|date:'d/m/Y'}}</td>
               <td>
                 {% if c.facturado %}
                   Con factura

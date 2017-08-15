@@ -16,6 +16,8 @@ class Consignacion(models.Model):
     devuelto = models.BooleanField(default=False)
     observacion = models.CharField(max_length=100, blank=True, null=True)
     productos = models.ManyToManyField(Producto, through='detalle_consignacion')
+    def __str__(self):
+        return self.personas.nombres + str(self.fecha)
 
 class detalle_consignacion(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

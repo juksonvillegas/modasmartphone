@@ -17,7 +17,20 @@ def agregarconsignacion(request):
 
 @login_required
 def listarconsignaciones(request):
-    lista = Consignacion.objects.filter(pagado=False, devuelto=False).order_by('-fecha')
+    lista = Consignacion.objects.filter(Q(pagado=False) | Q(devuelto=False)).order_by('-fecha')
+    page = request.GET.get('page')
+    paginator = Paginator(lista, 10)
+    try:
+        lista = paginator.page(page)
+    except PageNotAnInteger:
+        lista = paginator.page(1)
+    except EmptyPage:
+        lista = paginator.page(1)
+    return render(request, 'consignaciones/listar.html', { 'lista': lista, 'paginator':paginator })
+
+@login_required
+def listarconsignacionestodas(request):
+    lista = Consignacion.objects.all().order_by('-fecha')
     page = request.GET.get('page')
     paginator = Paginator(lista, 10)
     try:
@@ -84,13 +97,70 @@ def editarconsignaciones(request, pk):
 def editarconsignacionesobservacion(request, pk):
     if request.method == "GET":
         try:
-            c = get_object_or_404(Consignacion, pk=pk)
-            print(c)
+            c = Consignacion(pk=pk)
+            obse = str(request.GET['observacion'])
+            c.observacion = obse
+            c.save(update_fields=["observacion"])
+            detalle="ok"
         except Exception as e:
             detalle = "Error: " + str(e)
-            print(detalle)
         finally:
 			return HttpResponse(
 				json.dumps(detalle),
 				content_type="application/json"
 			)
+
+@login_required
+def editarconsignacionespagado(request, pk):
+    if request.method == "GET":
+        try:
+            c = Consignacion(pk=pk)
+            c.pagado=True
+            c.save(update_fields=["pagado"])
+            detalle="ok"
+        except Exception as e:
+            detalle = "Error: " + str(e)
+        finally:
+			return HttpResponse(
+				json.dumps(detalle),
+				content_type="application/json"
+			)
+
+@login_required
+def editarconsignacionesdevuelto(request, pk):
+    if request.method == "GET":
+        try:
+            c = Consignacion(pk=pk)
+            c.devuelto=True
+            c.save(update_fields=["devuelto"])
+            detalle="ok"
+        except Exception as e:
+            detalle = "Error: " + str(e)
+        finally:
+			return HttpResponse(
+				json.dumps(detalle),
+				content_type="application/json"
+			)
+
+@login_required
+def eliminarconsignacion(request, pk):
+    c = get_object_or_404(Consignacion, pk=pk)
+    productos = list(detalle_consignacion.objects.filter(consignacion=pk))
+    detalle = 0
+    if request.method == 'POST':
+        try:
+            #c.delete()
+            print("consignacion borrada")
+            for p in productos:
+                print("productos borrados")
+                #p.delete()
+        except Exception, e:
+            detalle = "Error: " + str(e)
+        finally:
+            if detalle != 0:
+                print(detalle)
+                return render(request, 'consignaciones/eliminar.html', {'c': c, 'detalle':detalle})
+            else:
+                return redirect(reverse_lazy('consignaciones_listar'))
+    else:
+        return render(request, 'consignaciones/eliminar.html', {'c': c, 'productos':productos})

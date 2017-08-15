@@ -2,8 +2,8 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/consignaciones/agregar" class="button float-right">PAGO TODO</a>
-    <a href="/consignaciones/agregar" class="button float-left">DEVOLVIO TODO</a>
+    <a href="#" onclick="editarconsignacionespagado();" class="button float-right">PAGO TODO</a>
+    <a href="#" onclick="editarconsignacionesdevuelto();" class="button float-left">DEVOLVIO TODO</a>
   </div>
   <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
   {% csrf_token %}
@@ -51,7 +51,7 @@
             <td>Observaciones</td>
             <td>
               <textarea name="observacion" id="observacion" cols="1" rows="4">
-
+                {{c.observacion}}
               </textarea>
               <button id="guardar" type="button" class="button boton1" name="entrar" onclick="editarobservacion();">Guardar</button>
             </td
@@ -92,22 +92,61 @@
 {% endblock %}
 {%block script%}
 $( document ).ready(function() {
+  obse = $("#observacion").val();
+  obse = $.trim(obse);
+  $("#observacion").val(obse);
   $("#observacion").focus();
 });
+
 function editarobservacion(){
+  obse = $("#observacion").val();
+  observacion = $.trim(obse);
   $.ajax({
     url: "observacion",
     dataType: "json",
-    data: {'observacion':$("#id_observacion").val()},
+    data: {'observacion':observacion},
     success: function(detalle){
       if(detalle=="ok"){
         window.location.replace("/consignaciones/listar");
       }
       else{
         console.log("hay que implementar un div para mostrat error");
+        console.log(detalle);
       }
     }
   });
 }
 
+function editarconsignacionespagado(){
+  $.ajax({
+    url: "/consignaciones/editar/{{c.pk}}/pagado",
+    dataType: "json",
+    success: function(detalle){
+      if(detalle=="ok"){
+        window.location.replace("/consignaciones/listar");
+        console.log("debe redirigir a ventas");
+      }
+      else{
+        console.log("hay que implementar un div para mostrat error");
+        console.log(detalle);
+      }
+    }
+  });
+}
+
+function editarconsignacionesdevuelto(){
+  $.ajax({
+    url: "/consignaciones/editar/{{c.pk}}/devuelto",
+    dataType: "json",
+    success: function(detalle){
+      if(detalle=="ok"){
+        window.location.replace("/consignaciones/listar");
+      }
+      else{
+        console.log("hay que implementar un div para mostrat error");
+        console.log(detalle);
+      }
+    }
+  });
+}
 {% endblock %}
