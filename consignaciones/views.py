@@ -81,7 +81,7 @@ def editarconsignaciones(request, pk):
     return render(request, "consignaciones/editar.html", {'c':c, 'productos':productos})
 
 @login_required
-def editarconsignaciones2(request, pk):
+def editarconsignacionesobservacion(request, pk):
     if request.method == "GET":
         try:
             c = get_object_or_404(Consignacion, pk=pk)

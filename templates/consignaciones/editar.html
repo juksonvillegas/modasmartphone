@@ -1,7 +1,11 @@
 {% extends 'inicio/base.html' %}
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
- <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+  <div class="callout clearfix">
+    <a href="/consignaciones/agregar" class="button float-right">PAGO TODO</a>
+    <a href="/consignaciones/agregar" class="button float-left">DEVOLVIO TODO</a>
+  </div>
+  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
   {% csrf_token %}
   <h3>Detalles de la Consignacion</h3>
     {% if detalle %}
@@ -43,6 +47,16 @@
               {% endif %}
             </td>
           </tr>
+          <tr>
+            <td>Observaciones</td>
+            <td>
+              <textarea name="observacion" id="observacion" cols="1" rows="4">
+
+              </textarea>
+              <button id="guardar" type="button" class="button boton1" name="entrar" onclick="editarobservacion();">Guardar</button>
+            </td
+
+          </tr>
         </tbody>
       </table>
     </div>
@@ -59,7 +73,6 @@
       <tr>
         <th width="5%">ID</th>
         <th width="">Producto</th>
-        <th width="15%">Costo</th>
         <th width="15%">Cantidad</th>
       </tr>
     </thead>
@@ -76,4 +89,25 @@
 </div>
 </div>
 </div>
+{% endblock %}
+{%block script%}
+$( document ).ready(function() {
+  $("#observacion").focus();
+});
+function editarobservacion(){
+  $.ajax({
+    url: "observacion",
+    dataType: "json",
+    data: {'observacion':$("#id_observacion").val()},
+    success: function(detalle){
+      if(detalle=="ok"){
+        window.location.replace("/consignaciones/listar");
+      }
+      else{
+        console.log("hay que implementar un div para mostrat error");
+      }
+    }
+  });
+}
+
 {% endblock %}
