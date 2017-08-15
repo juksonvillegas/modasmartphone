@@ -149,11 +149,11 @@ def eliminarconsignacion(request, pk):
     detalle = 0
     if request.method == 'POST':
         try:
-            #c.delete()
+            c.delete()
             print("consignacion borrada")
             for p in productos:
                 print("productos borrados")
-                #p.delete()
+                p.delete()
         except Exception, e:
             detalle = "Error: " + str(e)
         finally:
