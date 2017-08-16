@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
    <form id="form" class="" action="#" method="post">{% csrf_token %}
-      <h3>Agregar Compra</h3>
+      <h3>Agregar Venta</h3>
         {% if detalle %}
           {% if detalle != "0" %}
           <h5 class="error">
@@ -11,11 +11,11 @@
           </h5>
           {% endif %}
         {% endif %}
-      <label for="id_personas">Seleccione Proveedor: (Requerido)</label>
+      <label for="id_personas">Seleccione Cliente: (Requerido)</label>
       <input id = "id_personas" type="hidden">
       <div class="input-group">
         <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
-        <input type="text" class=" input-group-field" readonly id="id_proveedor" name="" value="">
+        <input type="text" class=" input-group-field" readonly id="id_cliente" name="" value="">
       </div>
       <div class="row">
         <div class="columns small-4">
@@ -27,7 +27,7 @@
           <label for="id_pago">Al contado:</label>
         </div>
         <div class="columns small-4">
-          <label for="id_fecha">Fecha de compra: (Requerido)</label>
+          <label for="id_fecha">Fecha de venta: (Requerido)</label>
           <input id="id_fecha"type="text" name="" value="{{fecha}}">
         </div>
       </div>
@@ -57,14 +57,14 @@
         </div>
 
  </div>
- <!--MODAL PARA PROVEEDOR-->
+ <!--MODAL PARA CLIENTE-->
    <div class="reveal titulo" id="exampleModal1" data-reveal>
-    <h3>Seleccionar Proveedor</h3>
+    <h3>Seleccionar Cliente</h3>
     <div class="input-group input-group-rounded columns large-6 medium-4">
       <span class="input-group-label"><i class="material-icons">search</i></span>
-      <input type="text" id="buscadorproveedor" name="buscador" class="buscador input-group-field" placeholder="Buscar proveedor" id="buscador">
+      <input type="text" id="buscadorcliente" name="buscador" class="buscador input-group-field" placeholder="Buscar cliente" id="buscador">
     </div>
-      <table class="table-scroll" id="tablaproveedor">
+      <table class="table-scroll" id="tablacliente">
         <thead>
           <tr>
             <th>Nombre</th>
@@ -78,7 +78,7 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-<!--MODAL PARA PROVEEDOR-->
+<!--MODAL PARA CLIENTE-->
 <!--MODAL PARA PRODUCTO-->
   <div class="reveal titulo" id="exampleModal2" data-reveal>
    <h3>Seleccionar Producto</h3>
@@ -109,7 +109,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
 <div class="callout medium">
-  <h4>Productos de la compra:</h4>
+  <h4>Productos de la venta:</h4>
   <table id="listaproductos">
     <thead>
       <tr>
@@ -134,12 +134,12 @@ $( document ).ready(function() {
   $("#id_fecha").mask("99/99/9999");
   $("#abrirmodal").focus();
 });
-$('#buscadorproveedor').change(function(){
-  $("#tablaproveedor tbody tr").remove();
-  a = $("#buscadorproveedor").val().length;
+$('#buscadorcliente').change(function(){
+  $("#tablacliente tbody tr").remove();
+  a = $("#buscadorcliente").val().length;
   if(a>2){
-    texto = $("#buscadorproveedor").val();
-    $("#tablaproveedor tbody tr").remove();
+    texto = $("#buscadorcliente").val();
+    $("#tablacliente tbody tr").remove();
     $.ajax({
       data: {'term':texto},
       url: "/personas/buscar-ajax",
@@ -153,7 +153,7 @@ $('#buscadorproveedor').change(function(){
           }
           nuevafila +="<td>" + $nom + "</td>" +
                       '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')";><i class=material-icons>thumb_up</i></a></td></tr>';
-          $("#tablaproveedor").append(nuevafila);
+          $("#tablacliente").append(nuevafila);
        }
 
       }
@@ -192,9 +192,9 @@ $('#buscadorproducto').change(function(){
 });
 function seleccionar(id, modelo){
   $("#id_personas").val(id);
-  $("#id_proveedor").val(modelo);
+  $("#id_cliente").val(modelo);
   $("#exampleModal1").foundation('close');
-  $("#buscadorproveedor").val('');
+  $("#buscadorcliente").val('');
   $("#tablaproducto tbody tr").remove();
   $("#id_facturado").focus();
 }
@@ -259,10 +259,10 @@ function guardarcompra(){
       $.ajax({
         url: "agregar-ajax",
         dataType: "json",
-        data: {'fecha':$('#id_fecha').val(), 'proveedor':$('#id_personas').val(), 'facturado':$('#id_facturado').is(':checked'), 'pago':$('#id_pago').is(':checked'), 'observacion':$("#id_observacion").val() , 'datos[]':datos},
+        data: {'fecha':$('#id_fecha').val(), 'cliente':$('#id_personas').val(), 'facturado':$('#id_facturado').is(':checked'), 'pago':$('#id_pago').is(':checked'), 'observacion':$("#id_observacion").val() , 'datos[]':datos},
         success: function(detalle){
           if(detalle=="ok"){
-            window.location.replace("/compras/listar");
+            window.location.replace("/ventas/listar");
           }
           else{
             console.log("hay que implementar un div para mostrat error");
