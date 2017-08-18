@@ -16,6 +16,8 @@ class Venta(models.Model):
     efectivo = models.BooleanField()
     observacion = models.CharField(max_length=100)
     productos = models.ManyToManyField(Producto, through='detalle_venta')
+    def __str__(self):
+        return self.personas.nombres + str(self.fecha)
 
 class detalle_venta(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)

@@ -39,15 +39,23 @@ def agregarventa2(request):
      try:
          c = Venta()
          clie = int(request.GET['cliente'])
-         fact = bool(request.GET['facturado'])
-         pago = bool(request.GET['pago'])
+         fact = request.GET['facturado']
+         pago = request.GET['pago']
+         print(pago)
+         if fact=='false':
+             c.facturado = False
+         else:
+             c.facturado = True
+         if pago=='false':
+             c.efectivo = False
+         else:
+             c.efectivo = True
+         print(c.efectivo)
          obse = str(request.GET['observacion'])
          f = request.GET['fecha']
          fecha = datetime.datetime.strptime(f, '%d/%m/%Y')
-         c.personas = get_object_or_404(Personas, pk=prov)
+         c.personas = get_object_or_404(Personas, pk=clie)
          c.fecha = fecha
-         c.facturado= fact
-         c.pago = pago
          c.observacion = obse
          c.save()
          productos = request.GET.getlist('datos[]')
@@ -56,8 +64,8 @@ def agregarventa2(request):
              dc = detalle_venta()
              itempro = get_object_or_404(Producto, pk=p[0])
              dc.producto = itempro
-             dc.compra = c
-             dc.costo = p[2]
+             dc.venta = c
+             dc.precio = p[2]
              dc.cantidad = p[1]
              dc.save()
              detalle = "ok"

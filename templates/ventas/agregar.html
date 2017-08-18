@@ -42,8 +42,8 @@
         </div>
         <div class="row">
             <div class="columns small-3">
-              <label >Costo</label>
-              <input id="costo"type="number" name="" value="">
+              <label >Precio</label>
+              <input id="precio"type="number" name="" value="">
             </div>
           <div class="columns small-3">
             <label for="cantidad">Cantidad</label>
@@ -115,7 +115,7 @@
       <tr>
         <th width="5%">ID</th>
         <th width="">Producto</th>
-        <th width="15%">Costo</th>
+        <th width="15%">Precio</th>
         <th width="15%">Cantidad</th>
         <th width="5%">Eliminar</th>
       </tr>
@@ -167,7 +167,7 @@ $('#buscadorproducto').change(function(){
     texto = $("#buscadorproducto").val();
     $.ajax({
       data: {'term':texto},
-      url: "/productos/buscar-ajax",
+      url: "/productos/buscar-ajax2",
       type: "get",
       success: function(data){
         for(var i = 0; i<data.length; i++){
@@ -204,18 +204,18 @@ function seleccionar2(id, modelo){
   $("#exampleModal2").foundation('close');
   $("#buscadorproducto").val('');
   $("#tablaproducto tbody tr").remove();
-  $("#costo").focus();
+  $("#precio").focus();
 }
 function agregarproducto(){
   fila =  '<tr><td id=\"colpk\" >'+ $("#id_producto").val()+'</td><td>'+
-                      $("#producto").val()+'</td><td id=\"colcosto\">' +
-                      $("#costo").val()+'</td><td id=\"colcantidad\">' +
+                      $("#producto").val()+'</td><td id=\"colprecio\">' +
+                      $("#precio").val()+'</td><td id=\"colcantidad\">' +
                       $("#cantidad").val()+'</td><td>' +
                       '<a href="#" onclick=\"eliminaritem(this);\"> <i class="material-icons">delete</i></a> </td></tr>';
   $("#listaproductos").append(fila);
   $("#id_producto").val('');
   $("#producto").val('');
-  $("#costo").val('');
+  $("#precio").val('');
   $("#cantidad").val('');
   $("#abrirmodal2").focus();
 }
@@ -223,9 +223,9 @@ function eliminaritem(arg){
   arg.closest("tr").remove();
 }
 
-$('#cantidad,#costo' ).keypress(function(e) {
+$('#cantidad,#precio' ).keypress(function(e) {
 
-    if(e.which == 13 && $("#id_producto").val()!='' && $("#costo").val()!='' ) {
+    if(e.which == 13 && $("#id_producto").val()!='' && $("#precio").val()!='' ) {
       console.log("entro");
         agregarproducto();
     }
@@ -237,7 +237,7 @@ $("#id_observacion").change(function(){
   $("#listaproductos>tbody>tr").each(function(){
         a = $(this).find('td[id=\"colpk\"]').text();
         b = $(this).find('td[id=\"colcantidad\"]').text();
-        c = $(this).find('td[id=\"colcosto\"]').text();
+        c = $(this).find('td[id=\"colprecio\"]').text();
         fila.push({prod:a, cant:b, cost:c });
         filas.push({'producto':fila});
     });
@@ -251,8 +251,8 @@ function guardarcompra(){
     $("#listaproductos>tbody>tr").each(function(){
           producto = $(this).find('td[id=\"colpk\"]').text();
           cantidad = $(this).find('td[id=\"colcantidad\"]').text();
-          costo = $(this).find('td[id=\"colcosto\"]').text();
-          dato = new Array(producto, cantidad, costo);
+          precio = $(this).find('td[id=\"colprecio\"]').text();
+          dato = new Array(producto, cantidad, precio);
           datos.push(dato);
       });
       if($('#id_personas').val()!='' && !($.isEmptyObject(datos))){

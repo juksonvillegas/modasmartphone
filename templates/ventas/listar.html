@@ -32,14 +32,14 @@
               <td>{{c.personas.nombres}}</td>
               <td>{{c.fecha|date:'d/m/Y'}}</td>
               <td>
-                {% if c.facturado %}
+                {% if c.facturado == True %}
                   Con factura
                 {% else %}
                   Sin Factura
                 {% endif %}
               </td>
               <td>
-                {% if c.pago %}
+                {% if c.efectivo == True %}
                   Efectivo
                 {% else %}
                   Credito
