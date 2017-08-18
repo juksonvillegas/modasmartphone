@@ -22,7 +22,7 @@
               <th>Fecha</th>
               <th>Facturado</th>
               <th>Tipo de pago</th>
-              <th>Editar</th>
+              <th>Ver</th>
               <th>Eliminar</th>
             </tr>
           </thead>
@@ -45,7 +45,7 @@
                   Credito
                 {% endif %}
               </td>
-              <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
+              <td><a href="editar/{{c.pk}}"><i class="material-icons">visibility</i></a></td>
               <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
             </tr>
         {% endfor %}

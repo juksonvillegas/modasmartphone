@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
   {% csrf_token %}
-  <h3>Detalles de la Compra</h3>
+  <h3>Detalles de la Venta</h3>
     {% if detalle %}
       {% if detalle != "0" %}
       <h5 class="error">
@@ -36,7 +36,7 @@
           <tr>
             <td>Tipo de pago</td>
             <td>
-              {% if c.pago == True %}
+              {% if c.efectivo == True %}
                 EN EFECTICO
               {% else %}
                 CREDITO

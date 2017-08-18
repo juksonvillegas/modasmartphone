@@ -93,7 +93,7 @@ def buscarventas(request):
 @login_required
 def editarventa(request,pk):
     c = get_object_or_404(Venta, pk=pk)
-    productos = list(detalle_venta.objects.filter(compra=pk))
+    productos = list(detalle_venta.objects.filter(venta=pk))
     return render(request, 'ventas/editar.html', {'c':c, 'productos':productos})
 
 @login_required
