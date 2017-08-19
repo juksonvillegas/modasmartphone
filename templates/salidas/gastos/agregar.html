@@ -1,0 +1,28 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form id="form" class="" action="#" method="post">{% csrf_token %}
+      <h3>Agregar Gasto</h3>
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      <label for="id_fecha">Fecha: (Requerido)</label>
+      {{form.fecha}}
+      <label for="monto">Monto</label>
+      {{form.monto}}
+      <label for="id_observacion">Observaciones: (Opcional)</label>
+      {{form.observacion}}
+      <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+</div>
+{% endblock %}
+{%block script%}
+$( document ).ready(function() {
+  $("#id_fecha").mask("99/99/9999");
+  $("#id_monto").focus();
+});
+{% endblock %}

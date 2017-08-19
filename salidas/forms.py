@@ -15,3 +15,10 @@ class PerdidaForm(forms.Form):
     cantidad = IntegerField()
     observacion = CharField(max_length=50, widget = Textarea(
         attrs={'placeholder':'Ingrese datos extras'}), required=False)
+
+class GastoForm(forms.Form):
+    fecha = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
+        attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
+    monto = DecimalField(decimal_places=2)
+    observacion = CharField(max_length=50, widget = Textarea(
+        attrs={'placeholder':'Ingrese datos extras'}), required=False)

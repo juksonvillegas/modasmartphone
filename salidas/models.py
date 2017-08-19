@@ -14,13 +14,6 @@ class Perdida(models.Model):
     def __str__(self):
         return str(self.fecha)
 
-class Egreso(models.Model):
-    fecha = models.DateField()
-    monto =  models.DecimalField(max_digits=6, decimal_places=2)
-    observacion = models.CharField(max_length=100)
-    def __str__(self):
-        return str(self.fecha)
-
 class Pago(models.Model):
     fecha = models.DateField()
     monto = models.DecimalField(max_digits=6, decimal_places=2)
@@ -46,3 +39,11 @@ def descontarstock(sender, instance, **kwargs):
         producto = get_object_or_404(Producto, pk=pk)
         producto.stock-= int(nuevo_stock)
         producto.save()
+
+@receiver(post_delete, sender=Perdida)
+def retornarstock(sender, instance, **kwargs):
+    pk = instance.producto.pk
+    nuevo_stock = instance.cantidad
+    producto = get_object_or_404(Producto, pk=pk)
+    producto.stock+= int(nuevo_stock)
+    producto.save()

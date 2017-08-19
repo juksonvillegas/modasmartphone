@@ -2,15 +2,15 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/perdidas/agregar" class="button float-left">Agregar nueva Perdida</a>
+    <a href="/gastos/agregar" class="button float-left">Agregar nuevo gasto</a>
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
-      <h3 class="columns large-8 medium-6 small-12 left">Listado Perdidas</h3>
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Gastos</h3>
       <div class="columns large-4 right medium-6 small-12">
         <div class="input-group input-group-rounded columns large-6 medium-4">
           <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Perdida" id="buscador">
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Gasto" id="buscador">
         </div>
       </div>
     </div>
@@ -18,9 +18,6 @@
         <table id="tabla">
           <thead>
             <tr>
-              <th>Categoria</th>
-              <th>Marca</th>
-              <th>Modelo</th>
               <th>Fecha</th>
               <th>Cantidad</th>
               <th>Observacion</th>
@@ -31,11 +28,8 @@
           <tbody>
         {% for c in lista %}
             <tr>
-              <td>{{c.producto.categoria.nombre}}</td>
-              <td>{{c.producto.modelo.marca.nombre}}</td>
-              <td>{{c.producto.modelo.nombre}}</td>
               <td>{{c.fecha|date:'d/m/Y'}}</td>
-              <td>{{c.cantidad}}</td>
+              <td>{{c.monto}}</td>
               <td>{{c.observacion}}</td>
               <td><a href="editar/{{c.pk}}"><i class="material-icons">mode_edit</i></a></td>
               <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
