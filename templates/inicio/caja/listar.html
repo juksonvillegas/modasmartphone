@@ -2,7 +2,8 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/comisiones/agregar" class="button float-left">Agregar nueva comision</a>
+    <a href="/caja/abrir" class="button float-left">Abrir caja</a>
+    <a href="/caja/cerrar" class="button float-right">Cerrar caja</a>
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
@@ -18,25 +19,29 @@
         <table id="tabla">
           <thead>
             <tr>
-              <th>Categoria</th>
-              <th>Marca</th>
-              <th>Modelo</th>
-              <th>Fecha</th>
-              <th>Monto</th>
-              <th>Editar</th>
-              <th>Eliminar</th>
+              <th>Usuario</th>
+              <th>Fecha Apertura</th>
+              <th>Monto Apertura</th>
+              <th>Fecha Cierre</th>
+              <th>Monto Cierre</th>
+              <th>Estado</th>
             </tr>
           </thead>
           <tbody>
         {% for c in lista %}
             <tr>
-              <td>{{c.producto.categoria.nombre|upper}}</td>
-              <td>{{c.producto.modelo.marca.nombre|upper}}</td>
-              <td>{{c.producto.modelo.nombre|upper}}</td>
-              <td>{{c.fecha|date:'d/m/Y'}}</td>
-              <td>{{c.monto}}</td>
-              <td><a href="editar/{{c.pk}}"><i class="material-icons">mode_edit</i></a></td>
-              <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+              <td>{{c.usuario|upper}}</td>
+              <td>{{c.fechaa|date:'d/m/Y H:i'}}</td>
+              <td>{{c.montoa}}</td>
+              <td>{{c.fechac|date:'d/m/Y H:i'}}</td>
+              <td>{{c.montoc}}</td>
+              <td>
+                {% if c.estado == True %}
+                  Abierta
+                {% else %}
+                  Cerrada
+                {% endif %}
+              </td>
             </tr>
         {% endfor %}
           </tbody>

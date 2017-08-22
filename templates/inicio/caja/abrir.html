@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
    <form id="form" class="" action="#" method="post">{% csrf_token %}
-      <h3>Agregar Gasto</h3>
+      <h3>Abrir Caja</h3>
         {% if detalle %}
           {% if detalle != "0" %}
           <h5 class="error">
@@ -11,23 +11,17 @@
           </h5>
           {% endif %}
         {% endif %}
-      <label for="id_fecha">Fecha: (Requerido)</label>
+      <label for="id_fecha">Fecha Apertura: (Requerido)</label>
       {{form.fecha}}
-      <div class="input-group">
-        {{form.producto}}
-        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
-        <input type="text" class=" input-group-field" readonly placeholder="Seleccione un producto" id="producto" name="" value="{{nompro}}">
-      </div>
-      <label for="id_monto">Monto (Requerido)</label>
+      <label for="monto">Monto Apertura: (Requerido)</label>
       {{form.monto}}
-      <label for="id_observacion">Observaciones: (Requerido)</label>
-      {{form.observacion}}
+      {% if unlock == True %}
       <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+      {% endif %}
 </div>
 {% endblock %}
 {%block script%}
 $( document ).ready(function() {
-  $("#id_fecha").mask("99/99/9999");
-  $("#id_fecha").focus();
+  $("#id_monto").focus();
 });
 {% endblock %}
