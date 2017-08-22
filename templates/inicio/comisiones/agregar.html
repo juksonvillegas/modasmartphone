@@ -1,0 +1,95 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form id="form" class="" action="#" method="post">{% csrf_token %}
+      <h3>Agregar Gasto</h3>
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      <label for="id_fecha">Fecha: (Requerido)</label>
+      {{form.fecha}}
+      <div class="input-group">
+        {{form.producto}}
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" readonly placeholder="Seleccione un producto" id="producto" name="" value="">
+      </div>
+      <label for="monto">Monto</label>
+      {{form.monto}}
+      <label for="id_observacion">Observaciones: (Opcional)</label>
+      {{form.observacion}}
+      <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+</div>
+<!--MODAL PARA PRODUCTO-->
+  <div class="reveal titulo" id="exampleModal2" data-reveal>
+   <h3>Seleccionar Producto</h3>
+   <div class="input-group input-group-rounded columns large-6 medium-4">
+     <span class="input-group-label"><i class="material-icons">search</i></span>
+     <input type="text" id="buscadorproducto" name="buscador" class="buscador input-group-field" placeholder="Buscar producto">
+   </div>
+     <table class="table-scroll" id="tablaproducto">
+       <thead>
+         <tr>
+           <th>Categoria</th>
+           <th>Marca</th>
+           <th>Modelo</th>
+           <th>Seleccionar</th>
+         </tr>
+       </thead>
+       <tbody>
+       </tbody>
+     </table>
+   <button class="close-button" data-close aria-label="Close modal" type="button">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+<!--MODAL PARA PRODUCTO-->
+{% endblock %}
+{%block script%}
+$( document ).ready(function() {
+  $("#id_fecha").mask("99/99/9999");
+  $("#id_fecha").focus();
+});
+$('#buscadorproducto').change(function(){
+  $("#tablaproducto tbody tr").remove();
+  a = $("#buscadorproducto").val().length;
+  if(a>1){
+    texto = $("#buscadorproducto").val();
+    $.ajax({
+      data: {'term':texto},
+      url: "/productos/buscar-ajax",
+      type: "get",
+      success: function(data){
+        for(var i = 0; i<data.length; i++){
+          categoria = data[i].categoria.replace(/\s+/g, '-');
+          modelo = data[i].modelo.replace(/\s+/g, '-');
+          marca = data[i].marca.replace(/\s+/g, '-');
+          nombrecompleto = categoria + '-' + marca + '-' + modelo;
+          if(data.length==1){
+            seleccionar2(data[i].pk, nombrecompleto);
+          }
+          nuevafila = "<tr>";
+          nuevafila +="<td>" + data[i].categoria + "</td>" +
+                      "<td>" + data[i].marca + "</td>" +
+                      "<td>" + data[i].modelo + "</td>" +
+                      "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto +"');><i class=material-icons>thumb_up</i></a></td></tr>";
+          $("#tablaproducto").append(nuevafila);
+       }
+
+      }
+    });
+  }
+});
+function seleccionar2(id, modelo){
+  $("#id_producto").val(id);
+  $("#producto").val(modelo);
+  $("#exampleModal2").foundation('close');
+  $("#buscadorproducto").val('');
+  $("#tablaproducto tbody tr").remove();
+  $("#id_monto").focus();
+}
+{% endblock %}

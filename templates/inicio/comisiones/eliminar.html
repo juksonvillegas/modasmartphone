@@ -1,0 +1,41 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="POST">{% csrf_token %}
+     <h3>Eliminar Gasto</h3>
+       {% if detalle %}
+         {% if detalle != "0" %}
+         <h5 class="error">
+           {{detalle}}
+         </h5>
+         {% endif %}
+       {% endif %}
+       <div class="callout medium">
+         <h4>Datos generales</h4>
+         <table>
+           <tbody
+             <tr>
+               <td>Fecha</td>
+               <td>{{c.fecha|date:'d/m/Y'}}</td>
+             </tr>
+             <tr>
+               <td>Cantidad</td>
+               <td>
+                 {{c.monto}}
+               </td>
+             </tr>
+             <tr>
+               <td>Observacion</td>
+               <td>
+                 {{c.observacion}}
+               </td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+       <button type="submit" class="button boton1" name="eliminar">Eliminar</button>
+     </form>
+   </div>
+ </div>
+       {% endblock %}
