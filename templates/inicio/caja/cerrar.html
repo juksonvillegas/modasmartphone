@@ -15,7 +15,11 @@
       {{form.fecha}}
       <label for="monto">Monto Cierre: (Requerido)</label>
       {{form.monto}}
-      <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+      {% if c != "vacio" %}
+        <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+      {% else %}
+        <h4 class="error">Debe abrir caja primero.</h4>
+      {% endif %}
 </div>
 {% endblock %}
 {%block script%}

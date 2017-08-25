@@ -72,7 +72,6 @@ def editarcomision(request, pk):
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
-            print(detalle)
         finally:
             if detalle != 0 or form.is_valid() == False:
                 return render(request, 'inicio/comisiones/editar.html', {'form': form, 'detalle':detalle})
@@ -130,22 +129,24 @@ def abrircaja(request):
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
-            print(detalle)
         finally:
             if detalle != 0 or form.is_valid() == False:
                 return render(request, 'inicio/caja/abrir.html', {'form': form, 'detalle':detalle})
             else:
                 return redirect(reverse_lazy('caja_listar'))
     else:
-        c = Caja.objects.first('montoa')
-        print(c.estado)
-        form = CajaForm()
-        if c.estado == True:
-            unlock = True
+        unlock = False
+        try:
+            c = Caja.objects.latest('estado')
+            if c.estado:
+                unlock=True
+            else:
+                unlock = False
+        except Caja.DoesNotExsist:
+            unlock = False
+        finally:
+            form = CajaForm()
             return render(request, 'inicio/caja/abrir.html', {'form': form, 'unlock':unlock})
-        else:
-            detalle = "La caja ya esta abierta debe cerrar primero."
-            return render(request, 'inicio/caja/abrir.html', {'form': form, 'detalle':detalle})
 
 @login_required
 def cerrarcaja(request):
@@ -154,7 +155,7 @@ def cerrarcaja(request):
         detalle = 0
         try:
             if form.is_valid():
-                c = Caja.objects.latest('montoa')
+                c = Caja.objects.get(estado=True)
                 c.montoc = form.cleaned_data['monto']
                 c.fechac = datetime.datetime.now()
                 c.usuario = request.user
@@ -162,12 +163,17 @@ def cerrarcaja(request):
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
-            print(detalle)
         finally:
             if detalle != 0 or form.is_valid() == False:
                 return render(request, 'inicio/caja/cerrar.html', {'form': form, 'detalle':detalle})
             else:
                 return redirect(reverse_lazy('caja_listar'))
     else:
-        form = CajaForm()
-        return render(request, 'inicio/caja/cerrar.html', {'form': form})
+        c="vacio"
+        try:
+            c = Caja.objects.get(estado=True)
+        except Caja.DoesNotExsist:
+            c = "vacio"
+        finally:
+            form = CajaForm()
+            return render(request, 'inicio/caja/cerrar.html', {'form': form, 'c':c})

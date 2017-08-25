@@ -22,6 +22,8 @@ class Caja(models.Model):
     montoc = models.DecimalField(max_digits=6, decimal_places=2, null=True, blank=True)
     usuario = models.ForeignKey(settings.AUTH_USER_MODEL)
     estado = models.BooleanField(default=True)
+    def __str__(self):
+        return str(self.fechaa)
 
 class Avatar(models.Model):
     usuario = models.OneToOneField(User)
