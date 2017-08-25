@@ -7,11 +7,11 @@
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
-      <h3 class="columns large-8 medium-6 small-12 left">Listado Comisiones</h3>
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Caja</h3>
       <div class="columns large-4 right medium-6 small-12">
         <div class="input-group input-group-rounded columns large-6 medium-4">
           <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Comision" id="buscador">
+          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Caja" id="buscador">
         </div>
       </div>
     </div>
@@ -37,9 +37,9 @@
               <td>{{c.montoc}}</td>
               <td>
                 {% if c.estado == True %}
-                  Abierta
+                  <span class="alerta">Abierta</span>
                 {% else %}
-                  Cerrada
+                  <span class="error">Cerrada</span>
                 {% endif %}
               </td>
             </tr>
