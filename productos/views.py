@@ -205,7 +205,7 @@ def agregarmodelo(request):
 
 @login_required
 def listarmodelos(request):
-    lista = Modelo.objects.all().order_by('nombre')
+    lista = Modelo.objects.all().order_by('marca__nombre', 'nombre')
     page = request.GET.get('page')
     paginator = Paginator(lista, 10)
     try:
@@ -316,7 +316,7 @@ def buscarprecios(request):
             clase = Precio.objects.filter(Q(categoria__nombre__contains = texto)| Q(modelo__marca__nombre__contains = texto)| Q(modelo__nombre__contains = texto))
             lista = []
             for c in clase:
-				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'modelo':c.modelo.nombre, 'mayor':str(c.mayor), 'punto':str(c.punto), 'cliente':str(c.cliente)})
+				lista.append({'pk':c.pk,'categoria':c.categoria.nombre, 'modelo':c.modelo.nombre,'marca':c.modelo.marca.nombre, 'mayor':str(c.mayor), 'punto':str(c.punto), 'cliente':str(c.cliente)})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 

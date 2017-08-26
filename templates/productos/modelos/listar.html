@@ -18,8 +18,8 @@
         <table id="tabla">
           <thead>
             <tr>
-              <th>Modelo</th>
               <th>Marca</th>
+              <th>Modelo</th>
               <th>Editar</th>
               <th>Eliminar</th>
             </tr>
@@ -27,8 +27,8 @@
           <tbody>
         {% for c in modelos %}
             <tr>
-              <td>{{c.nombre}}</td>
               <td>{{c.marca}}</td>
+              <td>{{c.nombre}}</td>
               <td><a href="editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
               <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
             </tr>

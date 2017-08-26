@@ -19,6 +19,7 @@
           <thead>
             <tr>
               <th>Categoria</th>
+              <th>Marca</th>
               <th>Modelo</th>
               <th>Por mayor</th>
               <th>A punto</th>
@@ -31,6 +32,7 @@
         {% for c in lista %}
             <tr>
               <td>{{c.categoria}}</td>
+              <td>{{c.modelo.marca.nombre}}</td>
               <td>{{c.modelo}}</td>
               <td>{{c.mayor}}</td>
               <td>{{c.punto}}</td>
@@ -73,6 +75,7 @@
           for(var i = 0; i<data.length; i++){
             nuevafila = "<tr>";
             nuevafila +="<td>" + data[i].categoria + "</td>" +
+                        "<td>" + data[i].marca + "</td>" +
                         "<td>" + data[i].modelo + "</td>" +
                         "<td>" + data[i].mayor + "</td>" +
                         "<td>" + data[i].punto + "</td>" +
