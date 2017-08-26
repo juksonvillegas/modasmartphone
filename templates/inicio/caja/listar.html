@@ -63,6 +63,7 @@
 {% endblock %}
 {% block script %}
   $(document).ready(function() {
+    $("#texto").mask("99/99/9999");
     $('#texto').focus();
   });
   $('#texto').change(function(){
