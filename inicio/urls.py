@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^caja/listar$', listarcajas, name='caja_listar'),
     url(r'^caja/abrir$', abrircaja, name='caja_abrir'),
     url(r'^caja/cerrar$', cerrarcaja, name='caja_cerrar'),
+    url(r'^usuario/agregar$', agregarusuario, name='usuario_agregar'),
     ]

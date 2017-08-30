@@ -14,9 +14,41 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 import datetime
 import time
+from django.contrib.auth.models import User
 
 class principal(LoginRequiredMixin, TemplateView):
     template_name = "inicio/base.html"
+
+@login_required
+def agregarusuario(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        detalle = 0
+        try:
+            if form.is_valid():
+                if(form.cleaned_data['password1']==form.cleaned_data['password2']):
+                    c = User()
+                    c.first_name = form.cleaned_data['first_name']
+                    c.last_name = form.cleaned_data['last_name']
+                    c.username = form.cleaned_data['username']
+                    c.email = form.cleaned_data['email']
+                    c.password = form.cleaned_data['password1']
+                    c.is_staff = form.cleaned_data['is_staff']
+                    #c.save()
+                else:
+                    print("password diferentes")
+                    detalle="Password diferentes"
+        except Exception as e:
+            detalle = "Error: " + str(e)
+        finally:
+            if detalle != 0 or form.is_valid() == False:
+                return render(request, 'inicio/usuario/agregar.html', {'form': form, 'detalle':detalle})
+            else:
+                return redirect(reverse_lazy('personas_listar'))
+    else:
+        form = UsuarioForm()
+        return render(request, 'inicio/usuario/agregar.html', {'form': form})
+
 
 @login_required
 def agregarcomision(request):

@@ -4,6 +4,8 @@ import datetime
 from django.forms import *
 from productos.models import Producto
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 def getfechahora():
     return datetime.datetime.now().strftime("%d/%m/%Y-%H:%M")
@@ -23,3 +25,13 @@ class CajaForm(forms.Form):
     fecha = CharField(widget = TextInput(
          attrs={'readonly':'readonly'}), initial = getfechahora())
     monto = DecimalField(decimal_places=2)
+
+class UsuarioForm(UserCreationForm):
+    first_name = CharField(max_length=30, required=False, help_text='Optional.')
+    last_name = CharField(max_length=30, required=False, help_text='Optional.')
+    email = EmailField(max_length=254, help_text='Required. Inform a valid email address.')
+    is_staff = BooleanField()
+
+    class Meta:
+        model = User
+        fields = ('username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'is_staff', )
