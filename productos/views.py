@@ -221,7 +221,7 @@ def buscarmodelos(request):
     if request.is_ajax():
         texto = request.GET['term']
         if texto is not None:
-            clase = Modelo.objects.filter(Q(nombre__contains = texto)| Q(marca__nombre__contains = texto))
+            clase = Modelo.objects.filter(Q(nombre__contains = texto)| Q(marca__nombre__contains = texto)).order_by('marca__nombre', 'nombre')
             lista = []
             for c in clase:
 				lista.append({'pk':c.pk,'nombre':c.nombre, 'marca': c.marca.nombre})

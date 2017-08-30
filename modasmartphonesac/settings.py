@@ -71,8 +71,8 @@ ROOT_URLCONF = 'modasmartphonesac.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['/Users/juksonvillegas/Documents/modasmartphone/modasmartphone/entorno/modasmartphonesac/templates'],
-        #'DIRS': ['/home/jukson/Documentos/entorno/modasmartphone/templates'],
+        #'DIRS': ['/Users/juksonvillegas/Documents/modasmartphone/modasmartphone/entorno/modasmartphonesac/templates'],
+        'DIRS': ['/home/jukson/entorno/modasmartphone/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
