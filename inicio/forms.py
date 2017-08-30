@@ -30,7 +30,7 @@ class UsuarioForm(UserCreationForm):
     first_name = CharField(max_length=30, required=False, help_text='Optional.')
     last_name = CharField(max_length=30, required=False, help_text='Optional.')
     email = EmailField(max_length=254, help_text='Required. Inform a valid email address.')
-    is_staff = BooleanField()
+    is_staff = BooleanField(required=False)
 
     class Meta:
         model = User

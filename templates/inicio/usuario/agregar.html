@@ -26,7 +26,7 @@
       {{form.last_name}}
       <label for="id_username">Nombre de usuario: (Requerido)</label>
       {{form.username}}
-      <label for="id_email">Nombre de usuario: (Requerido)</label>
+      <label for="id_email">Email: (Requerido)</label>
       {{form.email}}
       <label for="id_password1">Contraseña: (Requerido)</label>
       {{form.password1}}
@@ -46,15 +46,13 @@ $( document ).ready(function() {
   $("#id_first_name").focus();
 });
 $("#id_password1, #id_password2").change(function(){
-  a = $("id_password1").val();
-  b = $("id_password2").val();
-  if(a==b){
-    $("#perror").val("Las contraseñas no coinciden");
-    console.log("debe mostrar");
+  a = $("#id_password1").val();
+  b = $("#id_password2").val();
+  if(a!=b){
+    $("#perror").html("Las contraseñas no coinciden");
   }
   else{
-    $("#perror").val("");
-    console.log("debe ocultar");
+    $("#perror").html("");
   }
 });
 {% endblock %}

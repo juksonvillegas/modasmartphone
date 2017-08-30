@@ -32,11 +32,10 @@ def agregarusuario(request):
                     c.last_name = form.cleaned_data['last_name']
                     c.username = form.cleaned_data['username']
                     c.email = form.cleaned_data['email']
-                    c.password = form.cleaned_data['password1']
+                    c.set_password(form.cleaned_data['password1'])
                     c.is_staff = form.cleaned_data['is_staff']
-                    #c.save()
+                    c.save()
                 else:
-                    print("password diferentes")
                     detalle="Password diferentes"
         except Exception as e:
             detalle = "Error: " + str(e)
