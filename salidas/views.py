@@ -17,6 +17,7 @@ import time
 from django.utils.dateparse import parse_date
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def agregarperdida(request):
     if request.method == 'POST':
         form = PerdidaForm(request.POST)
@@ -42,6 +43,7 @@ def agregarperdida(request):
         return render(request, 'salidas/perdidas/agregar.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def listarperdidas(request):
     lista = Perdida.objects.all().order_by('-fecha')
     page = request.GET.get('page')
@@ -55,6 +57,7 @@ def listarperdidas(request):
     return render(request, 'salidas/perdidas/listar.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def editarperdida(request, pk):
     if request.method == 'POST':
         form = PerdidaForm(request.POST)
@@ -84,6 +87,7 @@ def editarperdida(request, pk):
         return render(request, 'salidas/perdidas/editar.html', {'form': form, 'nompro':nompro})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def eliminarperdida(request, pk):
     c = get_object_or_404(Perdida, pk=pk)
     detalle = 0
@@ -127,6 +131,7 @@ def agregargasto(request):
         return render(request, 'salidas/gastos/agregar.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def listargastos(request):
     lista = Gasto.objects.all().order_by('-fecha')
     page = request.GET.get('page')
@@ -140,6 +145,7 @@ def listargastos(request):
     return render(request, 'salidas/gastos/listar.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def editargasto(request, pk):
     if request.method == 'POST':
         form = GastoForm(request.POST)
@@ -165,6 +171,7 @@ def editargasto(request, pk):
         return render(request, 'salidas/gastos/editar.html', {'form': form})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def eliminargasto(request, pk):
     c = get_object_or_404(Gasto, pk=pk)
     detalle = 0

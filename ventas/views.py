@@ -91,12 +91,14 @@ def buscarventas(request):
          return HttpResponse(data, content_type='application/json')
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def editarventa(request,pk):
     c = get_object_or_404(Venta, pk=pk)
     productos = list(detalle_venta.objects.filter(venta=pk))
     return render(request, 'ventas/editar.html', {'c':c, 'productos':productos})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def eliminarventa(request, pk):
     c = get_object_or_404(Venta, pk=pk)
     productos = list(detalle_venta.objects.filter(venta=pk))

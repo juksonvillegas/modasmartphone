@@ -25,7 +25,7 @@ class principal(LoginRequiredMixin, TemplateView):
     template_name = "inicio/base.html"
 
 @login_required
-@user_passes_test(lambda u: u.is_staff, login_url='/compras/listar')
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def agregarusuario(request):
     if request.method == 'POST':
         group_admin, created = Group.objects.get_or_create(name='administrador')
@@ -129,6 +129,7 @@ def editarcomision(request, pk):
         return render(request, 'inicio/comisiones/editar.html', {'form': form, 'nompro':nompro})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def eliminarcomision(request, pk):
     c = get_object_or_404(Comision, pk=pk)
     detalle = 0
@@ -160,6 +161,7 @@ def listarcajas(request):
     return render(request, 'inicio/caja/listar.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def abrircaja(request):
     if request.method == 'POST':
         form = CajaForm(request.POST)
@@ -193,6 +195,7 @@ def abrircaja(request):
             return render(request, 'inicio/caja/abrir.html', {'form': form, 'unlock':unlock})
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def cerrarcaja(request):
     if request.method == 'POST':
         form = CajaForm(request.POST)
