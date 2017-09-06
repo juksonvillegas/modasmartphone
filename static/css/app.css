@@ -62,11 +62,12 @@ input#menu{
   font-size: 1em;
 }
 
-input:focus {
+/*input:focus {
+
   border: 1px;
   padding: 1.5em;
   color: #333333;
-}
+}*/
 
 label{
   color : #a0a0a0;
