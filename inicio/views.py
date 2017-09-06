@@ -17,6 +17,7 @@ import time
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.decorators import user_passes_test
 
 #if not request.user.is_anonymous():
         #return HttpResponseRedirect('/privado')
@@ -24,6 +25,7 @@ class principal(LoginRequiredMixin, TemplateView):
     template_name = "inicio/base.html"
 
 @login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/compras/listar')
 def agregarusuario(request):
     if request.method == 'POST':
         group_admin, created = Group.objects.get_or_create(name='administrador')
