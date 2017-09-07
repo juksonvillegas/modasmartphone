@@ -14,7 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 import datetime
 import time
-from django.utils.dateparse import parse_date
+from django.contrib.auth.decorators import user_passes_test
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')

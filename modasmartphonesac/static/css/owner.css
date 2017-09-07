@@ -1,6 +1,162 @@
-#barra-color{
-  background: #009688;
-  padding-top: 1.5em;
-  padding-bottom: 1.5em;
+.barra-color{
+  background: #03A9F4;
+  padding-top: 3em;
+  padding-bottom: 3em;
 }
-.fondo{ background: #EEEE00; }
+
+.sub-barra-color{
+  padding: 0.5em;
+  background: #008ccc;
+}
+.fondo{ background: #EEEEEE; }
+
+.formulario{
+  color: #a0a0a0;
+  padding: 3em;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 10px 10px 5px #888888;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  -o-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+}
+
+.formulario2 {
+  color: #a0a0a0;
+  padding: 1em;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 2px 2px 2px #888888;
+}
+
+input:focus {
+  border: 1px solid #33b5e5;
+  color: #333333;
+}
+
+.formulario2 label{
+  color : #a0a0a0;
+}
+
+.boton1{
+  background: #03A9F4;
+  border-radius: 5px;
+  font-size: 1.5em;
+}
+
+.boton2{
+  background: #ff6666;
+  border-radius: 5px;
+  font-size: 1.2em;
+}
+
+.boton2:hover{
+  background: #ff3f3f;
+}
+
+.input-login {
+  color: #000;
+  -moz-color: #000;
+  border-radius: 5px;
+}
+
+div h1{
+  color: #f2f2f2;
+}
+div h5 , h2{
+  color: #f2f2f2;
+  text-align: right;
+}
+
+.menucontenedor{
+  padding: 0.5em;
+  background: #03a9f4;
+  color: #fff;
+  min-height:100vh;
+}
+li{
+  padding: 0.5em;
+  background: #03a9f4;
+}
+
+li a, a:visited, a:active{
+  color: #fff;
+}
+li a:hover{
+  background: #008ccc;
+  color: #f2f2f2;
+}
+
+.avatar{
+  height: 100px;
+  width: 100px;
+  /* los siguientes valores son independientes del tamaño del círculo */
+  background-repeat: no-repeat;
+  background-position: 50%;
+  border-radius: 50%;
+  background-size: 100% auto;
+}
+
+.title-bar{
+  background: #03a9f4;
+}
+
+.title-bar-title{
+  background: #03a9f4;
+}
+.top-bar ul{
+  background: #03a9f4;
+}
+
+.salir{
+  padding: 0px;
+  background: #ff6666;
+  border-radius: 5px;
+}
+
+ .salir a:hover{
+   background: #ff3f3f;
+   border-radius: 10px;
+ }
+
+ .columns{
+   padding: 0;
+ }
+
+ .alerta{
+   color: green;
+   padding: 0;
+   font-size: 1em;
+ }
+ .error{
+   color: red;
+   padding: 0;
+   font-size: 1em;
+ }
+
+ .input-group-rounded .input-group-label {
+   border-radius: 5000px 0 0 5000px;
+   padding-top: 0.5em;
+   background: #008ccc;
+   color: #fff;
+   border-color: #33b5e5;
+ }
+
+ .input-group-rounded .input-group-field {
+   border-radius: 0 5000px 5000px 0;
+   padding: 1.5em;
+   width: auto;
+ }
+
+.paginas{
+  background: #1779ba;
+  color: #000;
+}
+
+.paginas a:hover{
+  background: #1779ba;
+}

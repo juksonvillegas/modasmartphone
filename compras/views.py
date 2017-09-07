@@ -74,7 +74,6 @@ def agregarcompra2(request):
 				content_type="application/json"
 			)
 
-
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def buscarcompras(request):
@@ -84,7 +83,7 @@ def buscarcompras(request):
             compras = Compra.objects.filter(Q(personas__nombres__contains = texto)|Q(fecha__contains = texto)|Q(observacion__contains = texto))
             for c in compras:
                 lista = []
-				lista.append({'pk':c.pk, 'proveedor':c.personas.nombres, 'fecha':str(c.fecha), 'pago':c.pago, 'facturado':c.facturado})
+                lista.append({'pk':c.pk, 'proveedor':c.personas.nombres, 'fecha':str(c.fecha), 'pago':c.pago, 'facturado':c.facturado})
             data = json.dumps(lista)
             return HttpResponse(data, content_type='application/json')
 
