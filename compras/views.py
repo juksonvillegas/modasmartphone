@@ -52,7 +52,7 @@ def agregarcompra2(request):
             c.fecha = fecha
             c.facturado= fact
             c.pago = pago
-            c.observacion = obse
+            c.observacion = obse.lower()
             c.save()
             productos = request.GET.getlist('datos[]')
             for prod in productos:
@@ -78,7 +78,7 @@ def agregarcompra2(request):
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def buscarcompras(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             compras = Compra.objects.filter(Q(personas__nombres__contains = texto)|Q(fecha__contains = texto)|Q(observacion__contains = texto))
             for c in compras:

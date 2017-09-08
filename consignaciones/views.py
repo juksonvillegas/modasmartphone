@@ -53,7 +53,7 @@ def agregarconsignacion2(request):
             c.fecha = fecha
             c.devuelto = False
             c.pagado = False
-            c.observacion = obse
+            c.observacion = obse.lower()
             c.save()
             productos = request.GET.getlist('datos[]')
             for prod in productos:
@@ -77,7 +77,7 @@ def agregarconsignacion2(request):
 @login_required
 def buscarconsignaciones(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             clase = Consignacion.objects.filter(Q(personas__nombres__contains = texto)).order_by(-fecha)
             lista = []
@@ -99,7 +99,7 @@ def editarconsignacionesobservacion(request, pk):
         try:
             c = Consignacion(pk=pk)
             obse = str(request.GET['observacion'])
-            c.observacion = obse
+            c.observacion = obse.lower()
             c.save(update_fields=["observacion"])
             detalle="ok"
         except Exception as e:
