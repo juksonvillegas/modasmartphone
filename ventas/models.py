@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 # Create your models here.
 class Venta(models.Model):
     personas = models.ForeignKey(Personas, on_delete=models.CASCADE)
-    fecha = models.DateField()
+    fecha = models.DateTimeField()
     facturado = models.BooleanField()
     efectivo = models.BooleanField()
     observacion = models.CharField(max_length=100)

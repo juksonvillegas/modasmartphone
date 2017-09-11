@@ -3,7 +3,7 @@ from .models import *
 import datetime
 
 def getfecha():
-    return datetime.date.today().strftime("%d/%m/%Y")
+    return datetime.datetime.today().strftime("%d/%m/%Y")
 
 class CompraForm(forms.Form):
     personas = CharField(widget=HiddenInput)

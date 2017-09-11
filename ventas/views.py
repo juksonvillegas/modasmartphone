@@ -86,7 +86,7 @@ def buscarventas(request):
          ventas = Venta.objects.filter(Q(personas__nombres__contains = texto)|Q(fecha__contains = texto)|Q(observacion__contains = texto))
          lista = []
          for c in ventas:
-    			lista.append({'pk':c.pk, 'cliente':c.personas.nombres, 'fecha':str(c.fecha), 'pago':c.pago, 'facturado':c.facturado})
+    		lista.append({'pk':c.pk, 'cliente':c.personas.nombres, 'fecha':str(c.fecha), 'pago':c.pago, 'facturado':c.facturado})
          data = json.dumps(lista)
          return HttpResponse(data, content_type='application/json')
 
@@ -118,4 +118,17 @@ def eliminarventa(request, pk):
              return redirect(reverse_lazy('ventas_listar'))
     else:
      return render(request, 'ventas/eliminar.html', {'c': c, 'productos':productos})
+
+@login_required
+def ventasdiarias(request):
+    ventas = Venta.objects.filter(fecha=datetime.date.today()).order_by('-fecha')
+    lista = []
+    for v in ventas:
+        detalles = detalle_venta.objects.filter(venta=v)
+        for d in detalles:
+            cliente = v.personas
+            fecha = v.fecha
+            total = d.precio * d.cantidad
+            lista.append({'fecha':fecha, 'cliente':cliente, 'precio':d.precio, 'cantidad':d.cantidad, 'producto':d.producto, 'total':total})
+    return render(request, 'ventas/reportes.html', { 'lista': lista})
  #-------------------------------------------------------------------------------

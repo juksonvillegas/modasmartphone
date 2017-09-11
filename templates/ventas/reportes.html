@@ -1,0 +1,36 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Ventas Diarias</h3>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for li in lista %}
+            <tr>
+              <td>{{li.fecha|time:"H:i"}}</td>
+              <td>{{li.cliente|upper}}</td>
+              <td>{{li.producto|upper}}</td>
+              <td>{{li.precio}}</td>
+              <td>{{li.cantidad}}</td>
+              <td>{{li.total}}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
