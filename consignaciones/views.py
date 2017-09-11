@@ -47,7 +47,7 @@ def agregarconsignacion2(request):
         try:
             c = Consignacion()
             clien = int(request.GET['cliente'])
-            obse = str(request.GET['observacion'])
+            obse = str(request.GET['observacion']).lower()
             fecha = datetime.datetime.now()
             c.personas = get_object_or_404(Personas, pk=clien)
             c.fecha = fecha
@@ -98,7 +98,7 @@ def editarconsignacionesobservacion(request, pk):
     if request.method == "GET":
         try:
             c = Consignacion(pk=pk)
-            obse = str(request.GET['observacion'])
+            obse = str(request.GET['observacion']).lower()
             c.observacion = obse.lower()
             c.save(update_fields=["observacion"])
             detalle="ok"

@@ -44,7 +44,7 @@ def agregarcompra2(request):
             prov = int(request.GET['proveedor'])
             fact = bool(request.GET['facturado'])
             pago = bool(request.GET['pago'])
-            obse = str(request.GET['observacion'])
+            obse = str(request.GET['observacion']).lower()
             nac = request.POST.get('nacimiento')
             f = request.GET['fecha']
             fecha = datetime.datetime.strptime(f, '%d/%m/%Y')

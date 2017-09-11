@@ -55,7 +55,7 @@ def agregarventa2(request):
          f = request.GET['fecha']
          fecha = datetime.datetime.strptime(f, '%d/%m/%Y')
          c.personas = get_object_or_404(Personas, pk=clie)
-         c.fecha = fecha
+         c.fecha = datetime.datetime.now()
          c.observacion = obse
          c.save()
          productos = request.GET.getlist('datos[]')

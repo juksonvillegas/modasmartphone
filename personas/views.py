@@ -44,8 +44,8 @@ def agregarpersona(request):
         try:
             if form.is_valid():
                 c = Personas()
-                c.nombres = form.cleaned_data['nombres']
-                c.datos = form.cleaned_data['datos']
+                c.nombres = form.cleaned_data['nombres'].lower()
+                c.datos = form.cleaned_data['datos'].lower()
                 c.phone = form.cleaned_data['phone']
                 c.sexo = form.cleaned_data['sexo']
                 c.mayorista = form.cleaned_data['mayorista']
@@ -70,8 +70,8 @@ def editarpersona(request, pk):
         try:
             if form.is_valid():
                 c = Personas.objects.get(id=pk)
-                c.nombres = form.cleaned_data['nombres']
-                c.datos = form.cleaned_data['datos']
+                c.nombres = form.cleaned_data['nombres'].lower()
+                c.datos = form.cleaned_data['datos'].lower()
                 c.phone = form.cleaned_data['phone']
                 c.sexo = form.cleaned_data['sexo']
                 c.mayorista = form.cleaned_data['mayorista']

@@ -17,7 +17,7 @@ def agregarcategoria(request):
         try:
             if form.is_valid():
                 c = Categoria()
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception as e:
              detalle = "Error: " + str(e)
@@ -63,7 +63,7 @@ def editarcategorias(request, pk):
         try:
             if form.is_valid():
                 c = Categoria.objects.get(id=pk)
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
@@ -104,7 +104,7 @@ def agregarmarca(request):
         try:
             if form.is_valid():
                 c = Marca()
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception as e:
              detalle = "Error: " + str(e)
@@ -150,7 +150,7 @@ def editarmarcas(request, pk):
         try:
             if form.is_valid():
                 c = Marca.objects.get(id=pk)
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
@@ -189,7 +189,7 @@ def agregarmodelo(request):
         try:
             if form.is_valid():
                 c = Modelo()
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.marca = form.cleaned_data['marca']
                 c.save()
         except Exception as e:
@@ -236,7 +236,7 @@ def editarmodelos(request, pk):
         try:
             if form.is_valid():
                 c = Modelo.objects.get(id=pk)
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.marca = form.cleaned_data['marca']
                 c.save()
         except Exception, e:
@@ -374,7 +374,7 @@ def agregaralmacen(request):
         try:
             if form.is_valid():
                 c = Almacen()
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception as e:
              detalle = "Error: " + str(e)
@@ -420,7 +420,7 @@ def editaralmacenes(request, pk):
         try:
             if form.is_valid():
                 c = Almacen.objects.get(id=pk)
-                c.nombre = form.cleaned_data['nombre']
+                c.nombre = form.cleaned_data['nombre'].lower()
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
@@ -467,7 +467,7 @@ def agregarproducto(request):
                 c.modelo = get_object_or_404(Modelo, pk=pk1)
                 c.precio = get_object_or_404(Precio, pk=pk3)
                 c.stock_minimo = form.cleaned_data['stock_minimo']
-                c.descripcion = form.cleaned_data['descripcion']
+                c.descripcion = form.cleaned_data['descripcion'].lower()
                 c.save()
                 barra = str(1000000 + int(c.id))
                 c.barra = calcularean8(barra)
@@ -541,7 +541,7 @@ def editarproductos(request, pk):
                 c.modelo = get_object_or_404(Modelo, pk=pk1)
                 c.precio = get_object_or_404(Precio, pk=pk3)
                 c.stock_minimo = form.cleaned_data['stock_minimo']
-                c.descripcion = form.cleaned_data['descripcion']
+                c.descripcion = form.cleaned_data['descripcion'].lower()
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
