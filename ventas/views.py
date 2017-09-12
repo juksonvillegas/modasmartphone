@@ -121,7 +121,8 @@ def eliminarventa(request, pk):
 
 @login_required
 def ventasdiarias(request):
-    ventas = Venta.objects.filter(fecha=datetime.date.today()).order_by('-fecha')
+    #ventas = Venta.objects.filter(fecha=datetime.date.today()).order_by('-fecha')
+    ventas=Venta.objects.all()
     lista = []
     for v in ventas:
         detalles = detalle_venta.objects.filter(venta=v)
