@@ -20,7 +20,7 @@
           <tbody>
             {% for li in lista %}
             <tr>
-              <td>{{li.fecha|time:"H:i"}}</td>
+              <td>{{li.fecha|date:'d/m/Y'}}-{{li.fecha|time:"H:i"}}</td>
               <td>{{li.cliente|upper}}</td>
               <td>{{li.producto|upper}}</td>
               <td>{{li.precio}}</td>

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render
 from datetime import datetime
 from django.shortcuts import render, get_object_or_404, redirect
@@ -121,8 +122,9 @@ def eliminarventa(request, pk):
 
 @login_required
 def ventasdiarias(request):
-    #ventas = Venta.objects.filter(fecha=datetime.date.today()).order_by('-fecha')
-    ventas=Venta.objects.all()
+    ventas = Venta.objects.filter(fecha__gte=datetime.date.today()).order_by('-fecha')
+    print(ventas)
+    #ventas=Venta.objects.all()
     lista = []
     for v in ventas:
         detalles = detalle_venta.objects.filter(venta=v)

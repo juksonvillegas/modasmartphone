@@ -31,7 +31,7 @@
         {% for c in lista %}
             <tr>
               <td>{{c.personas.nombres}}</td>
-              <td>{{c.fecha|date:'d/m/Y'}}</td>
+              <td>{{c.fecha|date:'d/m/Y'}}-{{ c.fecha|time:"H:i" }}</td>
               <td>
                 {% if c.facturado == True %}
                   Con factura
