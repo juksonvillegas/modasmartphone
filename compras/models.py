@@ -22,6 +22,8 @@ class detalle_compra(models.Model):
     compra = models.ForeignKey(Compra, on_delete=models.CASCADE)
     costo =  models.DecimalField(max_digits=6, decimal_places=2)
     cantidad = models.IntegerField(default=1)
+    unidades_restantes = models.IntegerField(default=0)
+    activo = models.BooleanField(default=False)
 
 @receiver(post_save, sender=detalle_compra)
 def agregarstock(sender, instance, **kwargs):
