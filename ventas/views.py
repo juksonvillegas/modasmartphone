@@ -126,12 +126,14 @@ def ventasdiarias(request):
     print(ventas)
     #ventas=Venta.objects.all()
     lista = []
+    totaldiario = 0
     for v in ventas:
         detalles = detalle_venta.objects.filter(venta=v)
         for d in detalles:
             cliente = v.personas
             fecha = v.fecha
             total = d.precio * d.cantidad
+            totaldiario +=total
             lista.append({'fecha':fecha, 'cliente':cliente, 'precio':d.precio, 'cantidad':d.cantidad, 'producto':d.producto, 'total':total})
-    return render(request, 'ventas/reportes.html', { 'lista': lista})
+    return render(request, 'ventas/reportes.html', { 'lista': lista, 'totaldiario':totaldiario})
  #-------------------------------------------------------------------------------
