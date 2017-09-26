@@ -41,6 +41,21 @@ def descontardc(prod, cant):
                 dc.activo=False
             dc.save()
 
+def regresardc(prod, cant):
+        dcs = detalle_compra.objects.filter(producto=prod).order_by('compra__fecha')
+        for dc in dcs:
+            if cant > 0:
+                if cant>dc.unidades_fuera:
+                    cant -=dc.unidades_fuera
+                else:
+                    dc.unidades_fuera -=cant
+                    cant = 0
+                if dc.cantidad == dc.unidades_fuera:
+                    dc.activo = False
+                else:
+                    dc.activo = True
+                dc.save()
+
 @receiver(post_save, sender=detalle_venta)
 def descontarstock(sender, instance, **kwargs):
     if kwargs['created']:
