@@ -27,14 +27,16 @@ class detalle_compra(models.Model):
 
 def calcularcosto(prod):
     items=detalle_compra.objects.filter(producto=prod, activo=True).order_by('compra__fecha')
-    print(items)
     a = 0
     total = 0
     for i in items:
         print("entro")
         a+=1
         total += i.costo
-    costo = total/a
+    try:
+        costo = total/a
+    except ZeroDivisionError:
+        costo = 0
     return costo
 
 
