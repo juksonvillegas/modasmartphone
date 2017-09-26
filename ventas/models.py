@@ -60,7 +60,7 @@ def regresardc(prod, cant):
 def descontarstock(sender, instance, **kwargs):
     if kwargs['created']:
         pk = instance.producto.pk
-        nuevo_stock = instance.cantidad
+        nuevo_stock = int(instance.cantidad)
         producto = get_object_or_404(Producto, pk=pk)
         producto.stock-= int(nuevo_stock)
         descontardc(producto, nuevo_stock)
@@ -69,7 +69,8 @@ def descontarstock(sender, instance, **kwargs):
 @receiver(post_delete, sender=detalle_venta)
 def regresarstock(sender, instance, **kwargs):
     pk = instance.producto.pk
-    nuevo_stock = instance.cantidad
+    nuevo_stock = int(instance.cantidad)
     producto = get_object_or_404(Producto, pk=pk)
     producto.stock+= int(nuevo_stock)
+    regresardc(producto,nuevo_stock)
     producto.save()
