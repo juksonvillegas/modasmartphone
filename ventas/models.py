@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 from django.db import models
 from personas.models import Personas
 from productos.models import Producto
+from compras.models import detalle_compra
 import datetime
 from django.utils import timezone
 from django.db.models.signals import *
@@ -25,6 +26,21 @@ class detalle_venta(models.Model):
     precio =  models.DecimalField(max_digits=6, decimal_places=2)
     cantidad = models.IntegerField(default=1)
 
+def descontardc(prod, cant):
+    dcs = detalle_compra.objects.filter(producto=prod, activo=True).order_by('compra__fecha')
+    for dc in dcs:
+        stock = dc.cantidad - dc.unidades_fuera
+        if cant>0:
+            if stock >= cant:
+                dc.unidades_fuera += int(cant)
+                cant = 0
+            else:
+                cant -= stock
+                dc.unidades_fuera = dc.cantidad
+            if dc.cantidad == dc.unidades_fuera:
+                dc.activo=False
+            dc.save()
+
 @receiver(post_save, sender=detalle_venta)
 def descontarstock(sender, instance, **kwargs):
     if kwargs['created']:
@@ -32,6 +48,7 @@ def descontarstock(sender, instance, **kwargs):
         nuevo_stock = instance.cantidad
         producto = get_object_or_404(Producto, pk=pk)
         producto.stock-= int(nuevo_stock)
+        descontardc(producto, nuevo_stock)
         producto.save()
 
 @receiver(post_delete, sender=detalle_venta)

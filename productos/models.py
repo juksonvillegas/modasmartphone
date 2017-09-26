@@ -31,6 +31,7 @@ class Producto(models.Model):
     modelo = models.ForeignKey('Modelo', on_delete=models.CASCADE)
     categoria = models.ForeignKey('Categoria', on_delete=models.CASCADE)
     precio = models.ForeignKey('Precio', on_delete=models.CASCADE)
+    costo = models.DecimalField(max_digits=6, decimal_places=2, default=0)
     stock_minimo = models.IntegerField(default=1)
     stock = models.IntegerField(default=0)
     barra = models.CharField(max_length=8, unique=True, blank=True, null=True)
