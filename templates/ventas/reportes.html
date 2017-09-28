@@ -3,9 +3,13 @@
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
-      <h3 class="columns large-8 medium-6 small-12 left">
-        Ventas Diarias S/.{{totaldiario}}
-      </h3>
+      <h3>Resultados en ventas</h3>
+      <h5>
+      <!--<h5 class="columns large-8 medium-6 small-12 left">-->
+        Ventas Diarias S/.{{totaldiario}} <p></p>
+        Inversion S/.{{totalinversion}} <p></p>
+        Ganancias S/.{{totalganancias}}
+      </h5>
     </div>
       <div class="table-scroll">
         <table id="tabla">
@@ -17,6 +21,8 @@
               <th>Precio</th>
               <th>Cantidad</th>
               <th>Total</th>
+              <th>Costo</th>
+              <th>Ganancia</th>
             </tr>
           </thead>
           <tbody>
@@ -28,6 +34,8 @@
               <td>{{li.precio}}</td>
               <td>{{li.cantidad}}</td>
               <td>{{li.total}}</td>
+              <td>{{li.costo}}</td>
+              <td>{{li.ganancia}}</td>
             </tr>
             {% endfor %}
           </tbody>
