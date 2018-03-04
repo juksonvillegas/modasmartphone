@@ -24,6 +24,7 @@
               <th>Modelo</th>
               <th>Fecha</th>
               <th>Monto</th>
+              <th>Detalle</th>
               <th>Editar</th>
               <th>Eliminar</th>
             </tr>
@@ -34,8 +35,9 @@
               <td>{{c.producto.categoria.nombre|upper}}</td>
               <td>{{c.producto.modelo.marca.nombre|upper}}</td>
               <td>{{c.producto.modelo.nombre|upper}}</td>
-              <td>{{c.fecha|date:'d/m/Y'}}</td>
+              <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
               <td>{{c.monto}}</td>
+              <td>{{c.observacion}}</td>
               <td><a href="editar/{{c.pk}}"><i class="material-icons">mode_edit</i></a></td>
               <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
             </tr>

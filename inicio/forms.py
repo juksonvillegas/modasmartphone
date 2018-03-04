@@ -14,8 +14,8 @@ def getfecha():
     return datetime.date.today().strftime("%d/%m/%Y")
 
 class ComisionForm(forms.Form):
-    fecha = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
-         attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
+    fecha = DateTimeField(input_formats=['%d/%m/%Y'],widget = TextInput(
+         attrs={'placeholder':'dd/mm/aaaa'}), initial = getfechahora())
     producto = CharField(widget=HiddenInput)
     monto = DecimalField(decimal_places=2)
     observacion = CharField(max_length=50, widget = Textarea(

@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
    <form id="form" class="" action="#" method="post">{% csrf_token %}
-      <h3>Agregar Gasto</h3>
+      <h3>Agregar Comision</h3>
         {% if detalle %}
           {% if detalle != "0" %}
           <h5 class="error">
@@ -79,7 +79,6 @@ $('#buscadorproducto').change(function(){
                       "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto +"');><i class=material-icons>thumb_up</i></a></td></tr>";
           $("#tablaproducto").append(nuevafila);
        }
-
       }
     });
   }

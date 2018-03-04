@@ -71,6 +71,11 @@ def agregarcomision(request):
             if form.is_valid():
                 c = Comision()
                 c.fecha = form.cleaned_data['fecha']
+                print(c.fecha.strftime(("%d/%m/%Y")), datetime.date.today().strftime("%d/%m/%Y"))
+                if c.fecha.strftime("%d/%m/%Y") == datetime.date.today().strftime("%d/%m/%Y"):
+                    print("entro")
+                    c.fecha = datetime.datetime.now()
+                    print c.fecha
                 c.monto = form.cleaned_data['monto']
                 pk1 = form.cleaned_data['producto']
                 c.producto = get_object_or_404(Producto, pk=pk1)
@@ -80,6 +85,7 @@ def agregarcomision(request):
              detalle = "Error: " + str(e)
         finally:
             if detalle != 0 or form.is_valid() == False:
+                print(detalle, form.data['fecha'])
                 return render(request, 'inicio/comisiones/agregar.html', {'form': form, 'detalle':detalle})
             else:
                 return redirect(reverse_lazy('comisiones_listar'))
@@ -91,7 +97,7 @@ def agregarcomision(request):
 def listarcomisiones(request):
     lista = Comision.objects.all().order_by('-fecha')
     page = request.GET.get('page')
-    paginator = Paginator(lista, 10)
+    paginator = Paginator(lista, 20)
     try:
         lista = paginator.page(page)
     except PageNotAnInteger:
