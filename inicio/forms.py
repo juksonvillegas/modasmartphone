@@ -3,6 +3,7 @@ from .models import *
 import datetime
 from django.forms import *
 from productos.models import Producto
+from personas.models import Personas
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
@@ -17,6 +18,7 @@ class ComisionForm(forms.Form):
     fecha = DateTimeField(input_formats=['%d/%m/%Y'],widget = TextInput(
          attrs={'placeholder':'dd/mm/aaaa'}), initial = getfechahora())
     producto = CharField(widget=HiddenInput)
+    personas = CharField(widget=HiddenInput)
     monto = DecimalField(decimal_places=2)
     observacion = CharField(max_length=50, widget = Textarea(
         attrs={'placeholder':'Ingrese datos extras'}), required=False)

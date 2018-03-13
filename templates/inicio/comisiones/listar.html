@@ -19,6 +19,7 @@
         <table id="tabla">
           <thead>
             <tr>
+              <th>Cliente</th>
               <th>Categoria</th>
               <th>Marca</th>
               <th>Modelo</th>
@@ -32,6 +33,7 @@
           <tbody>
         {% for c in lista %}
             <tr>
+              <td>{{c.personas|upper}}</td>
               <td>{{c.producto.categoria.nombre|upper}}</td>
               <td>{{c.producto.modelo.marca.nombre|upper}}</td>
               <td>{{c.producto.modelo.nombre|upper}}</td>

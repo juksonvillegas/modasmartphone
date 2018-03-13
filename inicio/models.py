@@ -3,17 +3,17 @@ from productos.models import Producto
 from django.db import models
 from django.conf import settings
 from django.contrib.auth.models import User
-
-
+from personas.models import Personas
 
 # Create your models here.
 class Comision(models.Model):
     fecha = models.DateTimeField()
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='comision2producto')
+    personas = models.ForeignKey(Personas, on_delete=models.CASCADE)
     monto = models.DecimalField(max_digits=6, decimal_places=2)
     observacion = models.CharField(max_length=100)
     def __str__(self):
-        return str(self.fecha)
+        return str(self.personas.nombre)
 
 class Caja(models.Model):
     fechaa = models.DateTimeField()

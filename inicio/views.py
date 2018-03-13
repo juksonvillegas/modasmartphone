@@ -71,14 +71,14 @@ def agregarcomision(request):
             if form.is_valid():
                 c = Comision()
                 c.fecha = form.cleaned_data['fecha']
-                print(c.fecha.strftime(("%d/%m/%Y")), datetime.date.today().strftime("%d/%m/%Y"))
                 if c.fecha.strftime("%d/%m/%Y") == datetime.date.today().strftime("%d/%m/%Y"):
                     print("entro")
                     c.fecha = datetime.datetime.now()
-                    print c.fecha
                 c.monto = form.cleaned_data['monto']
+                clie = form.cleaned_data['personas']
                 pk1 = form.cleaned_data['producto']
                 c.producto = get_object_or_404(Producto, pk=pk1)
+                c.personas = get_object_or_404(Personas, pk=clie)
                 c.observacion = form.cleaned_data['observacion']
                 c.save()
         except Exception as e:
@@ -95,7 +95,8 @@ def agregarcomision(request):
 
 @login_required
 def listarcomisiones(request):
-    lista = Comision.objects.all().order_by('-fecha')
+    lista = Comision.objects.filter(fecha__gte=datetime.date.today()).order_by('-fecha')
+    #lista = Comision.objects.all().order_by('-fecha')
     page = request.GET.get('page')
     paginator = Paginator(lista, 20)
     try:
