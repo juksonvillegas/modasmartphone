@@ -9,7 +9,7 @@ from personas.models import Personas
 class Comision(models.Model):
     fecha = models.DateTimeField()
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='comision2producto')
-    personas = models.ForeignKey(Personas, on_delete=models.CASCADE)
+    personas = models.ForeignKey(Personas, on_delete=models.CASCADE, related_name='comision2personas')
     monto = models.DecimalField(max_digits=6, decimal_places=2)
     observacion = models.CharField(max_length=100)
     def __str__(self):

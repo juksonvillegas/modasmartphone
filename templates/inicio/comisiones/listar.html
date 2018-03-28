@@ -8,11 +8,11 @@
     <div class="row panel-clearfix">
       <h3 class="columns large-8 medium-6 small-12 left">Listado Comisiones</h3>
       <div class="columns large-4 right medium-6 small-12">
-        <!--<div class="input-group input-group-rounded columns large-6 medium-4">
-          <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Comision" id="buscador">
-        </div>-->
+        <h3>TOTAL:{{total}}</h3>
+        <!--
+        Este sera el boton para reportes
         <a href="/consignaciones/reportes" class="button float-left">Reportes</a>
+        -->
       </div>
     </div>
       <div class="table-scroll">
@@ -26,7 +26,6 @@
               <th>Fecha</th>
               <th>Monto</th>
               <th>Detalle</th>
-              <th>Editar</th>
               <th>Eliminar</th>
             </tr>
           </thead>
@@ -40,7 +39,6 @@
               <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
               <td>{{c.monto}}</td>
               <td>{{c.observacion}}</td>
-              <td><a href="editar/{{c.pk}}"><i class="material-icons">mode_edit</i></a></td>
               <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
             </tr>
         {% endfor %}

@@ -21,6 +21,7 @@
             <tr>
               <th>Cliente</th>
               <th>Fecha</th>
+              <th>Observacion</th>
               <th>Pagado</th>
               <th>Devuelto</th>
               <th>Editar</th>
@@ -32,6 +33,7 @@
             <tr>
               <td>{{c.personas.nombres|upper}}</td>
               <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
+              <td>{{c.observacion}}</td>
               <td>
                 {% if c.pagado == True %}
                   <span class="alerta">Pago</span>

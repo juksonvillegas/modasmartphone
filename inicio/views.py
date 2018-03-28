@@ -96,7 +96,9 @@ def agregarcomision(request):
 @login_required
 def listarcomisiones(request):
     lista = Comision.objects.filter(fecha__gte=datetime.date.today()).order_by('-fecha')
-    #lista = Comision.objects.all().order_by('-fecha')
+    total = 0
+    for l in lista:
+        total += l.monto
     page = request.GET.get('page')
     paginator = Paginator(lista, 20)
     try:
@@ -105,7 +107,7 @@ def listarcomisiones(request):
         lista = paginator.page(1)
     except EmptyPage:
         lista = paginator.page(1)
-    return render(request, 'inicio/comisiones/listar.html', { 'lista': lista, 'paginator':paginator })
+    return render(request, 'inicio/comisiones/listar.html', { 'lista': lista, 'paginator':paginator, 'total':total })
 
 @login_required
 def editarcomision(request, pk):
@@ -123,6 +125,7 @@ def editarcomision(request, pk):
                 c.save()
         except Exception, e:
             detalle = "Error: " + str(e)
+            print(detalle)
         finally:
             if detalle != 0 or form.is_valid() == False:
                 return render(request, 'inicio/comisiones/editar.html', {'form': form, 'detalle':detalle})
@@ -131,7 +134,10 @@ def editarcomision(request, pk):
     else:
         c = get_object_or_404(Comision, pk=pk)
         id_producto = c.producto.pk
+        id_cliente = c.personas.pk
         nompro = c.producto.categoria.nombre + "-" + c.producto.modelo.marca.nombre + "-" + c.producto.modelo.nombre
+        cliente = c.personas.nombres
+        print(cliente)
         form = ComisionForm(initial={'producto':id_producto ,'fecha':c.fecha.strftime("%d/%m/%Y"), 'monto':c.monto, 'observacion':c.observacion})
         return render(request, 'inicio/comisiones/editar.html', {'form': form, 'nompro':nompro})
 
