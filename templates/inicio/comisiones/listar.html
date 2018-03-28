@@ -2,17 +2,16 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/comisiones/agregar" class="button float-left">Agregar nueva comision</a>
+    <a href="/comisiones/agregar" id="agregarcomision" class="button float">Agregar nueva comision</a>
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <a href="/comisiones/reportes" class="button float">Reporte Semanal</a>
+    <a href="/comisiones/reportes" class="button float">Reporte Mensual</a>
+    <a href="/comisiones/reportes" class="button float">Reporte Anual</a>
     <div class="row panel-clearfix">
       <h3 class="columns large-8 medium-6 small-12 left">Listado Comisiones</h3>
       <div class="columns large-4 right medium-6 small-12">
         <h3>TOTAL:{{total}}</h3>
-        <!--
-        Este sera el boton para reportes
-        <a href="/consignaciones/reportes" class="button float-left">Reportes</a>
-        -->
       </div>
     </div>
       <div class="table-scroll">
@@ -61,7 +60,7 @@
 {% endblock %}
 {% block script %}
   $(document).ready(function() {
-    $('#texto').focus();
+    $('#agregarcomision').focus();
   });
   $('#texto').change(function(){
     a = $("#texto").val().length;

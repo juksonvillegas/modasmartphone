@@ -1,0 +1,68 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <!--<div class="callout clearfix">
+    <a href="/caja/abrir" class="button float-left">Abrir caja</a>
+    <a href="/caja/cerrar" class="button float-right">Cerrar caja</a>
+  </div>-->
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Reporte de comisiones</h3>
+    </div>
+      <div class="callout clearfix">
+        <a href="#" class="button float-left">Semanal</a>
+        <a href="#" class="button float-center">Mensual</a>
+        <a href="#" class="button float-right">Anual</a>
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $("#texto").mask("99/99/9999");
+    $('#texto').focus();
+  });
+  $('#texto').change(function(){
+    a = $("#texto").val().length;
+    if(a>2){
+      $("#tabla tbody tr").remove();
+      texto = $("#texto").val();
+      nuevafila = "<tr>"
+      $.ajax({
+				data: {'term':texto},
+				url: "/compras/buscar-ajax",
+				type: "get",
+				success: function(data){
+          for(var i = 0; i<data.length; i++){
+            var fec = new Date(data[i].fecha);
+						var fecha = fec.getDate() + '/' + (fec.getMonth() + 1) + '/' + fec.getFullYear();
+            var facturado="";
+            if(data[i].facturado==true){
+              facturado = "Con Factura";
+            }
+            else{
+              facturado = "Sin Factura";
+            }
+            var pago="";
+            if(data[i].pago==true){
+              pago = "Efectivo";
+            }
+            else{
+              pago = "Credito";
+            }
+            nuevafila +="<td>" + data[i].proveedor + "</td>" +
+                        "<td>" + fecha + "</td>" +
+                        "<td>" + facturado + "</td>" +
+                        "<td>" + pago + "</td>" +
+                        '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
+                        '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
+           $("#tabla").append(nuevafila);
+         }
+        }
+      });
+    }
+    else if(a==0){
+      window.location.replace("/inicio/comisiones/listar?page=1");
+    }
+  });
+{% endblock %}

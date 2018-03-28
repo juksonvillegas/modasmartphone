@@ -174,6 +174,10 @@ def listarcajas(request):
     return render(request, 'inicio/caja/listar.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
+def reportecomisiones(request):
+    return render(request, 'inicio/comisiones/reportes.html')
+
+@login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def abrircaja(request):
     if request.method == 'POST':
