@@ -23,6 +23,12 @@ class ComisionForm(forms.Form):
     observacion = CharField(max_length=50, widget = Textarea(
         attrs={'placeholder':'Ingrese datos extras'}), required=False)
 
+class ReporteComisionForm(forms.Form):
+    fechainicio = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
+             attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
+    fechafin = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
+             attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
+
 class CajaForm(forms.Form):
     fecha = CharField(widget = TextInput(
          attrs={'readonly':'readonly'}), initial = getfechahora())

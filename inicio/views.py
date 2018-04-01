@@ -175,7 +175,38 @@ def listarcajas(request):
 
 @login_required
 def reportecomisiones(request):
-    return render(request, 'inicio/comisiones/reportes.html')
+    if request.method == 'POST':
+        form = ReporteComisionForm(request.POST)
+        detalle = 0
+        total = 0
+        paginator = None
+        try:
+            if form.is_valid():
+                fechainicio = form.cleaned_data['fechainicio']
+                fechafin = form.cleaned_data['fechafin']
+                f1 = fechainicio.strftime("%Y-%m-%d")
+                f2 = fechafin.strftime("%Y-%m-%d")
+                lista = Comision.objects.filter(fecha__range=[f1,f2])
+                for c in lista:
+                    total += c.monto
+                page = request.GET.get('page')
+                paginator = Paginator(lista, 20)
+                try:
+                    lista = paginator.page(page)
+                except PageNotAnInteger:
+                    lista = paginator.page(1)
+                except EmptyPage:
+                    lista = paginator.page(1)
+        except Exception, e:
+            lista = 0
+            detalle = "Error: " + str(e)
+        finally:
+            return render(request, 'inicio/comisiones/reportes.html', {'total': total, 'detalle':detalle, 'form':form,'lista':lista, 'paginator':paginator})
+    else:
+        total = 0
+        form = ReporteComisionForm()
+        return render(request, 'inicio/comisiones/reportes.html', {'form':form})
+
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')

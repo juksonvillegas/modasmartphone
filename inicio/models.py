@@ -13,7 +13,7 @@ class Comision(models.Model):
     monto = models.DecimalField(max_digits=6, decimal_places=2)
     observacion = models.CharField(max_length=100)
     def __str__(self):
-        return str(self.personas.nombre)
+        return str(self.personas.nombres)
 
 class Caja(models.Model):
     fechaa = models.DateTimeField()
