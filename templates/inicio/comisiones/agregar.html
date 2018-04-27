@@ -14,14 +14,14 @@
       <label for="id_fecha">Fecha: (Requerido)</label>
       {{form.fecha}}
       <div class="input-group">
-        {{form.producto}}
-        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
-        <input type="text" class=" input-group-field" readonly placeholder="Seleccione un producto" id="producto" name="" value="">
-      </div>
-      <div class="input-group">
         {{form.personas}}
         <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
         <input type="text" class=" input-group-field" placeholder="Seleccione cliente" readonly id="id_cliente" name="" value="">
+      </div>
+      <div class="input-group">
+        {{form.producto}}
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" readonly placeholder="Seleccione un producto" id="producto" name="" value="">
       </div>
       <label for="monto">Monto</label>
       {{form.monto}}
@@ -79,7 +79,7 @@
 {%block script%}
 $( document ).ready(function() {
   $("#id_fecha").mask("99/99/9999");
-  $("#abrirmodal2").focus();
+  $("#abrirmodal").focus();
 });
 $('#buscadorproducto').change(function(){
   $("#tablaproducto tbody tr").remove();
@@ -142,7 +142,7 @@ function seleccionar2(id, modelo){
   $("#exampleModal2").foundation('close');
   $("#buscadorproducto").val('');
   $("#tablaproducto tbody tr").remove();
-  $("#abrirmodal").focus();
+  $("#id_monto").focus();
 }
 function seleccionar(id, modelo){
   $("#id_personas").val(id);
@@ -150,6 +150,6 @@ function seleccionar(id, modelo){
   $("#exampleModal1").foundation('close');
   $("#buscadorcliente").val('');
   $("#tablacliente tbody tr").remove();
-  $("#id_monto").focus();
+  $("#abrirmodal2").focus();
 }
 {% endblock %}

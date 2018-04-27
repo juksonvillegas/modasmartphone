@@ -2,16 +2,12 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/consignaciones/agregar" class="button float-left">Agregar nueva consignacion</a>
+    <a id="agregarconsignacion" href="/consignaciones/agregar" class="button float-left">Agregar nueva consignacion</a>
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
       <h3 class="columns large-8 medium-6 small-12 left">Listado de Consignaciones</h3>
       <div class="columns large-4 right medium-6 small-12">
-        <!--<div class="input-group input-group-rounded columns large-6 medium-4">
-          <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Consignacion" id="buscador">
-        </div>-->
         <a href="/consignaciones/reportes" class="button float-left">Reportes</a>
       </div>
     </div>
@@ -71,50 +67,6 @@
 {% endblock %}
 {% block script %}
   $(document).ready(function() {
-    $("#texto").mask("99/99/9999");
-    $('#texto').focus();
-  });
-  $('#texto').change(function(){
-    a = $("#texto").val().length;
-    if(a>2){
-      $("#tabla tbody tr").remove();
-      texto = $("#texto").val();
-      nuevafila = "<tr>"
-      $.ajax({
-				data: {'term':texto},
-				url: "/consignaciones/buscar-ajax",
-				type: "get",
-				success: function(data){
-          for(var i = 0; i<data.length; i++){
-            var fec = new Date(data[i].fecha);
-						var fecha = fec.getDate() + '/' + (fec.getMonth() + 1) + '/' + fec.getFullYear();
-            var facturado="";
-            if(data[i].pagado==true){
-              pagado = "Pago";
-            }
-            else{
-              pagado = "Debe";
-            }
-            var pago="";
-            if(data[i].devuelto==true){
-              pago = "Devuelto";
-            }
-            else{
-              pago = "No devuelto";
-            }
-            nuevafila +="<td>" + data[i].cliente + "</td>" +
-                        "<td>" + fecha + "</td>" +
-                        "<td>" + pagado + "</td>" +
-                        "<td>" + devuelto + "</td>" +
-                        '<td><a href="editar/'+ data[i].pk +'"> <i class="material-icons">mode_edit</i></a></td>'+
-                        '<td><a href="eliminar/'+ data[i].pk +'"> <i class="material-icons">delete</i></a> </td></tr>';
-           $("#tabla").append(nuevafila);
-         }
-        }
-      });
-    }
-    else if(a==0){
-      window.location.replace("/compras/listar?page=1");
-    }
+    $('#agregarconsignacion').focus();
   });
 {% endblock %}
