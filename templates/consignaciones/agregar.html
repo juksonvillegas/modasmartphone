@@ -193,15 +193,18 @@ function seleccionar2(id, modelo){
   $("#cantidad").focus();
 }
 function agregarproducto(){
-  fila =  '<tr><td id=\"colpk\" >'+ $("#id_producto").val()+'</td><td>'+
-                      $("#producto").val()+'</td><td id=\"colcantidad\">' +
-                      $("#cantidad").val()+'</td><td>' +
-                      '<a href="#" onclick=\"eliminaritem(this);\"> <i class="material-icons">delete</i></a> </td></tr>';
-  $("#listaproductos").append(fila);
-  $("#id_producto").val('');
-  $("#producto").val('');
-  $("#cantidad").val('');
-  $("#abrirmodal2").focus();
+  if(($("#cantidad").val()!='') && ($("#id_producto").val()!='')){
+    fila =  '<tr><td id=\"colpk\" >'+ $("#id_producto").val()+'</td><td>'+
+                        $("#producto").val()+'</td><td id=\"colcantidad\">' +
+                        $("#cantidad").val()+'</td><td>' +
+                        '<a href="#" onclick=\"eliminaritem(this);\"> <i class="material-icons">delete</i></a> </td></tr>';
+    $("#listaproductos").append(fila);
+    $("#id_producto").val('');
+    $("#producto").val('');
+    $("#cantidad").val('');
+    $("#abrirmodal2").focus();
+  }
+
 }
 function eliminaritem(arg){
   arg.closest("tr").remove();
