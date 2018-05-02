@@ -190,7 +190,7 @@ def reportecomisiones(request):
                 for c in lista:
                     total += c.monto
                 page = request.GET.get('page')
-                paginator = Paginator(lista, 20)
+                paginator = Paginator(lista, 50)
                 try:
                     lista = paginator.page(page)
                 except PageNotAnInteger:
@@ -207,6 +207,28 @@ def reportecomisiones(request):
         form = ReporteComisionForm()
         return render(request, 'inicio/comisiones/reportes.html', {'form':form})
 
+@login_required
+def reportecomsionpersona(request):
+    if request.method == 'POST':
+        form = ComisionPersonaForm(request.POST)
+        detalle = 0
+        total = 0
+        try:
+            if form.is_valid():
+                clie = form.cleaned_data['personas']
+                persona = get_object_or_404(Personas, pk=clie)
+                lista = Comision.objects.filter(personas=persona)
+                for c in lista:
+                    total += c.monto
+        except Exception, e:
+            lista = 0
+            detalle = "Error: " + str(e)
+        finally:
+            return render(request, 'inicio/comisiones/reportepersona.html', {'total': total, 'detalle':detalle, 'form':form,'lista':lista})
+    else:
+        total = 0
+        form = ComisionPersonaForm()
+        return render(request, 'inicio/comisiones/reportepersona.html', {'form':form})
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')

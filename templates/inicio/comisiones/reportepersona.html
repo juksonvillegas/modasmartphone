@@ -1,0 +1,122 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <form id="form" class="" action="#" method="post">{% csrf_token %}
+      <div class="row panel-clearfix">
+        <h3 class="columns large-8 medium-6 small-12 left">Reporte por Persona</h3>
+      </div>
+      <div class="row">
+        <div class="input-group">
+          {{form.personas}}
+          <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
+          <input type="text" class=" input-group-field" placeholder="Seleccione cliente" readonly id="id_cliente" name="" value="">
+        </div>
+        <div class="columns large-8 medium-8 small-12">
+          <button id="buscar" type="submit" class="button boton1" name="buscar">Buscar</button>
+        </div>
+      </div>
+      <h3>TOTAL:{{total}}</h3>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Categoria</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Detalle</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in lista %}
+            <tr>
+              <td>{{c.personas|upper}}</td>
+              <td>{{c.producto.categoria.nombre|upper}}</td>
+              <td>{{c.producto.modelo.marca.nombre|upper}}</td>
+              <td>{{c.producto.modelo.nombre|upper}}</td>
+              <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
+              <td>{{c.monto}}</td>
+              <td>{{c.observacion}}</td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != lista.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </form>
+  </div>
+</div>
+<!--MODAL PARA CLIENTE-->
+  <div class="reveal titulo" id="exampleModal1" data-reveal>
+   <h3>Seleccionar Cliente</h3>
+   <div class="input-group input-group-rounded columns large-6 medium-4">
+     <span class="input-group-label"><i class="material-icons">search</i></span>
+     <input type="text" id="buscadorcliente" name="buscador" class="buscador input-group-field" placeholder="Buscar cliente" id="buscador">
+   </div>
+     <table class="table-scroll" id="tablacliente">
+       <thead>
+         <tr>
+           <th>Nombre</th>
+           <th>Seleccionar</th>
+         </tr>
+       </thead>
+       <tbody>
+       </tbody>
+     </table>
+   <button class="close-button" data-close aria-label="Close modal" type="button">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+<!--MODAL PARA CLIENTE-->
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#abrirmodal').focus();
+  });
+  $('#buscadorcliente').change(function(){
+    $("#tablacliente tbody tr").remove();
+    a = $("#buscadorcliente").val().length;
+    if(a>2){
+      texto = $("#buscadorcliente").val();
+      $("#tablacliente tbody tr").remove();
+      $.ajax({
+        data: {'term':texto},
+        url: "/personas/buscar-ajax",
+        type: "get",
+        success: function(data){
+          for(var i = 0; i<data.length; i++){
+            nuevafila = "<tr>";
+            $nom = data[i].nombres;
+            if(data.length==1){
+              seleccionar(data[i].pk, $nom);
+            }
+            nuevafila +="<td>" + $nom + "</td>" +
+                        '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')";><i class=material-icons>thumb_up</i></a></td></tr>';
+            $("#tablacliente").append(nuevafila);
+         }
+        }
+      });
+    }
+  });
+  function seleccionar(id, modelo){
+    $("#id_personas").val(id);
+    $("#id_cliente").val(modelo);
+    $("#exampleModal1").foundation('close');
+    $("#buscadorcliente").val('');
+    $("#tablacliente tbody tr").remove();
+    $("#buscar").focus();
+  }
+{% endblock %}

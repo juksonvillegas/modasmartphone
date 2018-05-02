@@ -23,6 +23,9 @@ class ComisionForm(forms.Form):
     observacion = CharField(max_length=50, widget = Textarea(
         attrs={'placeholder':'Ingrese datos extras'}), required=False)
 
+class ComisionPersonaForm(forms.Form):
+    personas = CharField(widget=HiddenInput)
+
 class ReporteComisionForm(forms.Form):
     fechainicio = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
              attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
