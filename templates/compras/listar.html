@@ -2,16 +2,12 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="/compras/agregar" class="button float-left">Agregar nueva compra</a>
+    <a href="/compras/agregar" id="agregarcompra" class="button float-left">Agregar nueva compra</a>
   </div>
   <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
     <div class="row panel-clearfix">
       <h3 class="columns large-8 medium-6 small-12 left">Listado Compras</h3>
       <div class="columns large-4 right medium-6 small-12">
-        <!--<div class="input-group input-group-rounded columns large-6 medium-4">
-          <span class="input-group-label"><i class="material-icons">search</i></span>
-          <input type="text" id="texto" name="buscador" class="buscador input-group-field" placeholder="Buscar Compra" id="buscador">
-        </div>-->
         <a href="/consignaciones/reportes" class="button float-left">Reportes</a>
       </div>
     </div>
@@ -69,7 +65,7 @@
 {% endblock %}
 {% block script %}
   $(document).ready(function() {
-    $('#texto').focus();
+    $('#agregarcompra').focus();
   });
   $('#texto').change(function(){
     a = $("#texto").val().length;
