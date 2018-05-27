@@ -82,7 +82,7 @@ def agregarventa2(request):
 @login_required
 def buscarventas(request):
     if request.is_ajax():
-     texto = request.GET['term']
+     texto = request.GET['term'].lower()
      if texto is not None:
          ventas = Venta.objects.filter(Q(personas__nombres__contains = texto)|Q(fecha__contains = texto)|Q(observacion__contains = texto))
          lista = []

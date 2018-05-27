@@ -27,7 +27,7 @@ def listarpersonas(request):
 @login_required
 def buscarpersonas(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             personas = Personas.objects.filter(Q(nombres__contains = texto)|Q(phone__contains = texto)|Q(datos__contains = texto))
             lista = []

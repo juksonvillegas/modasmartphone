@@ -240,7 +240,7 @@ def abrircaja(request):
             if form.is_valid():
                 c = Caja()
                 c.montoa = form.cleaned_data['monto']
-                c.fechaa = datetime.datetime.now()
+                c.fechaa = datetime.datetime.utcnow()
                 c.usuario = request.user
                 c.save()
         except Exception, e:

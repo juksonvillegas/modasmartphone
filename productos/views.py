@@ -46,7 +46,7 @@ def listarcategorias(request):
 @login_required
 def buscarcategorias(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             clase = Categoria.objects.filter(Q(nombre__contains = texto))
             lista = []
@@ -133,7 +133,7 @@ def listarmarcas(request):
 @login_required
 def buscarmarcas(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             clase = Marca.objects.filter(Q(nombre__contains = texto))
             lista = []
@@ -403,7 +403,7 @@ def listaralmacenes(request):
 @login_required
 def buscaralmacenes(request):
     if request.is_ajax():
-        texto = request.GET['term']
+        texto = request.GET['term'].lower()
         if texto is not None:
             clase = Almacen.objects.filter(Q(nombre__contains = texto))
             lista = []
