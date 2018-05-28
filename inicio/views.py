@@ -14,6 +14,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core import serializers
 import datetime
 import time
+from personas.models import Personas
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -108,6 +109,28 @@ def listarcomisiones(request):
     except EmptyPage:
         lista = paginator.page(1)
     return render(request, 'inicio/comisiones/listar.html', { 'lista': lista, 'paginator':paginator, 'total':total })
+
+@login_required
+def rankingcomisiones(request):
+    listapersonas = Personas.objects.all()
+    lista=[]
+    #lista = Comision.objects.all().order_by('personas')
+    for p in listapersonas:
+        comisionxpersona = Comision.objects.filter(personas=p)
+        totalpersona=0
+        for c in comisionxpersona:
+            totalpersona+=c.monto
+        lista.append({'persona':p.nombres, 'total':totalpersona})
+    lista=sorted(lista, key=lambda k: k['total'], reverse=True)
+    page = request.GET.get('page')
+    paginator = Paginator(lista, 20)
+    try:
+        lista = paginator.page(page)
+    except PageNotAnInteger:
+        lista = paginator.page(1)
+    except EmptyPage:
+        lista = paginator.page(1)
+    return render(request, 'inicio/comisiones/ranking.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
 def editarcomision(request, pk):

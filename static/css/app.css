@@ -45,8 +45,7 @@ input#menu{
 }
 
 .titulo {
-  /*color: #a0a0a0;*/
-  color: #fff;
+  color: #a0a0a0;
   padding: 1em;
   background: #fff;
   border-radius: 1px;
