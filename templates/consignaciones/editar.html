@@ -2,8 +2,17 @@
 {% block contenido %}
 <div class="off-canvas-content" data-off-canvas-content>
   <div class="callout clearfix">
-    <a href="#" onclick="editarconsignacionespagado();" class="button float-right">PAGO TODO</a>
-    <a href="#" onclick="editarconsignacionesdevuelto();" class="button float-left">DEVOLVIO TODO</a>
+    <div class="row">
+      <div class="columns large-4">
+        <a href="#" onclick="editarconsignacionespagado();" class="button">PAGO TODO</a>
+      </div>
+      <div class="columns large-4">
+        <a href="#" onclick="pagoydevolvio();" class="button">PAGO Y DEVOLVIO</a>
+      </div>
+      <div class="columns large-4 medium-4 small-12">
+        <a href="#" onclick="editarconsignacionesdevuelto();" class="button float-left">DEVOLVIO TODO</a>
+      </div>
+    </div>
   </div>
   <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
   {% csrf_token %}
@@ -120,6 +129,23 @@ function editarobservacion(){
 function editarconsignacionespagado(){
   $.ajax({
     url: "/consignaciones/editar/{{c.pk}}/pagado",
+    dataType: "json",
+    success: function(detalle){
+      if(detalle=="ok"){
+        window.location.replace("/consignaciones/listar");
+        console.log("debe redirigir a ventas");
+      }
+      else{
+        console.log("hay que implementar un div para mostrat error");
+        console.log(detalle);
+      }
+    }
+  });
+}
+
+function pagoydevolvio(){
+  $.ajax({
+    url: "/consignaciones/editar/{{c.pk}}/pagoydevolvio",
     dataType: "json",
     success: function(detalle){
       if(detalle=="ok"){

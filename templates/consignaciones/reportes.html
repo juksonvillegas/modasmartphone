@@ -1,0 +1,69 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="callout clearfix">
+    espacio para los tipos de reportes
+  </div>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Listado de todas las  Consignaciones</h3>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Fecha</th>
+              <th>Observacion</th>
+              <th>Pagado</th>
+              <th>Devuelto</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in lista %}
+            <tr>
+              <td>{{c.personas.nombres|upper}}</td>
+              <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
+              <td>{{c.observacion}}</td>
+              <td>
+                {% if c.pagado == True %}
+                  <span class="alerta">Pago</span>
+                {% else %}
+                  <span class="error">Debe</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if c.devuelto == True %}
+                  <span class="alerta">Devuelto</span>
+                {% else %}
+                  <spanc class="error">No devuelto</span>
+                {% endif %}
+              </td>
+              <td><a href="/consignaciones/editar/{{c.pk}}"> <i class="material-icons">mode_edit</i></a></td>
+              <td><a href="/consignaciones/eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != lista.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#agregarconsignacion').focus();
+  });
+{% endblock %}

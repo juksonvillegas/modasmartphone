@@ -39,7 +39,7 @@ def listarconsignacionestodas(request):
         lista = paginator.page(1)
     except EmptyPage:
         lista = paginator.page(1)
-    return render(request, 'consignaciones/listar.html', { 'lista': lista, 'paginator':paginator })
+    return render(request, 'consignaciones/reportes.html', { 'lista': lista, 'paginator':paginator })
 
 @login_required
 def agregarconsignacion2(request):
@@ -117,6 +117,23 @@ def editarconsignacionespagado(request, pk):
             c = Consignacion(pk=pk)
             c.pagado=True
             c.save(update_fields=["pagado"])
+            detalle="ok"
+        except Exception as e:
+            detalle = "Error: " + str(e)
+        finally:
+			return HttpResponse(
+				json.dumps(detalle),
+				content_type="application/json"
+			)
+
+@login_required
+def editarconsignacionespagoydevolvio(request, pk):
+    if request.method == "GET":
+        try:
+            c = Consignacion(pk=pk)
+            c.pagado=True
+            c.devuelto=True
+            c.save(update_fields=["pagado","devuelto"])
             detalle="ok"
         except Exception as e:
             detalle = "Error: " + str(e)
