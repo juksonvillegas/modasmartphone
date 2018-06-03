@@ -31,7 +31,7 @@
           <tbody>
         {% for c in lista %}
             <tr>
-              <td>{{c.personas|upper}}</td>
+              <td>{{c.personas.nombres|upper}}</td>
               <td>{{c.producto.categoria.nombre|upper}}</td>
               <td>{{c.producto.modelo.marca.nombre|upper}}</td>
               <td>{{c.producto.modelo.nombre|upper}}</td>

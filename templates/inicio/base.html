@@ -47,15 +47,18 @@
   <!--Zona Menu-->
   <div class="off-canvas reveal-for-large position-left" id="menu" data-off-canvas>
     <ul class="vertical menu" data-accordion-menu>
+      {% if request.user.is_staff %}
       <li>
         <a href="/caja/listar"><i class="material-icons">view_list</i>Caja Diaria</a>
       </li>
+      {% endif %}
       <li>
         <a href="/consignaciones/listar"><i class="material-icons">view_list</i>Consignaciones</a>
       </li>
       <li>
         <a href="/personas/listar"><i class="material-icons">view_list</i>Clientes</a>
       </li>
+      {% if request.user.is_staff %}
       <li>
         <a href="/categorias/listar"><i class="material-icons">view_list</i>Categorias</a>
       </li>
@@ -71,21 +74,26 @@
       <li>
         <a href="/almacenes/listar"><i class="material-icons">view_list</i>Almacenes</a>
       </li>
+      {% endif %}
       <li>
         <a href="/productos/listar"><i class="material-icons">view_list</i>Productos</a>
       </li>
+      {% if request.user.is_staff %}
       <li>
         <a href="/compras/listar"><i class="material-icons">view_list</i>Compras</a>
       </li>
+      {% endif %}
       <li>
         <a href="/ventas/listar"><i class="material-icons">view_list</i>Ventas</a>
       </li>
       <li>
         <a href="/comisiones/listar"><i class="material-icons">view_list</i>Comisiones</a>
       </li>
+      {% if request.user.is_staff %}
       <li>
         <a href="/perdidas/listar"><i class="material-icons">view_list</i>Perdidas</a>
       </li>
+      {% endif%}
       <li>
         <a href="/gastos/listar"><i class="material-icons">view_list</i>Gastos</a>
       </li>
