@@ -187,3 +187,10 @@ def eliminargasto(request, pk):
                 return redirect(reverse_lazy('gastos_listar'))
     else:
         return render(request, 'salidas/gastos/eliminar.html', {'c': c})
+
+def rangogastos(fec1, fec2):
+    total=0
+    lista = Gasto.objects.filter(fecha__range=[fec1,fec2])
+    for c in lista:
+        total += c.monto
+    return total

@@ -142,3 +142,11 @@ def ventasdiarias(request):
             lista.append({'fecha':fecha, 'cliente':cliente, 'precio':d.precio, 'cantidad':d.cantidad, 'producto':d.producto, 'total':total, 'costo':d.producto.costo, 'ganancia':ganancia})
     return render(request, 'ventas/reportes.html', { 'lista': lista, 'totaldiario':totaldiario, 'totalinversion':totalinversion, 'totalganancias':totalganancias})
  #-------------------------------------------------------------------------------
+def rangoventas(fec1, fec2):
+    total=0
+    lista = Venta.objects.filter(fecha__range=[fec1,fec2])
+    for c in lista:
+        items = list(detalle_venta.objects.filter(venta=c.pk))
+        for i in items:
+            total += i.cantidad * i.precio
+    return total

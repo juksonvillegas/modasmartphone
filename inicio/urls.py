@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^comisiones/reportepersona$', reportecomsionpersona, name='reportecomisionpersona'),
     url(r'^caja/abrir$', abrircaja, name='caja_abrir'),
     url(r'^caja/cerrar$', cerrarcaja, name='caja_cerrar'),
+    url(r'^caja/resumen/(?P<pk>[0-9]+)/$', resumencaja, name='resumen_caja'),
     url(r'^usuario/agregar$', agregarusuario, name='usuario_agregar'),
 
     ]

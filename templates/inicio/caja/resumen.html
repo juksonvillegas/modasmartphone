@@ -1,0 +1,60 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+      <h2>Resumen de caja</h2>
+      <h3>TOTAL: {{total}}</h3>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <th>Entradas</th>
+            <th>S/.</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>CAJA</td>
+              <td>{{caja}}</td>
+            </tr>
+            <tr>
+              <td>VENTAS</td>
+              <td>{{vent}}</td>
+            </tr>
+            <tr>
+              <td>COMISIONES</td>
+              <td>{{comi}}</td>
+            </tr>
+            <tr>
+              <td><h4>TOTAL</h4></td>
+              <td><h4>{{totalentradas}}</h4></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <th>Salidas</th>
+            <th>S/.</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td>COMPRAS</td>
+              <td>{{comp}}</td>
+            </tr>
+            <tr>
+              <td>GASTOS</td>
+              <td>{{gast}}</td>
+            </tr>
+            <td><h4>TOTAL</h4></td>
+            <td><h4>{{totalsalidas}}</h4></td>
+          </tbody>
+        </table>
+      </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#id_fechainicio').focus();
+  });
+{% endblock %}

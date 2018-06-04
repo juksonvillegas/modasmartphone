@@ -15,6 +15,9 @@ from django.core import serializers
 import datetime
 import time
 from personas.models import Personas
+from compras.views import rangocompras
+from ventas.views import rangoventas
+from salidas.views import rangogastos
 from django.contrib.auth.models import User
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
@@ -182,19 +185,6 @@ def eliminarcomision(request, pk):
         return render(request, 'inicio/comisiones/eliminar.html', {'c': c, 'nompro':nompro})
 
 @login_required
-def listarcajas(request):
-    lista = Caja.objects.all().order_by('-fechaa')
-    page = request.GET.get('page')
-    paginator = Paginator(lista, 10)
-    try:
-        lista = paginator.page(page)
-    except PageNotAnInteger:
-        lista = paginator.page(1)
-    except EmptyPage:
-        lista = paginator.page(1)
-    return render(request, 'inicio/caja/listar.html', { 'lista': lista, 'paginator':paginator })
-
-@login_required
 def reportecomisiones(request):
     if request.method == 'POST':
         form = ReporteComisionForm(request.POST)
@@ -228,6 +218,13 @@ def reportecomisiones(request):
         form = ReporteComisionForm()
         return render(request, 'inicio/comisiones/reportes.html', {'form':form})
 
+def rangocomisiones(fec1, fec2):
+    total=0
+    lista = Comision.objects.filter(fecha__range=[fec1,fec2])
+    for c in lista:
+        total += c.monto
+    return total
+
 @login_required
 def reportecomsionpersona(request):
     if request.method == 'POST':
@@ -251,6 +248,37 @@ def reportecomsionpersona(request):
         form = ComisionPersonaForm()
         return render(request, 'inicio/comisiones/reportepersona.html', {'form':form})
 
+
+@login_required
+def listarcajas(request):
+    lista = Caja.objects.all().order_by('-fechaa')
+    page = request.GET.get('page')
+    paginator = Paginator(lista, 10)
+    try:
+        lista = paginator.page(page)
+    except PageNotAnInteger:
+        lista = paginator.page(1)
+    except EmptyPage:
+        lista = paginator.page(1)
+    return render(request, 'inicio/caja/listar.html', { 'lista': lista, 'paginator':paginator })
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/caja/listar')
+def resumencaja(request,pk):
+    c = get_object_or_404(Caja, pk=pk)
+    comisiones = rangocomisiones(c.fechaa,c.fechac)
+    compras = rangocompras(c.fechaa, c.fechac)
+    ventas = rangoventas(c.fechaa, c.fechac)
+    gastos = rangogastos(c.fechaa, c.fechac)
+    totalentradas = ventas+comisiones+c.montoa
+    totalsalidas = compras+gastos
+    total = totalentradas-totalsalidas
+    return render(request, 'inicio/caja/resumen.html', {'comp': compras,
+     'comi':comisiones, 'vent':ventas, 'gast':gastos, 'caja':c.montoa,
+     'totalentradas': totalentradas, 'totalsalidas': totalsalidas,
+     'total':total})
+
+
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
 def abrircaja(request):
@@ -261,7 +289,7 @@ def abrircaja(request):
             if form.is_valid():
                 c = Caja()
                 c.montoa = form.cleaned_data['monto']
-                c.fechaa = datetime.datetime.utcnow()
+                c.fechaa = datetime.datetime.now()
                 c.usuario = request.user
                 c.save()
         except Exception, e:

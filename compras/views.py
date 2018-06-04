@@ -116,3 +116,11 @@ def eliminarcompra(request, pk):
     else:
         return render(request, 'compras/eliminar.html', {'c': c, 'productos':productos})
 #-------------------------------------------------------------------------------
+def rangocompras(fec1, fec2):
+    total=0
+    lista = Compra.objects.filter(fecha__range=[fec1,fec2])
+    for c in lista:
+        items = list(detalle_compra.objects.filter(compra=c.pk))
+        for i in items:
+            total += i.cantidad * i.costo
+    return total

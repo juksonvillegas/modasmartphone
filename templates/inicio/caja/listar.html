@@ -19,17 +19,20 @@
         <table id="tabla">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Usuario</th>
               <th>Fecha Apertura</th>
               <th>Monto Apertura</th>
               <th>Fecha Cierre</th>
               <th>Monto Cierre</th>
               <th>Estado</th>
+              <th>Resumen</th>
             </tr>
           </thead>
           <tbody>
         {% for c in lista %}
             <tr>
+              <td>{{c.id}}</td>
               <td>{{c.usuario|upper}}</td>
               <td>{{c.fechaa|date:'d/m/Y H:i'}}</td>
               <td>{{c.montoa}}</td>
@@ -40,6 +43,11 @@
                   <span class="alerta">Abierta</span>
                 {% else %}
                   <span class="error">Cerrada</span>
+                {% endif %}
+              </td>
+              <td>
+                {% if c.estado == False %}
+                  <a href="/caja/resumen/{{c.id}}"><i class="material-icons">assignment</i></a>
                 {% endif %}
               </td>
             </tr>
