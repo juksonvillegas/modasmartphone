@@ -15,6 +15,7 @@
         <table id="tabla">
           <thead>
             <tr>
+              <th>ID</th>
               <th>Cliente</th>
               <th>Fecha</th>
               <th>Observacion</th>
@@ -27,6 +28,7 @@
           <tbody>
         {% for c in lista %}
             <tr>
+              <td>{{c.id}}</td>
               <td>{{c.personas.nombres|upper}}</td>
               <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
               <td>{{c.observacion}}</td>

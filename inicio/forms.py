@@ -7,9 +7,12 @@ from personas.models import Personas
 from django.core.validators import RegexValidator
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.utils import timezone
+import pytz
 
 def getfechahora():
-    return datetime.datetime.now().strftime("%d/%m/%Y-%H:%M")
+    lima_now = datetime.datetime.now(pytz.timezone("America/Lima")).strftime("%d/%m/%Y-%H:%M")
+    return lima_now
 
 def getfecha():
     return datetime.date.today().strftime("%d/%m/%Y")
