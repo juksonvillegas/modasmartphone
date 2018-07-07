@@ -1,0 +1,183 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form id="form" class="" action="#" method="post">{% csrf_token %}
+      <h3>Agregar Desbloqueo</h3>
+        {% if detalle %}
+          {% if detalle != "0" %}
+          <h5 class="error">
+            {{detalle}}
+          </h5>
+          {% endif %}
+        {% endif %}
+      <div class="input-group">
+        {{form.personas}}
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal" data-open="exampleModal1"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" placeholder="Seleccione cliente" readonly id="id_cliente" name="" value="">
+      </div>
+      <div class="input-group">
+        {{form.modelo}}
+        <a href="#" class="botonopenmodal input-group-button" id="abrirmodal2" data-open="exampleModal2"><i class="material-icons">search</i></a>
+        <input type="text" class=" input-group-field" readonly placeholder="Seleccione un modelo" id="modelo" name="" value="">
+      </div>
+      <label for="monto">Monto:</label>
+      {{form.monto}}
+      <fieldset>
+        <legend>Operaciones:</legend>
+        <div class="row">
+          <div class="columns small-3">
+            {{form.flash}}
+            <label for="id_flash">Flash</label>
+          </div>
+          <div class="columns small-3">
+            {{form.imei}}
+            <label for="id_imei">Imei</label>
+          </div>
+          <div class="columns small-3">
+            {{form.liberacion}}
+            <label for="id_liberacion">Liberacion</label>
+          </div>
+          <div class="columns small-3">
+            {{form.cuenta}}
+            <label for="id_cuenta">Cuenta</label>
+          </div>
+        </div>
+      </fieldset>
+      <label for="id_observacion">Observaciones: (Opcional)</label>
+      {{form.observacion}}
+      <fieldset>
+        <legend>Estados:</legend>
+        <div class="row">
+          <div class="columns small-6">
+            {{form.entregado}}
+            <label for="id_entregado">Entregado</label>
+            {{form.pagado}}
+            <label for="id_pagado">Pagado</label>
+          </div>
+        </div>
+      </fieldset>
+      <button id="guardar" type="submit" class="button boton1" name="entrar">Guardar</button>
+</div>
+<!--MODAL PARA modelo-->
+  <div class="reveal titulo" id="exampleModal2" data-reveal>
+   <h3>Seleccionar modelo</h3>
+   <div class="input-group input-group-rounded columns large-6 medium-4">
+     <span class="input-group-label"><i class="material-icons">search</i></span>
+     <input type="text" id="buscadormodelo" name="buscador" class="buscador input-group-field" placeholder="Buscar modelo">
+   </div>
+     <table class="table-scroll" id="tablamodelo">
+       <thead>
+         <tr>
+           <th>Categoria</th>
+           <th>Marca</th>
+           <th>Modelo</th>
+           <th>Seleccionar</th>
+         </tr>
+       </thead>
+       <tbody>
+       </tbody>
+     </table>
+   <button class="close-button" data-close aria-label="Close modal" type="button">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+<!--MODAL PARA modelo-->
+<!--MODAL PARA CLIENTE-->
+  <div class="reveal titulo" id="exampleModal1" data-reveal>
+   <h3>Seleccionar Cliente</h3>
+   <div class="input-group input-group-rounded columns large-6 medium-4">
+     <span class="input-group-label"><i class="material-icons">search</i></span>
+     <input type="text" id="buscadorcliente" name="buscador" class="buscador input-group-field" placeholder="Buscar cliente" id="buscador">
+   </div>
+     <table class="table-scroll" id="tablacliente">
+       <thead>
+         <tr>
+           <th>Nombre</th>
+           <th>Seleccionar</th>
+         </tr>
+       </thead>
+       <tbody>
+       </tbody>
+     </table>
+   <button class="close-button" data-close aria-label="Close modal" type="button">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+<!--MODAL PARA CLIENTE-->
+{% endblock %}
+{%block script%}
+$( document ).ready(function() {
+  $("#id_fecha").mask("99/99/9999");
+  $("#abrirmodal").focus();
+});
+$('#buscadormodelo').change(function(){
+  $("#tablamodelo tbody tr").remove();
+  a = $("#buscadormodelo").val().length;
+  if(a>1){
+    texto = $("#buscadormodelo").val();
+    $.ajax({
+      data: {'term':texto},
+      url: "/modelos/buscar-ajax",
+      type: "get",
+      success: function(data){
+        for(var i = 0; i<data.length; i++){
+          for(var i = 0; i<data.length; i++){
+            nombre = data[i].nombre.replace(/\s+/g, '-');
+            marca = data[i].marca.replace(/\s+/g, '-');
+            nombrecompleto = marca + '-' + nombre;
+            if(data.length==1){
+              seleccionar2(data[i].pk, nombrecompleto);
+            }
+            nuevafila = "<tr>";
+            nuevafila +="<td>" + data[i].nombre + "</td>" +
+                        "<td>" + data[i].marca + "</td>" +
+                        "<td><a href=javascript:seleccionar2("+ data[i].pk + ",'" + nombrecompleto + "');><i class=material-icons>thumb_up</i></a></td></tr>";
+            $("#tablamodelo").append(nuevafila);
+       }
+     }}
+    });
+  }
+});
+$('#buscadorcliente').change(function(){
+  $("#tablacliente tbody tr").remove();
+  a = $("#buscadorcliente").val().length;
+  if(a>2){
+    texto = $("#buscadorcliente").val();
+    $("#tablacliente tbody tr").remove();
+    $.ajax({
+      data: {'term':texto},
+      url: "/personas/buscar-ajax",
+      type: "get",
+      success: function(data){
+        for(var i = 0; i<data.length; i++){
+          nuevafila = "<tr>";
+          $nom = data[i].nombres;
+          if(data.length==1){
+            seleccionar(data[i].pk, $nom);
+          }
+          nuevafila +="<td>" + $nom + "</td>" +
+                      '<td><a href="#" onclick="seleccionar(' + data[i].pk + ",\'"+  $nom + '\')";><i class=material-icons>thumb_up</i></a></td></tr>';
+          $("#tablacliente").append(nuevafila);
+       }
+     }
+    });
+  }
+});
+function seleccionar2(id, modelo){
+  $("#id_modelo").val(id);
+  $("#modelo").val(modelo);
+  $("#exampleModal2").foundation('close');
+  $("#buscadormodelo").val('');
+  $("#tablamodelo tbody tr").remove();
+  $("#id_monto").focus();
+}
+function seleccionar(id, modelo){
+  $("#id_personas").val(id);
+  $("#id_cliente").val(modelo);
+  $("#exampleModal1").foundation('close');
+  $("#buscadorcliente").val('');
+  $("#tablacliente tbody tr").remove();
+  $("#abrirmodal2").focus();
+}
+{% endblock %}

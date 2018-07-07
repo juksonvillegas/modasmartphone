@@ -1,0 +1,88 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+  <div class="callout clearfix">
+    <a href="/desbloqueos/agregar" id="agregardesbloqueo" class="button float">Agregar nueva desbloqueo</a>
+  </div>
+  <div class="row titulo large-10 large-offset-1 medium-10 medium-offset-1 small-12">
+    <a href="/comisiones/reportes" class="button float">Cobrados hoy</a>
+    <a href="/comisiones/reportepersona" class="button float">Por Cobrar</a>
+    <a href="/comisiones/ranking" class="button float">Mas Reportes</a>
+    <div class="row panel-clearfix">
+      <h3 class="columns large-8 medium-6 small-12 left">Listado Desbloqueos</h3>
+      <div class="columns large-4 right medium-6 small-12">
+        <h3>TOTAL:{{total}}</h3>
+      </div>
+    </div>
+      <div class="table-scroll">
+        <table id="tabla">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Fecha</th>
+              <th>Cliente</th>
+              <th>Marca</th>
+              <th>Modelo</th>
+              <th>Monto</th>
+              <th>Operaciones</th>
+              <th>Entregado</th>
+              <th>Pagado</th>
+              <th>Editar</th>
+              <th>Eliminar</th>
+            </tr>
+          </thead>
+          <tbody>
+        {% for c in lista %}
+            <tr>
+              <td>{{c.id}}</td>
+              <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
+              <td>{{c.personas.nombres|upper}}</td>
+              <td>{{c.modelo.marca.nombre|upper}}</td>
+              <td>{{c.modelo.nombre|upper}}</td>
+              <td>{{c.monto}}</td>
+              <td>
+                {% if c.flash %}FLASH{% endif %}
+                {% if c.imei %}IMEI{% endif %}
+                {% if c.liberacion %}LIBERACION{% endif %}
+                {% if c.cuenta %}CUENTA{% endif %}
+              </td>
+              <td>
+                {% if c.entregado %}
+                  {{c.fecha_entregado}}
+                {% else %}
+                  <a href="editar/{{c.pk}}"> Entregar<i class="material-icons">mobile_screen_share</i></a>
+                {% endif %}
+              </td>
+              <td>
+                {% if c.pagado %}
+                  {{c.fecha_pagado}}
+                {% else %}
+                  <a href="editar/{{c.pk}}">Cobrar <i class="material-icons">attach_money</i></a>
+                {% endif %}
+              </td>
+              <td><a href="editar/{{c.pk}}"> <i class="material-icons">edit</i></a> </td>
+              <td><a href="eliminar/{{c.pk}}"> <i class="material-icons">delete</i></a> </td>
+            </tr>
+        {% endfor %}
+          </tbody>
+        </table>
+        </div>
+        {% if paginator.num_pages > 1%}
+          <ul class="pagination text-center" role="navigation" aria-label="Pagination">
+            {% for i in paginator.page_range %}
+              {% if i != lista.number  %}
+              <li class="paginas"><a href="?page={{i}}" aria-label="Page {{i}}">{{i}}</a></li>
+              {% else %}
+              <li class="paginas">{{i}}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+  $(document).ready(function() {
+    $('#agregardesbloqueo').focus();
+  });
+{% endblock %}

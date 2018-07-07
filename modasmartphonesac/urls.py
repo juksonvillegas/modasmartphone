@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'', include('consignaciones.urls')),
     url(r'', include('ventas.urls')),
     url(r'', include('salidas.urls')),
+    url(r'', include('desbloqueos.urls')),
 ]

@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'consignaciones',
     'ventas',
     'salidas',
+    'desbloqueos',
 ]
 
 MIDDLEWARE_CLASSES = [

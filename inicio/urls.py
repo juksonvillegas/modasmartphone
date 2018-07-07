@@ -19,5 +19,4 @@ urlpatterns = [
     url(r'^caja/cerrar$', cerrarcaja, name='caja_cerrar'),
     url(r'^caja/resumen/(?P<pk>[0-9]+)/$', resumencaja, name='resumen_caja'),
     url(r'^usuario/agregar$', agregarusuario, name='usuario_agregar'),
-
     ]
