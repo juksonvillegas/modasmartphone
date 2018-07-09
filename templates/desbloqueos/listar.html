@@ -48,9 +48,9 @@
               </td>
               <td>
                 {% if c.entregado %}
-                  {{c.fecha_entregado}}
+                  {{c.fecha_entregado|date:'d/m/Y H:i'}}
                 {% else %}
-                  <a href="editar/{{c.pk}}"> Entregar<i class="material-icons">mobile_screen_share</i></a>
+                  <a href="entregar/{{c.pk}}"> Entregar<i class="material-icons">mobile_screen_share</i></a>
                 {% endif %}
               </td>
               <td>

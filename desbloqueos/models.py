@@ -20,4 +20,4 @@ class Desbloqueo(models.Model):
     fecha_pagado = models.DateTimeField(blank=True, null=True)
     observacion = models.CharField(max_length=100, blank=True, null=True)
     def __str__(self):
-        return self.personas.nombres + str(self.fecha) 
+        return self.personas.nombres + str(self.entregado)

@@ -73,3 +73,24 @@ def listardesbloqueos(request):
     except EmptyPage:
         lista = paginator.page(1)
     return render(request, 'desbloqueos/listar.html', { 'lista': lista, 'paginator':paginator })
+
+@login_required
+def entregardesbloqueo(request, pk):
+    c = get_object_or_404(Desbloqueo, pk=pk)
+    detalle = 0
+    if request.method == 'POST':
+        try:
+            c.entregado = True
+            c.fecha_entregado = datetime.datetime.now()
+            c.save()
+        except Exception, e:
+            detalle = "Error: " + str(e)
+        finally:
+            if detalle != 0:
+                return render(request, 'desbloqueos/entregar.html', {'c': c, 'detalle':detalle})
+            else:
+                return redirect(reverse_lazy('desbloqueos_listar'))
+    else:
+        modelo = c.modelo.marca.nombre + '-' +  c.modelo.nombre
+        cliente = c.personas.nombres
+        return render(request, 'desbloqueos/entregar.html', {'c': c, 'modelo':modelo, 'cliente':cliente})

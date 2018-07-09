@@ -1,0 +1,58 @@
+{% extends 'inicio/base.html' %}
+{% block contenido %}
+<div class="off-canvas-content" data-off-canvas-content>
+ <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
+   <form class="" action="#" method="POST">{% csrf_token %}
+     <h3>Entregar Desbloqueo</h3>
+       {% if detalle %}
+         {% if detalle != "0" %}
+         <h5 class="error">
+           {{detalle}}
+         </h5>
+         {% endif %}
+       {% endif %}
+       <div class="callout medium">
+         <h4>Datos generales</h4>
+         <table>
+           <tbody>
+             <tr>
+               <td>Cliente</td>
+               <td>{{c.personas.nombres|upper}}</td>
+             </tr>
+             <tr>
+               <td>Modelo</td>
+               <td>{{modelo|upper}}</td>
+             </tr>
+             <tr>
+               <td>Operaciones:</td>
+               <td>
+                 {% if c.flash %}FLASH{% endif %}
+                 {% if c.imei %}IMEI{% endif %}
+                 {% if c.liberacion %}LIBERACION{% endif %}
+                 {% if c.cuenta %}CUENTA{% endif %}
+               </td>
+             </tr>
+             <tr>
+               <td>Recibido</td>
+               <td>{{c.fecha|date:'d/m/Y H:i'}}</td>
+             </tr>
+             <tr>
+               <td>Monto</td>
+               <td>
+                 {{c.monto}}
+               </td>
+             </tr>
+             <tr>
+               <td>Observacion</td>
+               <td>
+                 {{c.observacion}}
+               </td>
+             </tr>
+           </tbody>
+         </table>
+       </div>
+       <button type="submit" class="button boton1" name="eliminar">Entregar</button>
+     </form>
+   </div>
+ </div>
+       {% endblock %}
