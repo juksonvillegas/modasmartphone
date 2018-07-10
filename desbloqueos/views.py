@@ -10,6 +10,7 @@ from .forms import *
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect
 import json
+from django.contrib.auth.decorators import user_passes_test
 
 # Create your views here.
 @login_required
@@ -22,9 +23,6 @@ def agregardesbloqueo(request):
                 print("entro")
                 c = Desbloqueo()
                 c.fecha = datetime.datetime.now()
-                #c.fecha = form.cleaned_data['fecha']
-                #if c.fecha.strftime("%d/%m/%Y") == datetime.date.today().strftime("%d/%m/%Y"):
-                    #c.fecha = datetime.datetime.now()
                 c.monto = form.cleaned_data['monto']
                 clie = form.cleaned_data['personas']
                 pk1 = form.cleaned_data['modelo']
@@ -64,6 +62,8 @@ def agregardesbloqueo(request):
 def listardesbloqueos(request):
     lista = Desbloqueo.objects.filter(pagado=False).order_by('-fecha')
     total = 0
+    for l in lista:
+        total += l.monto
     page = request.GET.get('page')
     paginator = Paginator(lista, 30)
     try:
@@ -72,7 +72,24 @@ def listardesbloqueos(request):
         lista = paginator.page(1)
     except EmptyPage:
         lista = paginator.page(1)
-    return render(request, 'desbloqueos/listar.html', { 'lista': lista, 'paginator':paginator })
+    return render(request, 'desbloqueos/listar.html', { 'lista': lista, 'paginator':paginator, 'total':total})
+
+@login_required
+def listardesbloqueoscobrados(request):
+    lista = Desbloqueo.objects.filter(pagado=True, fecha_pagado__gte=datetime.date.today()).order_by('-fecha')
+    total = 0
+    for l in lista:
+        total += l.monto
+    page = request.GET.get('page')
+    paginator = Paginator(lista, 30)
+    try:
+        lista = paginator.page(page)
+    except PageNotAnInteger:
+        lista = paginator.page(1)
+    except EmptyPage:
+        lista = paginator.page(1)
+    return render(request, 'desbloqueos/listarcobrados.html', { 'lista': lista, 'paginator':paginator, 'total':total})
+
 
 @login_required
 def entregardesbloqueo(request, pk):
@@ -94,3 +111,47 @@ def entregardesbloqueo(request, pk):
         modelo = c.modelo.marca.nombre + '-' +  c.modelo.nombre
         cliente = c.personas.nombres
         return render(request, 'desbloqueos/entregar.html', {'c': c, 'modelo':modelo, 'cliente':cliente})
+
+@login_required
+def cobrardesbloqueo(request, pk):
+    c = get_object_or_404(Desbloqueo, pk=pk)
+    detalle = 0
+    if request.method == 'POST':
+        try:
+            if c.entregado != True:
+                c.entregado = True
+                c.fecha_entregado = datetime.datetime.now()
+            c.pagado = True
+            c.fecha_pagado = datetime.datetime.now()
+            c.save()
+        except Exception, e:
+            detalle = "Error: " + str(e)
+        finally:
+            if detalle != 0:
+                return render(request, 'desbloqueos/cobrar.html', {'c': c, 'detalle':detalle})
+            else:
+                return redirect(reverse_lazy('desbloqueos_listar'))
+    else:
+        modelo = c.modelo.marca.nombre + '-' +  c.modelo.nombre
+        cliente = c.personas.nombres
+        return render(request, 'desbloqueos/cobrar.html', {'c': c, 'modelo':modelo, 'cliente':cliente})
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/consignaciones/listar')
+def eliminardesbloqueo(request, pk):
+    c = get_object_or_404(Desbloqueo, pk=pk)
+    detalle = 0
+    if request.method == 'POST':
+        try:
+            c.delete()
+        except Exception, e:
+            detalle = "Error: " + str(e)
+        finally:
+            if detalle != 0:
+                return render(request, 'desbloqueos/eliminar.html', {'c': c, 'detalle':detalle})
+            else:
+                return redirect(reverse_lazy('desbloqueos_listar'))
+    else:
+        modelo = c.modelo.marca.nombre + '-' +  c.modelo.nombre
+        cliente = c.personas.nombres
+        return render(request, 'desbloqueos/eliminar.html', {'c': c, 'modelo':modelo, 'cliente':cliente})

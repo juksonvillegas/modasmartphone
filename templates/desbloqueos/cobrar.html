@@ -3,7 +3,7 @@
 <div class="off-canvas-content" data-off-canvas-content>
  <div class="row titulo large-8 large-offset-2 medium-8 medium-offset-2 small-12">
    <form class="" action="#" method="POST">{% csrf_token %}
-     <h3>Eliminar Desbloqueo</h3>
+     <h3>Cobrar Desbloqueo</h3>
        {% if detalle %}
          {% if detalle != "0" %}
          <h5 class="error">
@@ -51,7 +51,7 @@
            </tbody>
          </table>
        </div>
-       <button type="submit" class="button boton1" name="eliminar">Eliminar</button>
+       <button type="submit" class="button boton1" name="eliminar">Cobrar</button>
      </form>
    </div>
  </div>
