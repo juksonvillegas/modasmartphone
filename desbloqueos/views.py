@@ -20,7 +20,6 @@ def agregardesbloqueo(request):
         detalle = 0
         try:
             if form.is_valid():
-                print("entro")
                 c = Desbloqueo()
                 c.fecha = datetime.datetime.now()
                 c.monto = form.cleaned_data['monto']
@@ -39,12 +38,13 @@ def agregardesbloqueo(request):
                 c.cuenta = cuenta
                 entregado = bool(form.cleaned_data['entregado'])
                 pagado = bool(form.cleaned_data['pagado'])
+                print(entregado, pagado)
                 c.entregado = entregado
                 c.pagado = pagado
-                if c.entregado==True:
+                if c.entregado:
                     c.fecha_entregado = datetime.datetime.now()
-                if c.pagado==True:
-                    c.fecha_entregado = datetime.datetime.now()
+                if c.pagado:
+                    c.fecha_pagado = datetime.datetime.now()
                 c.save()
         except Exception as e:
             detalle = "Error: " + str(e)
