@@ -155,3 +155,36 @@ def eliminardesbloqueo(request, pk):
         modelo = c.modelo.marca.nombre + '-' +  c.modelo.nombre
         cliente = c.personas.nombres
         return render(request, 'desbloqueos/eliminar.html', {'c': c, 'modelo':modelo, 'cliente':cliente})
+
+@login_required
+def desbloqueosporfecha(request):
+    if request.method == 'POST':
+        form = DesbloqueoFechaForm(request.POST)
+        detalle = 0
+        total = 0
+        paginator = None
+        try:
+            if form.is_valid():
+                fechainicio = form.cleaned_data['fechainicio']
+                fechafin = form.cleaned_data['fechafin']
+                f1 = fechainicio.strftime("%Y-%m-%d")
+                f2 = fechafin.strftime("%Y-%m-%d")
+                lista = Desbloqueo.objects.filter(fecha__date__range=[f1,f2]).extra(select={'fecha1':"DATE(fecha_pagado)"}).order_by('fecha1')
+                nuevalista={}
+                tot = 0
+                for c in lista:
+                    if c.fecha1 in nuevalista:
+                         tot = nuevalista.get(c.fecha1) + c.monto
+                         nuevalista.update({c.fecha1 : tot})
+                    else:
+                        nuevalista.update({c.fecha1 : c.monto})
+                    total += c.monto
+        except Exception, e:
+            lista = 0
+            detalle = "Error: " + str(e)
+        finally:
+            return render(request, 'desbloqueos/reportes.html', {'total': total, 'detalle':detalle, 'form':form,'lista':nuevalista})
+    else:
+        total = 0
+        form = DesbloqueoFechaForm()
+        return render(request, 'desbloqueos/reportes.html', {'form':form})

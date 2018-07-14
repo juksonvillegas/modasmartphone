@@ -6,6 +6,7 @@ from .views import *
 urlpatterns = [
     url(r'^desbloqueos/agregar$', agregardesbloqueo, name='agregardesbloqueo'),
     url(r'^desbloqueos/listar$', listardesbloqueos, name='desbloqueos_listar'),
+    url(r'^desbloqueos/reportesporfecha$', desbloqueosporfecha, name='desbloqueos_porfecha'),
     url(r'^desbloqueos/listarcobrados$', listardesbloqueoscobrados, name='desbloqueos_cobrados_listar'),
     url(r'^desbloqueos/entregar/(?P<pk>[0-9]+)/$', entregardesbloqueo, name='desbloqueos_entregar'),
     url(r'^desbloqueos/cobrar/(?P<pk>[0-9]+)/$', cobrardesbloqueo, name='desbloqueos_cobrar'),

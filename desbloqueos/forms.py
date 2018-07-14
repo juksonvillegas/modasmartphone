@@ -21,3 +21,12 @@ class DesbloqueoForm(forms.Form):
     pagado = BooleanField(required=False)
     observacion = CharField(max_length=50, widget = TextInput(
         attrs={'placeholder':'Ingrese datos extras'}), required=False)
+
+def getfecha():
+    return datetime.date.today().strftime("%d/%m/%Y")
+
+class DesbloqueoFechaForm(forms.Form):
+    fechainicio = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
+             attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
+    fechafin = DateField(input_formats=['%d/%m/%Y'],widget = TextInput(
+             attrs={'placeholder':'dd/mm/aaaa'}), initial = getfecha())
