@@ -169,16 +169,17 @@ def desbloqueosporfecha(request):
                 fechafin = form.cleaned_data['fechafin']
                 f1 = fechainicio.strftime("%Y-%m-%d")
                 f2 = fechafin.strftime("%Y-%m-%d")
-                lista = Desbloqueo.objects.filter(fecha__date__range=[f1,f2]).extra(select={'fecha1':"DATE(fecha_pagado)"}).order_by('fecha1')
                 nuevalista={}
+                lista = Desbloqueo.objects.filter(fecha__date__range=[f1,f2]).extra(select={'fecha1':"DATE(fecha_pagado)"}).order_by('fecha1')
                 tot = 0
                 for c in lista:
-                    if c.fecha1 in nuevalista:
-                         tot = nuevalista.get(c.fecha1) + c.monto
-                         nuevalista.update({c.fecha1 : tot})
-                    else:
-                        nuevalista.update({c.fecha1 : c.monto})
-                    total += c.monto
+                    if c.pagado == True:
+                        if c.fecha1 in nuevalista:
+                             tot = nuevalista.get(c.fecha1) + c.monto
+                             nuevalista.update({c.fecha1 : tot})
+                        else:
+                            nuevalista.update({c.fecha1 : c.monto})
+                        total += c.monto
         except Exception, e:
             lista = 0
             detalle = "Error: " + str(e)
